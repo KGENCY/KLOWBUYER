@@ -33,7 +33,7 @@ export default function RequestDetail({ id }: { id: string }) {
 
   return (
     <div className="page wrap">
-      <nav className="crumbs"><Link href="/account" className="link">My requests</Link><span>/</span><span className="mono">{order.id}</span></nav>
+      <nav className="trail"><Link href="/account" className="link">My requests</Link><span>/</span><span className="mono">{order.id}</span></nav>
 
       <header className="page__head page__head--row">
         <div>

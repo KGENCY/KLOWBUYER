@@ -211,28 +211,28 @@ function Profile({ buyer }: { buyer: Buyer }) {
 
       <section className="panel">
         <h3 className="panel__title">Documents</h3>
-        <ul className="docs">
+        <ul className="files">
           {buyer.certFileName ? (
             <li>
-              <span className="docs__icon">PDF</span>
+              <span className="files__icon">PDF</span>
               <div><b>{buyer.certFileName}</b><span className="muted small">Business registration · uploaded {fmtDate(buyer.createdAt)}</span></div>
               <span className="badge badge--accent">✓ Verified</span>
             </li>
           ) : (
             <li>
-              <span className="docs__icon docs__icon--empty">—</span>
+              <span className="files__icon files__icon--empty">—</span>
               <div><b>Business registration certificate</b><span className="muted small">Not uploaded yet · unlocks brand-exclusive terms and faster quotes</span></div>
               <button className="btn btn--ghost btn--plain btn--sm">Upload</button>
             </li>
           )}
           {buyer.storePhotoName && (
             <li>
-              <span className="docs__icon">IMG</span>
+              <span className="files__icon">IMG</span>
               <div><b>{buyer.storePhotoName}</b><span className="muted small">Offline store photo</span></div>
               <span className="badge">On file</span>
             </li>
           )}
-          <li className="docs__add">
+          <li className="files__add">
             <button className="link small">+ Add a document (reseller permit, VAT ID, import licence…)</button>
           </li>
         </ul>
