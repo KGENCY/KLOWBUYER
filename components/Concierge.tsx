@@ -11,6 +11,12 @@ type Msg = { role: "bot" | "user"; text: string; note?: string };
 
 const TYPING_MS = 700;
 
+const answerText = (s: Step, a: Answers) => {
+  const v = a[s.key];
+  if (v === undefined) return "";
+  return (Array.isArray(v) ? v : [v]).map((x) => labelFor(s.key, x)).join(", ");
+};
+
 export default function Concierge({ initialType }: { initialType?: string }) {
   const [answers, setAnswers] = useState<Answers>({});
   const [msgs, setMsgs] = useState<Msg[]>([]);
@@ -18,6 +24,7 @@ export default function Concierge({ initialType }: { initialType?: string }) {
   const [typing, setTyping] = useState(false);
   const [picked, setPicked] = useState<string[]>([]);
   const [done, setDone] = useState(false);
+  const [recapOpen, setRecapOpen] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
   const booted = useRef(false);
@@ -36,7 +43,7 @@ export default function Concierge({ initialType }: { initialType?: string }) {
   };
 
   const start = async (prefill?: string) => {
-    setMsgs([]); setAnswers({}); setPicked([]); setDone(false); setStep(-1);
+    setMsgs([]); setAnswers({}); setPicked([]); setDone(false); setRecapOpen(false); setStep(-1);
     await say({ role: "bot", text: "Welcome to KLOW.", note: "Five short questions about how you sell — then we'll match you with Korean brands built for your business." }, 350);
     const t = STEPS[0].options.find((o) => o.value === prefill);
     if (!t) return ask(0, {});
@@ -50,7 +57,14 @@ export default function Concierge({ initialType }: { initialType?: string }) {
     start(initialType);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" }); }, [msgs, typing, step]);
+  // Follow the thread as it grows. The second pass re-aligns after the option tiles finish rising,
+  // so the newest question never ends up under the fixed sample bar (see .thread__end scroll-margin).
+  useEffect(() => {
+    const go = () => endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+    go();
+    const t = setTimeout(go, 450);
+    return () => clearTimeout(t);
+  }, [msgs, typing, step]);
 
   const commit = async (i: number, values: string[], base: Answers) => {
     const s = STEPS[i];
@@ -80,7 +94,7 @@ export default function Concierge({ initialType }: { initialType?: string }) {
 
   return (
     <>
-      <section className="concierge">
+      <section className={`concierge ${done ? "concierge--done" : ""}`}>
         <div className="concierge__top">
           <span className="eyebrow">KLOW Concierge</span>
           <span className="concierge__step">{String(Math.min(answered + (done ? 0 : 1), STEPS.length)).padStart(2, "0")} / {String(STEPS.length).padStart(2, "0")}</span>
@@ -88,15 +102,33 @@ export default function Concierge({ initialType }: { initialType?: string }) {
         </div>
         <div className="concierge__bar"><i style={{ width: `${(answered / STEPS.length) * 100}%` }} /></div>
 
+        {done ? (
+          <div className="recap">
+            <button className="recap__head" onClick={() => setRecapOpen((o) => !o)} aria-expanded={recapOpen}>
+              <div>
+                <span className="eyebrow">Your answers · {STEPS.length} of {STEPS.length}</span>
+                <p>{STEPS.map((s) => answerText(s, answers)).filter(Boolean).join(" · ")}</p>
+              </div>
+              <span className="recap__chev" aria-hidden>{recapOpen ? "−" : "+"}</span>
+            </button>
+            {recapOpen && (
+              <dl className="recap__body">
+                {STEPS.map((s) => (
+                  <div key={s.key} className="recap__row">
+                    <dt>{s.question}</dt>
+                    <dd>{answerText(s, answers)}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+          </div>
+        ) : (
         <div className="thread">
           {msgs.map((m, i) =>
             m.role === "bot" ? (
               <div key={i} className="msg msg--bot">
-                <span className="msg__mark">K</span>
-                <div>
-                  {m.note && <p className="msg__note">{m.note}</p>}
-                  <p className="msg__text">{m.text}</p>
-                </div>
+                <p className="msg__text">{m.text}</p>
+                {m.note && <p className="msg__note">{m.note}</p>}
               </div>
             ) : (
               <div key={i} className="msg msg--user"><p>{m.text}</p></div>
@@ -105,7 +137,6 @@ export default function Concierge({ initialType }: { initialType?: string }) {
 
           {typing && (
             <div className="msg msg--bot">
-              <span className="msg__mark">K</span>
               <span className="dots"><i /><i /><i /></span>
             </div>
           )}
@@ -132,8 +163,9 @@ export default function Concierge({ initialType }: { initialType?: string }) {
               )}
             </div>
           )}
-          <div ref={endRef} />
+          <div ref={endRef} className="thread__end" aria-hidden />
         </div>
+        )}
       </section>
 
       <div ref={resultsRef}>{done && <Results answers={answers} />}</div>
