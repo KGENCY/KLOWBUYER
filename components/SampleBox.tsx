@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { FREE_SHIPPING_SKUS, SAMPLE_SHIPPING_FEE, brandById, money, productById } from "@/lib/data";
 import Photo from "./Photo";
 
@@ -9,9 +10,13 @@ interface Ctx {
   has: (id: string) => boolean;
   toggle: (id: string) => void;
   addMany: (ids: string[]) => void;
+  clear: () => void;
   open: boolean;
   setOpen: (v: boolean) => void;
 }
+
+/** Routes where the fixed bottom bar would sit on top of its own checkout. */
+const QUIET_ROUTES = ["/checkout", "/signup", "/signin"];
 
 const SampleCtx = createContext<Ctx | null>(null);
 export const useSamples = () => useContext(SampleCtx)!;
@@ -38,6 +43,7 @@ export function SampleProvider({ children }: { children: ReactNode }) {
     has: (id) => items.includes(id),
     toggle: (id) => setItems((xs) => (xs.includes(id) ? xs.filter((x) => x !== id) : [...xs, id])),
     addMany: (ids) => setItems((xs) => [...xs, ...ids.filter((i) => !xs.includes(i))]),
+    clear: () => setItems([]),
     open,
     setOpen,
   };
@@ -68,10 +74,12 @@ export function shippingNote(count: number) {
 
 function SampleBar() {
   const { items, setOpen } = useSamples();
+  const pathname = usePathname();
+  const quiet = QUIET_ROUTES.some((r) => pathname.startsWith(r));
   const n = items.length;
   const subtotal = items.reduce((s, id) => s + productById(id).wholesale, 0);
   return (
-    <div className={`samplebar ${n ? "is-on" : ""}`} aria-hidden={!n}>
+    <div className={`samplebar ${n && !quiet ? "is-on" : ""}`} aria-hidden={!n || quiet}>
       <div className="samplebar__in">
         <div className="samplebar__l">
           <span className="eyebrow eyebrow--light">Sample box</span>
@@ -92,6 +100,7 @@ function SampleBar() {
 
 function SampleDrawer() {
   const { items, toggle, open, setOpen } = useSamples();
+  const router = useRouter();
   const n = items.length;
   const subtotal = items.reduce((s, id) => s + productById(id).wholesale, 0);
   const free = n >= FREE_SHIPPING_SKUS;
@@ -139,7 +148,13 @@ function SampleDrawer() {
           <div className="row"><span>Samples at wholesale</span><span>{money(subtotal)}</span></div>
           <div className="row"><span>Shipping from Seoul</span><span>{free ? "Complimentary" : money(SAMPLE_SHIPPING_FEE)}</span></div>
           <div className="row row--total"><span>Total</span><span>{money(subtotal + (free || !n ? 0 : SAMPLE_SHIPPING_FEE))}</span></div>
-          <button className="btn btn--solid btn--block" disabled={!n}>Request samples</button>
+          <button
+            className="btn btn--solid btn--block"
+            disabled={!n}
+            onClick={() => { setOpen(false); router.push("/checkout"); }}
+          >
+            Request samples
+          </button>
           <p className="muted small center">Every sample is billed at the wholesale price — never retail.</p>
         </footer>
       </aside>

@@ -2,12 +2,15 @@
 
 import Link from "next/link";
 import { FREE_SHIPPING_SKUS } from "@/lib/data";
+import { initials } from "@/lib/buyer";
 import { useSamples } from "./SampleBox";
 import { useRequest } from "./RequestBrand";
+import { useBuyer } from "./Buyer";
 
 export default function Header() {
   const { items, setOpen } = useSamples();
   const { openWith } = useRequest();
+  const { buyer } = useBuyer();
   return (
     <>
       <div className="notice">
@@ -30,7 +33,14 @@ export default function Header() {
             <button onClick={() => openWith()}>Request a brand</button>
           </nav>
           <div className="header__act">
-            <span className="hide-sm">Sign in</span>
+            {buyer ? (
+              <Link href="/account" className="header__avatar" title={`${buyer.name} · ${buyer.company}`} aria-label="My account">
+                <span>{initials(buyer.name)}</span>
+                <i className="header__verified" aria-hidden />
+              </Link>
+            ) : (
+              <Link href="/signin" className="hide-sm">Sign in</Link>
+            )}
             <button className="header__box" onClick={() => setOpen(true)}>
               Sample box <span className="header__count">{items.length}/{FREE_SHIPPING_SKUS}</span>
             </button>

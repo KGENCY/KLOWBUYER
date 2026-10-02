@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import { SampleProvider } from "@/components/SampleBox";
 import { RequestProvider } from "@/components/RequestBrand";
+import { BuyerProvider } from "@/components/Buyer";
 import "./globals.css";
 
 const sans = Geist({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-sans" });
@@ -20,11 +21,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${sans.variable} ${mono.variable}`}>
       <body>
         <SampleProvider>
-          <RequestProvider>
-            <Header />
-            <main>{children}</main>
-            <Footer />
-          </RequestProvider>
+          <BuyerProvider>
+            <RequestProvider>
+              <Header />
+              <main>{children}</main>
+              <Footer />
+            </RequestProvider>
+          </BuyerProvider>
         </SampleProvider>
         <Reveal />
       </body>
