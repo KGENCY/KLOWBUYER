@@ -58,7 +58,12 @@ export default function ProductDetail({ p }: { p: Product }) {
             {/* What the brand does for the buyer, before any number */}
             <p className="support" title={b.support.join(", ")}><i aria-hidden="true" />Marketing support available from {b.name}.</p>
 
-            <ul className="certs" aria-label="Certifications">
+            {/* Badges fill the column edge to edge: one row of n up to 5, two balanced rows beyond. Mobile narrows to 2–3 per row. */}
+            <ul
+              className="certs"
+              aria-label="Certifications"
+              style={{ "--n": certs.length <= 5 ? certs.length : Math.ceil(certs.length / 2), "--nm": certs.length <= 3 ? certs.length : certs.length === 4 ? 2 : 3 } as React.CSSProperties}
+            >
               {certs.map((c) => (
                 <li key={c.code}><b>{c.code}</b><span>{c.note}</span></li>
               ))}
