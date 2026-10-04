@@ -5,7 +5,7 @@ import { Product, brandById, money } from "@/lib/data";
 import Photo from "./Photo";
 import { useSamples } from "./SampleBox";
 
-export default function ProductCard({ p, index = 0 }: { p: Product; index?: number }) {
+export default function ProductCard({ p, index = 0, tag }: { p: Product; index?: number; tag?: string }) {
   const { has, toggle } = useSamples();
   const b = brandById(p.brandId);
   const added = has(p.id);
@@ -34,6 +34,7 @@ export default function ProductCard({ p, index = 0 }: { p: Product; index?: numb
           <span className="card__ws">{money(p.wholesale)}</span>
           <span className="card__msrp">MSRP {money(p.msrp)}</span>
         </div>
+        {tag && <span className="card__tag">{tag}</span>}
         <div className="card__support" title={`Marketing support from ${b.name}: ${b.support.join(", ")}`}>
           <span className="card__support-k"><i />Marketing support</span>
           <span className="card__support-v">{b.support.join(" · ")}</span>

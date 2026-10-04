@@ -14,9 +14,9 @@ export default function Header() {
   return (
     <>
       <div className="notice">
-        <span>Samples from 1 unit at wholesale price</span>
+        <span>Samples at wholesale price — from 1 unit</span>
         <span className="notice__dot hide-sm" />
-        <span className="hide-sm">Complimentary shipping on any {FREE_SHIPPING_SKUS} SKUs</span>
+        <span className="hide-sm">Free shipping at {FREE_SHIPPING_SKUS} SKUs</span>
         <span className="notice__dot hide-sm" />
         <span className="hide-sm">Verified Korean brands only</span>
       </div>
