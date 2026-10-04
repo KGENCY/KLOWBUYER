@@ -222,7 +222,8 @@ img { display: block; max-width: 100%; }
 .brands__mood figure:hover img { transform: scale(1.04); }
 .brands__mood figcaption { position: absolute; left: 14px; bottom: 14px; background: var(--card); padding: 7px 10px; font-family: var(--mono); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; }
 .brandwall { display: grid; grid-template-columns: repeat(3, 1fr); border-top: var(--bw-2) solid var(--ink); border-left: var(--bw) solid var(--line); }
-.brandwall li { padding: 26px 20px 24px; border-bottom: var(--bw) solid var(--line); border-right: var(--bw) solid var(--line); display: flex; flex-direction: column; gap: 8px; background: var(--card); transition: background .3s var(--ease); }
+.brandwall li { border-bottom: var(--bw) solid var(--line); border-right: var(--bw) solid var(--line); background: var(--card); transition: background .3s var(--ease); }
+.brandwall__link { display: flex; flex-direction: column; gap: 8px; padding: 26px 20px 24px; height: 100%; }
 .brandwall li:hover { background: var(--surface); }
 .brandwall .serif { font-size: 22px; line-height: 1.1; }
 .brandwall__meta { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
@@ -971,8 +972,8 @@ body:has(.samplebar.is-on) .footer { padding-bottom: 110px; }
   .review__meta li + li::before { content: "·"; color: var(--muted); margin-right: 10px; }
   .review__title { font-size: 18px; }
   .review__photos li { width: 88px; }
-  .chat { padding: 20px 18px; }
   .pdp__ask { height: 48px; padding: 0 14px; font-size: 14px; }
+  .chat { padding: 20px 18px; }
   .chat__composer { padding: 14px 18px 20px; }
   .chat__quick { padding-left: 0; }
 }
@@ -995,6 +996,29 @@ body:has(.samplebar.is-on) .footer { padding-bottom: 110px; }
 .chat__hand-tick { flex: none; width: 28px; height: 28px; display: grid; place-items: center; background: var(--accent); color: #fff; font-family: var(--mono); font-size: 13px; }
 @media (max-width: 860px) { .chat__hand { margin-left: 0; } }
 .chat__quick--more button { padding: 8px 12px; font-size: 13px; }
+
+/* ───────────── Brand page ───────────── */
+.brand { padding: 32px 0 96px; }
+.brand__head { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 80px; align-items: start; padding-bottom: 40px; border-bottom: var(--bw-2) solid var(--ink); }
+.brand__id { display: flex; flex-direction: column; gap: 16px; }
+.brand__name { font-size: clamp(40px, 5vw, 68px); line-height: .95; font-weight: 500; letter-spacing: -.045em; margin-top: -.08em; }
+.brand__tagline { font-size: clamp(18px, 1.8vw, 22px); line-height: 1.3; color: var(--ink-2); letter-spacing: -.015em; max-width: 440px; }
+.brand__id .support { margin-top: 4px; }
+.brand__facts > div { display: grid; grid-template-columns: 160px 1fr; gap: 24px; padding: 12px 0; border-bottom: var(--bw) solid var(--line-2); font-size: 14px; line-height: 1.5; }
+.brand__facts > div:first-child { padding-top: 0; }
+.brand__facts dt { color: var(--muted); }
+.brand__facts dd { font-weight: 500; }
+.brand__cta { grid-column: 2; display: flex; gap: 10px; margin-top: -8px; }
+.brand__cta .btn { flex: 1; padding: 0 18px; }
+.brand__products { margin-top: 40px; }
+@media (max-width: 1120px) { .brand__head { gap: 44px; } }
+@media (max-width: 860px) {
+  .brand { padding: 16px 0 72px; }
+  .brand__head { grid-template-columns: 1fr; gap: 24px; padding-bottom: 28px; }
+  .brand__facts > div { grid-template-columns: 120px 1fr; gap: 16px; font-size: 13.5px; }
+  .brand__cta { grid-column: 1; flex-direction: column; margin-top: 0; }
+  .brand__products { margin-top: 32px; }
+}
 /* Marketing support: one emphasised sentence, nothing else */
 .support { display: inline-flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 500; letter-spacing: -.01em; color: var(--ink); margin-top: -4px; }
 .support i { flex: none; width: 8px; height: 8px; background: var(--accent); }

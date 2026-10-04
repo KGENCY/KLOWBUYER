@@ -75,10 +75,12 @@ export default function Home() {
             <ul className="brandwall">
               {BRANDS.map((b) => (
                 <li key={b.id}>
-                  <span className={`eyebrow tier ${b.tier === "gem" ? "tier--gem" : ""}`}>{b.tier === "icon" ? "K-Beauty icon" : "Hidden gem"}</span>
-                  <span className="serif">{b.name}</span>
-                  <span className="muted small">{b.tagline}</span>
-                  <div className="brandwall__meta"><span>{b.city} · est. {b.founded}</span><span>MOQ <b>{b.moq}</b></span></div>
+                  <Link href={`/brands/${b.id}`} className="brandwall__link" aria-label={`${b.name} — all products`}>
+                    <span className={`eyebrow tier ${b.tier === "gem" ? "tier--gem" : ""}`}>{b.tier === "icon" ? "K-Beauty icon" : "Hidden gem"}</span>
+                    <span className="serif">{b.name}</span>
+                    <span className="muted small">{b.tagline}</span>
+                    <div className="brandwall__meta"><span>{b.city} · est. {b.founded}</span><span>MOQ <b>{b.moq}</b></span></div>
+                  </Link>
                 </li>
               ))}
             </ul>

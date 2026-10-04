@@ -131,7 +131,7 @@ export default function ProductDetail({ p }: { p: Product }) {
           <section className="pdp__sec">
             <div className="pdp__sechead">
               <span className="eyebrow">More from {b.name}</span>
-              <p className="muted">{b.tagline}</p>
+              <Link href={`/brands/${b.id}`} className="pdp__all">All {siblings.length + 1} products from {b.name} <span className="mono">→</span></Link>
             </div>
             <div className="grid">
               {siblings.map((s, i) => <ProductCard key={s.id} p={s} index={i} />)}
