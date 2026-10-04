@@ -903,7 +903,19 @@ body:has(.samplebar.is-on) .footer { padding-bottom: 110px; }
 .details__inci { font-family: var(--mono); font-size: 11.5px; line-height: 1.6; color: var(--ink-2); }
 
 /* Reviews: a quiet list at the end of the page */
-.pdp__sechead .muted { max-width: 460px; display: block; line-height: 1.5; }
+.pdp__sechead .muted { display: block; line-height: 1.5; }
+.pdp__sechead-r { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; justify-content: flex-end; }
+.translate { position: relative; }
+.translate__btn { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 12px; font-size: 13px; font-weight: 500; border: var(--bw) solid var(--ink); background: var(--card); transition: background .2s, color .2s; }
+.translate__btn:hover { background: var(--ink); color: #fff; }
+.translate__icon { font-family: var(--mono); font-size: 11px; letter-spacing: -.02em; }
+.translate__on { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ink-2); }
+.translate__on b { font-weight: 500; color: var(--ink); }
+.translate__on .link { font-size: 13px; }
+.translate__menu { position: absolute; right: 0; top: calc(100% + 6px); z-index: 5; min-width: 160px; background: var(--card); border: var(--bw) solid var(--ink); animation: rise .25s var(--ease) both; }
+.translate__menu button { display: block; width: 100%; text-align: left; padding: 10px 14px; font-size: 13.5px; transition: background .15s, color .15s; }
+.translate__menu button:hover, .translate__menu button[aria-selected="true"] { background: var(--ink); color: #fff; }
+.review__xl { margin-top: -4px; }
 .reviews { border-top: var(--bw-2) solid var(--ink); }
 .review { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 48px; padding: 28px 0; border-bottom: var(--bw) solid var(--line); }
 .review__side { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }

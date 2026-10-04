@@ -192,6 +192,51 @@ const POOL: Record<Category, Seed[]> = {
   ],
 };
 
+/* ───────────── Review translations ─────────────
+   Keyed by the English title. Korean is hand-translated for the seed reviews;
+   other languages go through translateReview(), which is where a translation API plugs in. */
+
+export const LANGS: { code: string; label: string }[] = [
+  { code: "ko", label: "한국어" },
+  { code: "ja", label: "日本語" },
+  { code: "zh", label: "中文" },
+  { code: "de", label: "Deutsch" },
+  { code: "fr", label: "Français" },
+  { code: "es", label: "Español" },
+  { code: "ar", label: "العربية" },
+];
+
+const KO: Record<string, { title: string; text: string }> = {
+  "Reordered three times in six months": { title: "6개월 동안 세 번 재주문했습니다", text: "테스트 삼아 MOQ로 시작했는데 저희 사이트에서 5주 만에 완판됐습니다. 재구매율은 K-뷰티 섹션에서 최고이고, 브랜드 이미지 자료도 첫날부터 저희 포맷에 맞게 준비되어 있었습니다." },
+  "Margin holds even with promo": { title: "프로모션을 해도 마진이 유지됩니다", text: "권장소비자가로 판매하면 2.6배 마진이 나오고, 15% 할인을 해도 저희 하한선 아래로 내려가지 않습니다. 박스를 6단 이상 쌓으면 겉상자가 긁히니 강화 포장을 요청하세요." },
+  "Documentation was the easy part": { title: "서류는 가장 쉬운 부분이었습니다", text: "CPNP는 이미 등록되어 있었고 책임자(RP) 서류도 견적서와 함께 왔습니다. 통관은 이틀 만에 끝났습니다. 첫 K-뷰티 수입치고는 저희가 추가한 라인 중 가장 매끄러웠습니다." },
+  "Staff sell it once they've used it": { title: "직원들이 써보고 나면 알아서 팝니다", text: "입점 전에 샘플을 2주 동안 트리트먼트룸에서 써봤습니다. 이후 테라피스트들이 제품명을 콕 집어 찾았는데, 스파 리테일에서는 그게 유일하게 의미 있는 지표입니다." },
+  "Our top sunscreen by units, two summers running": { title: "두 해 여름 연속 판매량 1위 선크림", text: "백탁 없음이라는 설명이 어두운 피부톤에서도 실제로 맞는데, 저희 고객들이 가장 먼저 확인하는 부분입니다. 주문량을 96개에서 480개로 늘렸는데도 리드타임은 열흘 그대로였습니다." },
+  "FDA listing made the difference": { title: "FDA 등록이 결정적이었습니다", text: "OTC 등록이 없으면 선크림을 취급할 수 없습니다. 요청하기도 전에 준비되어 있어서 다음 시즌이 아니라 5월에 맞춰 출시할 수 있었습니다." },
+  "Low weight, high margin, no returns": { title: "가볍고, 마진 높고, 반품 없음", text: "50ml 튜브는 배송비가 적게 들고, 세 번 주문하는 동안 누액 불만이 한 건도 없었습니다. 광고 공동 지원금으로 첫 유료 캠페인을 충당했습니다." },
+  "The entry SKU that brings people into the range": { title: "라인 전체로 이끄는 입문 제품", text: "가장 낮은 가격대인 이 제품을 앞세우면 고객들이 나머지 라인을 사러 다시 옵니다. 첫 8주 판매율이 80%였습니다." },
+  "Clean label is the whole pitch, and it works": { title: "클린 라벨이 핵심 셀링 포인트, 그리고 통합니다", text: "설페이트 프리와 무향은 저희 고객들이 가장 많이 쓰는 두 가지 필터입니다. 둘 다 통과하고 가격은 2.8배 마진 여유가 있습니다. 펌프 헤드가 가끔 느슨하게 오니 수령 시 확인하세요." },
+  "Listed the same day the pallet landed": { title: "팔레트가 도착한 당일에 등록했습니다", text: "브랜드 이미지가 이미 흰 배경 1:1 포맷으로 되어 있어서 마켓플레이스 등록을 바로 올릴 수 있었습니다." },
+  "Perfect basket add-on": { title: "장바구니 추가 상품으로 완벽합니다", text: "단가가 낮고 배송이 가볍고, 세럼과 묶으면 평균 주문 금액이 올라갑니다. 지금은 구매 사은품 로테이션에 상시로 넣어두고 있습니다." },
+  "Salon retail favourite": { title: "살롱 리테일에서 가장 인기", text: "페이셜 후에 테라피스트가 추천하기 쉽습니다. 다른 어떤 홈케어 제품보다 많이 팔립니다. 10매 박스 옵션이 있으면 좋겠습니다." },
+  "Shelf life gives us breathing room": { title: "유통기한 덕분에 여유가 생깁니다", text: "36개월이면 작은 매장의 재고 회전을 걱정하지 않고 카톤 단위로 주문할 수 있습니다." },
+  "Backbar and retail in one SKU": { title: "시술용과 판매용을 하나로", text: "샴푸대에서 쓰고 프런트에서 판매합니다. 300ml 사이즈가 둘 다에 맞습니다. 직원 교육 자료 덕분에 스타일리스트들이 일주일 만에 두피 pH 이야기를 하기 시작했습니다." },
+  "Heavy carton, plan freight accordingly": { title: "카톤이 무거우니 운송 계획이 필요합니다", text: "제품도 좋고 재주문도 꾸준하지만, 카톤당 14kg에 가까워서 소포가 아니라 팔레트로 받아야 합니다. 바꾸고 나니 착륙 원가가 11% 내려갔습니다." },
+  "Hard-water markets respond": { title: "경수 지역에서 반응이 옵니다", text: "경수를 염두에 두고 만든 제품이라 중서부 고객들이 차이를 느낍니다. 저희가 취급하는 헤어케어 라인 중 반품률이 가장 낮습니다." },
+  "The packaging sells it before the scent does": { title: "향보다 패키지가 먼저 팝니다", text: "매장 앞 테이블에 두면 병 하나 때문에 집어 듭니다. 정가 그대로 받아도 3배 마진이 나옵니다. 선물 시즌에는 주문량이 두 배가 됐습니다." },
+  "Small MOQ made the test easy": { title: "낮은 MOQ 덕분에 테스트가 쉬웠습니다", text: "6개로 시작할 수 있어서 회의 없이 바로 진열했습니다. 로션과 워시를 함께 두니 단품보다 더 팔려서, 처음부터 세트로 들이길 권합니다." },
+  "Lead time is the trade-off": { title: "리드타임은 감수해야 할 부분", text: "주문 생산이라 4주 전에 계획해야 합니다. 그래도 가치가 있습니다. 바디 카테고리에서 이 가격에 이만큼 팔리는 제품은 없습니다." },
+  "Shade range is what closed the deal": { title: "셰이드 구성이 계약을 결정지었습니다", text: "12가지 셰이드로 저희 고객층을 빈틈없이 커버하고, 브랜드가 첫 주문에 테스터 세트를 함께 보내줬습니다. 리필 덕분에 고객이 6~8주마다 다시 옵니다." },
+  "Strong marketplace performer": { title: "마켓플레이스에서 강합니다", text: "마켓플레이스 수수료를 빼고도 2.4배 마진이 남는 가격입니다. 브랜드의 론칭 콘텐츠가 유료 소셜 광고에서 성과가 좋았습니다." },
+  "Zero quality issues across 2,000 units": { title: "2,000개 동안 품질 문제 0건", text: "색조 제품에서 필요한 건 일관성입니다. 세 번 주문하는 동안 모든 배치가 셰이드 카드와 일치했습니다. CPNP도 되어 있는데, 이 가격대 한국 색조에서는 드문 일입니다." },
+};
+
+/** Returns the review in the requested language, or null when no translation is available yet (hook up the translation API here). */
+export function translateReview(r: Review, lang: string): { title: string; text: string } | null {
+  if (lang === "ko") return KO[r.title] ?? null;
+  return null;
+}
+
 export function reviewsOf(p: Product): Review[] {
   const pool = POOL[p.category];
   const idx = parseInt(p.id.slice(1), 10);

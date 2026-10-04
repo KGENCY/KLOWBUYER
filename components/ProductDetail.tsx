@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Product, brandById, money, productsOf } from "@/lib/data";
-import { Review, Shot, certsOf, copyOf, photosOf, reviewsOf, tierIndexFor, tiersFor } from "@/lib/detail";
+import { LANGS, Review, Shot, certsOf, copyOf, photosOf, reviewsOf, tierIndexFor, tiersFor, translateReview } from "@/lib/detail";
 import { photoPos } from "./Photo";
 import ProductCard from "./ProductCard";
 import AskProduct from "./AskProduct";
@@ -24,10 +24,14 @@ export default function ProductDetail({ p }: { p: Product }) {
   const { openWith } = useRequest();
   const added = has(p.id);
   const [asking, setAsking] = useState(false);
+  const [lang, setLang] = useState<string | null>(null); // review translation
   const [askFirst, setAskFirst] = useState<string | undefined>();
   // /products/p01?ask=1 opens the question thread; ?ask=<question> opens it and asks that question (used from emails and the account page).
   useEffect(() => {
-    const q = new URLSearchParams(window.location.search).get("ask");
+    const sp = new URLSearchParams(window.location.search);
+    const l = sp.get("lang"); // ?lang=ko shows reviews translated
+    if (l && LANGS.some((x) => x.code === l)) setLang(l);
+    const q = sp.get("ask");
     if (q === null) return;
     if (q && q !== "1") setAskFirst(q);
     setAsking(true);
@@ -148,11 +152,14 @@ export default function ProductDetail({ p }: { p: Product }) {
         <section className="pdp__sec" id="reviews">
           <div className="pdp__sechead">
             <span className="eyebrow">Buyer reviews</span>
-            <p className="muted">From buyers who ordered this product through KLOW. Identities stay private; each review is tied to a verified order.</p>
+            <div className="pdp__sechead-r">
+              <p className="muted">Reviews from verified buyers who ordered through KLOW.</p>
+              <Translate lang={lang} onChange={setLang} />
+            </div>
           </div>
 
           <ul className="reviews">
-            {reviews.map((r) => <ReviewItem key={r.id} r={r} />)}
+            {reviews.map((r) => <ReviewItem key={r.id} r={r} lang={lang} />)}
           </ul>
         </section>
       </div>
@@ -212,8 +219,47 @@ function Stars({ value }: { value: number }) {
   );
 }
 
-function ReviewItem({ r }: { r: Review }) {
+/** "Translate" with a language menu; once picked it reads "Translated to X · Show original". */
+function Translate({ lang, onChange }: { lang: string | null; onChange: (l: string | null) => void }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const away = (e: MouseEvent) => { if (!ref.current?.contains(e.target as Node)) setOpen(false); };
+    document.addEventListener("mousedown", away);
+    return () => document.removeEventListener("mousedown", away);
+  }, [open]);
+  const current = LANGS.find((l) => l.code === lang);
+
+  return (
+    <div className="translate" ref={ref}>
+      {current ? (
+        <span className="translate__on">
+          Translated to <b>{current.label}</b>
+          <button type="button" className="link" onClick={() => onChange(null)}>Show original</button>
+        </span>
+      ) : (
+        <button type="button" className="translate__btn" onClick={() => setOpen((o) => !o)} aria-expanded={open} aria-haspopup="listbox">
+          <span className="translate__icon" aria-hidden="true">文A</span>Translate
+        </button>
+      )}
+      {open && (
+        <ul className="translate__menu" role="listbox" aria-label="Translate reviews to">
+          {LANGS.map((l) => (
+            <li key={l.code}>
+              <button type="button" role="option" aria-selected={lang === l.code} onClick={() => { onChange(l.code); setOpen(false); }}>{l.label}</button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function ReviewItem({ r, lang }: { r: Review; lang: string | null }) {
   const date = new Date(r.date).toLocaleDateString("en-US", { month: "long", year: "numeric" });
+  const t = lang ? translateReview(r, lang) : null;
+  const langLabel = LANGS.find((l) => l.code === lang)?.label;
   return (
     <li className="review">
       <div className="review__side">
@@ -229,8 +275,13 @@ function ReviewItem({ r }: { r: Review }) {
         </ul>
       </div>
       <div className="review__body">
-        <h3 className="review__title">{r.title}</h3>
-        <p className="review__text">{r.text}</p>
+        <h3 className="review__title" lang={t ? lang! : "en"}>{t ? t.title : r.title}</h3>
+        <p className="review__text" lang={t ? lang! : "en"}>{t ? t.text : r.text}</p>
+        {lang && (
+          <span className="review__xl muted small">
+            {t ? "Translated from English" : `${langLabel} translation isn't connected yet · showing the original`}
+          </span>
+        )}
         {r.photos.length > 0 && (
           <ul className="review__photos">
             {r.photos.map((src) => (
