@@ -121,10 +121,10 @@ export default function ProductDetail({ p }: { p: Product }) {
         )}
 
         {/* ── Buyer reviews ── */}
-        <section className="pdp__sec">
+        <section className="pdp__sec" id="reviews">
           <div className="pdp__sechead">
             <span className="eyebrow">Buyer reviews</span>
-            <p className="muted"><Squares n={Math.round(avgRating(reviews))} /> {avgRating(reviews).toFixed(1)} · {reviews.length} verified {reviews.length === 1 ? "order" : "orders"}</p>
+            <p className="muted">From buyers who ordered this product through KLOW. Identities stay private; each review is tied to a verified order.</p>
           </div>
           <ul className="reviews">
             {reviews.map((r) => <ReviewItem key={r.id} r={r} />)}
@@ -145,22 +145,16 @@ function Squares({ n }: { n: number }) {
 
 function ReviewItem({ r }: { r: Review }) {
   const date = new Date(r.date).toLocaleDateString("en-US", { month: "long", year: "numeric" });
+
   return (
     <li className="review">
-      <div className="review__who">
-        <span className="review__avatar" aria-hidden="true">{initials(r.name)}</span>
-        <div>
-          <b>{r.name}</b>
-          <span>{r.role}, {r.company}</span>
-          <span className="muted">{r.country}</span>
+      <div className="review__side">
+        <div className="review__score">
+          <Stars value={r.rating} />
+          <b className="mono">{r.rating}.0</b>
         </div>
       </div>
       <div className="review__body">
-        <div className="review__head">
-          <Squares n={r.rating} />
-          <span className="review__verified">Verified order · {num(r.units)} units</span>
-          <span className="muted small">{date}</span>
-        </div>
         <h3 className="review__title">{r.title}</h3>
         <p className="review__text">{r.text}</p>
         {r.photos.length > 0 && (
@@ -174,3 +168,10 @@ function ReviewItem({ r }: { r: Review }) {
     </li>
   );
 }
+        <span className="review__verified">✓ Verified order</span>
+        <ul className="review__meta">
+          <li>{r.business}</li>
+          <li>{r.country}</li>
+          <li>{num(r.units)} units{r.orders > 1 ? ` · ordered ${r.orders}×` : ""}</li>
+        </ul>
+        <time className="review__date muted small" dateTime={r.date}>{date}</time>

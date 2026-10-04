@@ -31,12 +31,11 @@ export interface Review {
   rating: 1 | 2 | 3 | 4 | 5;
   title: string;
   text: string;
-  name: string;
-  role: string;
-  company: string;
+  business: string; // kind of business, e.g. "Online retailer"
   country: string;
   units: number; // verified order size
   date: string;
+  orders: number; // how many orders this buyer has placed for the product
   photos: string[];
 }
 
@@ -115,47 +114,47 @@ type Seed = Omit<Review, "id" | "productId" | "photos"> & { photos?: string[] };
 
 const POOL: Record<Category, Seed[]> = {
   Skincare: [
-    { rating: 5, title: "Reordered three times in six months", text: "We opened with the MOQ to test and sold through in five weeks on our site. Repeat rate is the best in our K-beauty section, and the brand's imagery was ready in our format on day one.", name: "Hannah Reyes", role: "Buyer", company: "Glasshouse Beauty", country: "United States", units: 288, date: "2026-08-14", photos: ["/img/brand-set.jpg", "/img/facial.jpg"] },
-    { rating: 4, title: "Margin holds even with promo", text: "Priced at MSRP we're at a 2.6× multiple, and we can still run 15% off without going below our floor. The outer box scuffs if cartons are stacked more than six high, so ask for the reinforced pack.", name: "Jonas Lind", role: "Category manager", company: "Nordlys Trading", country: "Germany", units: 960, date: "2026-06-02" },
-    { rating: 5, title: "Documentation was the easy part", text: "CPNP was already filed and the Responsible Person paperwork came with the proforma. Customs cleared in two days. For a first-time K-beauty import this was the smoothest line we've added.", name: "Elin Berg", role: "Purchasing", company: "Apoteket Norr", country: "Sweden", units: 144, date: "2026-04-21", photos: ["/img/brand-pink.jpg"] },
-    { rating: 4, title: "Staff sell it once they've used it", text: "We ran the sample through our treatment rooms for two weeks before listing. Therapists asked for it by name afterwards, which is the only KPI that matters for retail in a spa.", name: "Priya Nair", role: "Owner", company: "Studio Lumen", country: "Australia", units: 48, date: "2026-07-30", photos: ["/img/salon.jpg"] },
+    { rating: 5, title: "Reordered three times in six months", text: "We opened with the MOQ to test and sold through in five weeks on our site. Repeat rate is the best in our K-beauty section, and the brand's imagery was ready in our format on day one.", business: "Online retailer", country: "United States", units: 288, orders: 4, date: "2026-08-14", photos: ["/img/brand-set.jpg", "/img/facial.jpg"] },
+    { rating: 4, title: "Margin holds even with promo", text: "Priced at MSRP we're at a 2.6× multiple, and we can still run 15% off without going below our floor. The outer box scuffs if cartons are stacked more than six high, so ask for the reinforced pack.", business: "Distributor", country: "Germany", units: 960, orders: 2, date: "2026-06-02" },
+    { rating: 5, title: "Documentation was the easy part", text: "CPNP was already filed and the Responsible Person paperwork came with the proforma. Customs cleared in two days. For a first-time K-beauty import this was the smoothest line we've added.", business: "Pharmacy chain", country: "Sweden", units: 144, orders: 1, date: "2026-04-21", photos: ["/img/brand-pink.jpg"] },
+    { rating: 4, title: "Staff sell it once they've used it", text: "We ran the sample through our treatment rooms for two weeks before listing. Therapists asked for it by name afterwards, which is the only KPI that matters for retail in a spa.", business: "Spa & clinic", country: "Australia", units: 48, orders: 2, date: "2026-07-30", photos: ["/img/salon.jpg"] },
   ],
   "Sun Care": [
-    { rating: 5, title: "Our top sunscreen by units, two summers running", text: "The no-white-cast claim actually holds for darker skin tones, which is what our customers test first. We moved from 96 to 480 units per order and lead time stayed at ten days.", name: "Amara Okafor", role: "Founder", company: "Dewpoint", country: "United Kingdom", units: 480, date: "2026-07-11", photos: ["/img/brand-set.jpg"] },
-    { rating: 4, title: "FDA listing made the difference", text: "We can't carry sunscreen without an OTC listing. Having it in place before we asked meant we launched in time for May instead of the following season.", name: "Mark Delgado", role: "VP Sourcing", company: "Pacific Coast Brands", country: "United States", units: 1200, date: "2026-05-19" },
-    { rating: 5, title: "Low weight, high margin, no returns", text: "Fifty-millilitre tubes ship cheaply and we have had zero leakage complaints across three orders. The ad co-funding covered our first paid campaign.", name: "Grace Kim", role: "Seller", company: "Seoul Shelf", country: "Canada", units: 360, date: "2026-08-28", photos: ["/img/hero.jpg", "/img/dark.jpg"] },
+    { rating: 5, title: "Our top sunscreen by units, two summers running", text: "The no-white-cast claim actually holds for darker skin tones, which is what our customers test first. We moved from 96 to 480 units per order and lead time stayed at ten days.", business: "Online retailer", country: "United Kingdom", units: 480, orders: 5, date: "2026-07-11", photos: ["/img/brand-set.jpg"] },
+    { rating: 4, title: "FDA listing made the difference", text: "We can't carry sunscreen without an OTC listing. Having it in place before we asked meant we launched in time for May instead of the following season.", business: "Distributor", country: "United States", units: 1200, orders: 2, date: "2026-05-19" },
+    { rating: 5, title: "Low weight, high margin, no returns", text: "Fifty-millilitre tubes ship cheaply and we have had zero leakage complaints across three orders. The ad co-funding covered our first paid campaign.", business: "Marketplace seller", country: "Canada", units: 360, orders: 3, date: "2026-08-28", photos: ["/img/hero.jpg", "/img/dark.jpg"] },
   ],
   Cleansing: [
-    { rating: 5, title: "The entry SKU that brings people into the range", text: "We lead with this at the lowest price point and customers come back for the rest of the line. Sell-through was 80% in the first eight weeks.", name: "Camille Roux", role: "Owner", company: "Mille Skin Studio", country: "France", units: 72, date: "2026-06-25", photos: ["/img/facial.jpg"] },
-    { rating: 4, title: "Clean label is the whole pitch, and it works", text: "Sulfate-free and fragrance-free are the two filters our customers use most. This passes both and the price leaves room for a 2.8× multiple. Pump heads occasionally arrive loose, so check on receipt.", name: "Dana Whitfield", role: "Buyer", company: "Honest Glow Co.", country: "United States", units: 240, date: "2026-08-03" },
-    { rating: 5, title: "Listed the same day the pallet landed", text: "Imagery from the brand was already in white-background 1:1 format, so the marketplace listing went up immediately.", name: "Wei Lun Tan", role: "Director", company: "Kbeauty Direct", country: "Singapore", units: 480, date: "2026-05-08", photos: ["/img/brand-set.jpg"] },
+    { rating: 5, title: "The entry SKU that brings people into the range", text: "We lead with this at the lowest price point and customers come back for the rest of the line. Sell-through was 80% in the first eight weeks.", business: "Skin studio", country: "France", units: 72, orders: 2, date: "2026-06-25", photos: ["/img/facial.jpg"] },
+    { rating: 4, title: "Clean label is the whole pitch, and it works", text: "Sulfate-free and fragrance-free are the two filters our customers use most. This passes both and the price leaves room for a 2.8× multiple. Pump heads occasionally arrive loose, so check on receipt.", business: "Online retailer", country: "United States", units: 240, orders: 1, date: "2026-08-03" },
+    { rating: 5, title: "Listed the same day the pallet landed", text: "Imagery from the brand was already in white-background 1:1 format, so the marketplace listing went up immediately.", business: "Marketplace seller", country: "Singapore", units: 480, orders: 3, date: "2026-05-08", photos: ["/img/brand-set.jpg"] },
   ],
   Masks: [
-    { rating: 5, title: "Perfect basket add-on", text: "Low unit cost, light to ship, and it lifts average order value when we bundle it with a serum. We now keep it permanently in the gift-with-purchase rotation.", name: "Hannah Reyes", role: "Buyer", company: "Glasshouse Beauty", country: "United States", units: 600, date: "2026-07-19", photos: ["/img/brand-pink.jpg"] },
-    { rating: 4, title: "Salon retail favourite", text: "Easy for therapists to recommend after a facial. We sell more of this than any other take-home product. Would love a 10-sheet box option.", name: "Sophie Hart", role: "Spa director", company: "Haus of Calm", country: "United Kingdom", units: 120, date: "2026-04-30", photos: ["/img/salon.jpg", "/img/facial.jpg"] },
-    { rating: 4, title: "Shelf life gives us breathing room", text: "Thirty-six months means we can order a full carton without worrying about rotation in our smaller stores.", name: "Lucía Marín", role: "Purchasing", company: "Farmacia Verde", country: "Spain", units: 240, date: "2026-08-22" },
+    { rating: 5, title: "Perfect basket add-on", text: "Low unit cost, light to ship, and it lifts average order value when we bundle it with a serum. We now keep it permanently in the gift-with-purchase rotation.", business: "Online retailer", country: "United States", units: 600, orders: 4, date: "2026-07-19", photos: ["/img/brand-pink.jpg"] },
+    { rating: 4, title: "Salon retail favourite", text: "Easy for therapists to recommend after a facial. We sell more of this than any other take-home product. Would love a 10-sheet box option.", business: "Spa & salon", country: "United Kingdom", units: 120, orders: 2, date: "2026-04-30", photos: ["/img/salon.jpg", "/img/facial.jpg"] },
+    { rating: 4, title: "Shelf life gives us breathing room", text: "Thirty-six months means we can order a full carton without worrying about rotation in our smaller stores.", business: "Pharmacy chain", country: "Spain", units: 240, orders: 2, date: "2026-08-22" },
   ],
   Haircare: [
-    { rating: 5, title: "Backbar and retail in one SKU", text: "We use it in the basin and sell it at the front desk. The 300 ml size works for both. The staff training deck got our stylists talking about scalp pH within a week.", name: "Marcus Hale", role: "Owner", company: "Atelier Hair", country: "United States", units: 96, date: "2026-06-14", photos: ["/img/salon.jpg"] },
-    { rating: 4, title: "Heavy carton, plan freight accordingly", text: "Great product and very steady reorders, but at nearly 14 kg per carton you want this on a pallet, not parcel. Once we switched, the landed cost dropped 11%.", name: "Olivia Chen", role: "Operations", company: "Maple Beauty Supply", country: "Canada", units: 720, date: "2026-07-27" },
-    { rating: 5, title: "Hard-water markets respond", text: "Formulated with hard water in mind and our customers in the Midwest notice. Lowest return rate of any haircare line we carry.", name: "Tom Becker", role: "Founder", company: "Rootline", country: "United States", units: 216, date: "2026-05-02", photos: ["/img/dark.jpg"] },
+    { rating: 5, title: "Backbar and retail in one SKU", text: "We use it in the basin and sell it at the front desk. The 300 ml size works for both. The staff training deck got our stylists talking about scalp pH within a week.", business: "Hair salon", country: "United States", units: 96, orders: 3, date: "2026-06-14", photos: ["/img/salon.jpg"] },
+    { rating: 4, title: "Heavy carton, plan freight accordingly", text: "Great product and very steady reorders, but at nearly 14 kg per carton you want this on a pallet, not parcel. Once we switched, the landed cost dropped 11%.", business: "Beauty supply distributor", country: "Canada", units: 720, orders: 4, date: "2026-07-27" },
+    { rating: 5, title: "Hard-water markets respond", text: "Formulated with hard water in mind and our customers in the Midwest notice. Lowest return rate of any haircare line we carry.", business: "Online retailer", country: "United States", units: 216, orders: 2, date: "2026-05-02", photos: ["/img/dark.jpg"] },
   ],
   Body: [
-    { rating: 5, title: "The packaging sells it before the scent does", text: "This sits on our front table and people pick it up for the bottle alone. We charge full MSRP and still see a 3× multiple. Gifting season doubled our order.", name: "Isla Morgan", role: "Owner", company: "Field & Form", country: "United States", units: 64, date: "2026-08-09", photos: ["/img/brand-set.jpg", "/img/hero.jpg"] },
-    { rating: 4, title: "Small MOQ made the test easy", text: "Six units to start meant we could put it on the shelf without a meeting. The lotion and wash together outsold the single SKU, so we'd suggest the set from day one.", name: "Yuki Tanaka", role: "Spa manager", company: "Onsen Day Spa", country: "Australia", units: 32, date: "2026-06-30", photos: ["/img/salon.jpg"] },
-    { rating: 4, title: "Lead time is the trade-off", text: "Made to order, so plan four weeks ahead. Worth it: nothing else in our body category moves at this price.", name: "Femke de Vries", role: "Buyer", company: "Slow Goods", country: "Netherlands", units: 96, date: "2026-04-12" },
+    { rating: 5, title: "The packaging sells it before the scent does", text: "This sits on our front table and people pick it up for the bottle alone. We charge full MSRP and still see a 3× multiple. Gifting season doubled our order.", business: "Concept store", country: "United States", units: 64, orders: 2, date: "2026-08-09", photos: ["/img/brand-set.jpg", "/img/hero.jpg"] },
+    { rating: 4, title: "Small MOQ made the test easy", text: "Six units to start meant we could put it on the shelf without a meeting. The lotion and wash together outsold the single SKU, so we'd suggest the set from day one.", business: "Day spa", country: "Australia", units: 32, orders: 1, date: "2026-06-30", photos: ["/img/salon.jpg"] },
+    { rating: 4, title: "Lead time is the trade-off", text: "Made to order, so plan four weeks ahead. Worth it: nothing else in our body category moves at this price.", business: "Boutique retailer", country: "Netherlands", units: 96, orders: 1, date: "2026-04-12" },
   ],
   Makeup: [
-    { rating: 5, title: "Shade range is what closed the deal", text: "Twelve shades covers our customer base without gaps, and the brand shipped a tester set with the opening order. Refills bring customers back every 6–8 weeks.", name: "Naomi Price", role: "Founder", company: "Tint Theory", country: "United States", units: 432, date: "2026-07-05", photos: ["/img/brand-makeup.jpg", "/img/lips.jpg"] },
-    { rating: 4, title: "Strong marketplace performer", text: "Pricing leaves room for marketplace fees and still returns a 2.4× multiple. Launch content from the brand performed well in paid social.", name: "Grace Kim", role: "Seller", company: "Seoul Shelf", country: "Canada", units: 720, date: "2026-08-18" },
-    { rating: 5, title: "Zero quality issues across 2,000 units", text: "Consistency is what we need in colour. Three orders in and every batch matched the shade card. CPNP done, which is rare for Korean colour at this price.", name: "Claire Dubois", role: "Head of buying", company: "Lumière Distribution", country: "France", units: 1440, date: "2026-05-27", photos: ["/img/lips.jpg"] },
+    { rating: 5, title: "Shade range is what closed the deal", text: "Twelve shades covers our customer base without gaps, and the brand shipped a tester set with the opening order. Refills bring customers back every 6–8 weeks.", business: "Beauty retailer", country: "United States", units: 432, orders: 3, date: "2026-07-05", photos: ["/img/brand-makeup.jpg", "/img/lips.jpg"] },
+    { rating: 4, title: "Strong marketplace performer", text: "Pricing leaves room for marketplace fees and still returns a 2.4× multiple. Launch content from the brand performed well in paid social.", business: "Marketplace seller", country: "Canada", units: 720, orders: 3, date: "2026-08-18" },
+    { rating: 5, title: "Zero quality issues across 2,000 units", text: "Consistency is what we need in colour. Three orders in and every batch matched the shade card. CPNP done, which is rare for Korean colour at this price.", business: "Distributor", country: "France", units: 1440, orders: 3, date: "2026-05-27", photos: ["/img/lips.jpg"] },
   ],
 };
 
 export function reviewsOf(p: Product): Review[] {
   const pool = POOL[p.category];
   const idx = parseInt(p.id.slice(1), 10);
-  const n = p.badge === "Bestseller" ? pool.length : 2;
+  const n = p.badge === "Bestseller" ? pool.length : 3;
   const start = idx % pool.length;
   return Array.from({ length: Math.min(n, pool.length) }, (_, i) => {
     const seed = pool[(start + i) % pool.length];
@@ -165,5 +164,3 @@ export function reviewsOf(p: Product): Review[] {
   });
 }
 
-export const avgRating = (rs: Review[]) => (rs.length ? rs.reduce((s, r) => s + r.rating, 0) / rs.length : 0);
-export const initials = (name: string) => name.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase();

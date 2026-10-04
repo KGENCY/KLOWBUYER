@@ -874,20 +874,17 @@ body:has(.samplebar.is-on) .footer { padding-bottom: 110px; }
 .details__specs dt { color: var(--muted); }
 .details__inci { font-family: var(--mono); font-size: 11.5px; line-height: 1.6; color: var(--ink-2); }
 
-/* Reviews */
-.squares { display: inline-flex; gap: 3px; }
-.squares i { width: 10px; height: 10px; background: var(--line); }
-.squares i.on { background: var(--ink); }
+/* Reviews: a quiet list at the end of the page */
+.pdp__sechead .muted { max-width: 460px; display: block; line-height: 1.5; }
 .reviews { border-top: var(--bw-2) solid var(--ink); }
-.review { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 48px; padding: 36px 0; border-bottom: var(--bw) solid var(--line); }
-.review__who { display: flex; gap: 14px; align-items: flex-start; }
-.review__who > div { display: flex; flex-direction: column; gap: 2px; font-size: 13px; color: var(--ink-2); }
-.review__who b { font-weight: 500; color: var(--ink); font-size: 14.5px; }
-.review__avatar { flex: none; width: 40px; height: 40px; display: grid; place-items: center; background: var(--ink); color: #fff; font-family: var(--mono); font-size: 12px; letter-spacing: .04em; }
-.review__body { display: flex; flex-direction: column; gap: 12px; }
-.review__head { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.review { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 48px; padding: 28px 0; border-bottom: var(--bw) solid var(--line); }
+.review__side { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+.review__score { display: flex; align-items: center; gap: 10px; }
+.review__score b { font-size: 14px; font-weight: 500; }
 .review__verified { font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
-.review__head .small { margin-left: auto; }
+.review__meta { display: flex; flex-direction: column; gap: 2px; font-size: 13px; color: var(--ink-2); }
+.review__meta li:first-child { color: var(--ink); font-weight: 500; }
+.review__body { display: flex; flex-direction: column; gap: 12px; }
 .review__title { font-size: 20px; font-weight: 500; letter-spacing: -.025em; line-height: 1.2; }
 .review__text { font-size: 15px; line-height: 1.6; color: var(--ink-2); max-width: 640px; }
 .review__photos { display: flex; gap: 8px; margin-top: 6px; }
