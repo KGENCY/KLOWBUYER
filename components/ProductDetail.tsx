@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Product, brandById, money, productsOf } from "@/lib/data";
 import { Review, avgRating, certsOf, copyOf, initials, reviewsOf, tierIndexFor, tiersFor } from "@/lib/detail";
 import Photo from "./Photo";
 import ProductCard from "./ProductCard";
+import AskProduct from "./AskProduct";
 import { useSamples } from "./SampleBox";
 import { useRequest } from "./RequestBrand";
 
@@ -22,6 +23,15 @@ export default function ProductDetail({ p }: { p: Product }) {
   const { has, toggle } = useSamples();
   const { openWith } = useRequest();
   const added = has(p.id);
+  const [asking, setAsking] = useState(false);
+  const [askFirst, setAskFirst] = useState<string | undefined>();
+  // /products/p01?ask=1 opens the question thread; ?ask=<question> opens it and asks that question (used from emails and the account page).
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get("ask");
+    if (q === null) return;
+    if (q && q !== "1") setAskFirst(q);
+    setAsking(true);
+  }, []);
 
   const [units, setUnits] = useState(b.moq);
   const ti = tierIndexFor(tiers, units);
@@ -86,10 +96,17 @@ export default function ProductDetail({ p }: { p: Product }) {
               </div>
             </div>
           </div>
+
+              <button type="button" className="pdp__ask" onClick={() => setAsking(true)}>
+                <span>Need more detail? Ask the brand team directly.</span>
+                <span className="pdp__ask-arrow mono">→</span>
+              </button>
         </div>
 
         {/* ── Product details ── */}
         <section className="pdp__sec details">
+        <AskProduct p={p} b={b} open={asking} first={askFirst} onClose={() => setAsking(false)} />
+
           <div className="details__text">
             <span className="eyebrow">About the product</span>
             <p className="details__about">{copy.about}</p>
