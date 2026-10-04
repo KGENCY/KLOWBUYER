@@ -55,7 +55,8 @@ export default function ProductDetail({ p }: { p: Product }) {
 
           <div className="pdp__info">
             <h1 className="pdp__name">{p.name}</h1>
-            <p className="pdp__msrp">MSRP {money(p.msrp)} · {(p.msrp / p.wholesale).toFixed(1)}× at wholesale</p>
+            {/* What the brand does for the buyer, before any number */}
+            <p className="support" title={b.support.join(", ")}><i aria-hidden="true" />Marketing support available from {b.name}.</p>
 
             <ul className="certs" aria-label="Certifications">
               {certs.map((c) => (
@@ -100,15 +101,15 @@ export default function ProductDetail({ p }: { p: Product }) {
                 <span>Need more detail? Ask the brand team directly.</span>
                 <span className="pdp__ask-arrow mono">→</span>
               </button>
-        </div>
             </div>
           </div>
+        </div>
 
         <AskProduct p={p} b={b} open={asking} first={askFirst} onClose={() => setAsking(false)} />
 
-          <div className="details__text">
         {/* ── Product details ── */}
         <section className="pdp__sec details">
+          <div className="details__text">
             <span className="eyebrow">About the product</span>
             <p className="details__about">{copy.about}</p>
             <ul className="details__claims">
@@ -144,8 +145,8 @@ export default function ProductDetail({ p }: { p: Product }) {
             <span className="eyebrow">Buyer reviews</span>
             <p className="muted">From buyers who ordered this product through KLOW. Identities stay private; each review is tied to a verified order.</p>
           </div>
-          <ul className="reviews">
 
+          <ul className="reviews">
             {reviews.map((r) => <ReviewItem key={r.id} r={r} />)}
           </ul>
         </section>
@@ -215,13 +216,13 @@ function ReviewItem({ r }: { r: Review }) {
           <Stars value={r.rating} />
           <b className="mono">{r.rating}.0</b>
         </div>
-      </div>
         <span className="review__verified">✓ Verified order</span>
         <ul className="review__meta">
           <li>{r.business}</li>
           <li>{r.country}</li>
           <li>{num(r.units)} units{r.orders > 1 ? ` · ordered ${r.orders}×` : ""}</li>
         </ul>
+      </div>
       <div className="review__body">
         <h3 className="review__title">{r.title}</h3>
         <p className="review__text">{r.text}</p>
@@ -232,8 +233,8 @@ function ReviewItem({ r }: { r: Review }) {
             ))}
           </ul>
         )}
-      </div>
         <time className="review__date muted small" dateTime={r.date}>{date}</time>
+      </div>
     </li>
   );
 }
