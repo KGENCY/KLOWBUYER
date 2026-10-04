@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Product, brandById, money, productsOf } from "@/lib/data";
-import { Review, avgRating, certsOf, copyOf, initials, reviewsOf, tierIndexFor, tiersFor } from "@/lib/detail";
-import Photo from "./Photo";
+import { Review, Shot, certsOf, copyOf, photosOf, reviewsOf, tierIndexFor, tiersFor } from "@/lib/detail";
+import { photoPos } from "./Photo";
 import ProductCard from "./ProductCard";
 import AskProduct from "./AskProduct";
 import { useSamples } from "./SampleBox";
@@ -43,16 +43,17 @@ export default function ProductDetail({ p }: { p: Product }) {
   return (
     <article className="pdp">
       <div className="wrap">
-        <Link href="/#collection" className="pdp__back">← Collection</Link>
+        {/* One line across both columns: the way back on the left, the brand over the product on the right */}
+        <div className="pdp__bar">
+          <Link href="/#collection" className="pdp__back">← Collection</Link>
+          <Link href={`/brands/${b.id}`} className="pdp__brand eyebrow" title={`All products from ${b.name}`}>{b.name} →</Link>
+        </div>
 
         {/* ── Photo · pricing ── */}
         <div className="pdp__top">
-          <figure className="pdp__photo">
-            <Photo p={p} priority sizes="(max-width: 860px) 100vw, 50vw" />
-          </figure>
+          <Gallery shots={photosOf(p, `${b.name} ${p.name}`, photoPos(p))} />
 
           <div className="pdp__info">
-            <span className="eyebrow">{b.name} · {p.size}</span>
             <h1 className="pdp__name">{p.name}</h1>
             <p className="pdp__msrp">MSRP {money(p.msrp)} · {(p.msrp / p.wholesale).toFixed(1)}× at wholesale</p>
 
@@ -94,20 +95,20 @@ export default function ProductDetail({ p }: { p: Product }) {
                   {added ? "In your sample box" : "Sample 1 unit"}
                 </button>
               </div>
-            </div>
-          </div>
 
               <button type="button" className="pdp__ask" onClick={() => setAsking(true)}>
                 <span>Need more detail? Ask the brand team directly.</span>
                 <span className="pdp__ask-arrow mono">→</span>
               </button>
         </div>
+            </div>
+          </div>
 
-        {/* ── Product details ── */}
-        <section className="pdp__sec details">
         <AskProduct p={p} b={b} open={asking} first={askFirst} onClose={() => setAsking(false)} />
 
           <div className="details__text">
+        {/* ── Product details ── */}
+        <section className="pdp__sec details">
             <span className="eyebrow">About the product</span>
             <p className="details__about">{copy.about}</p>
             <ul className="details__claims">
@@ -144,6 +145,7 @@ export default function ProductDetail({ p }: { p: Product }) {
             <p className="muted">From buyers who ordered this product through KLOW. Identities stay private; each review is tied to a verified order.</p>
           </div>
           <ul className="reviews">
+
             {reviews.map((r) => <ReviewItem key={r.id} r={r} />)}
           </ul>
         </section>
@@ -152,17 +154,60 @@ export default function ProductDetail({ p }: { p: Product }) {
   );
 }
 
-function Squares({ n }: { n: number }) {
+const SLIDE_MS = 3000;
+
+/** Main photo with the brand's other shots beneath it. Advances every 3 s; pauses while hovered. */
+function Gallery({ shots }: { shots: Shot[] }) {
+  const [i, setI] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [tick, setTick] = useState(0); // restarts the timer when the buyer picks a shot
+
+  useEffect(() => {
+    if (paused || shots.length < 2) return;
+    const t = setInterval(() => setI((x) => (x + 1) % shots.length), SLIDE_MS);
+    return () => clearInterval(t);
+  }, [paused, shots.length, tick]);
+
+  const pick = (n: number) => { setI(n); setTick((t) => t + 1); };
+  const cur = shots[i] ?? shots[0];
+
   return (
-    <span className="squares" aria-label={`${n} out of 5`}>
-      {Array.from({ length: 5 }).map((_, i) => <i key={i} className={i < n ? "on" : ""} />)}
+    <figure className="gallery" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+      <div className="gallery__main">
+        <img key={cur.src} src={cur.src} alt={cur.alt} style={{ objectPosition: cur.pos ?? "50% 50%" }} loading="eager" decoding="async" sizes="(max-width: 860px) 100vw, 50vw" />
+        {shots.length > 1 && (
+          <span className="gallery__count mono" aria-live="polite">{String(i + 1).padStart(2, "0")} / {String(shots.length).padStart(2, "0")}</span>
+        )}
+      </div>
+      {shots.length > 1 && (
+        <ul className="gallery__thumbs" aria-label="Product photos">
+          {shots.map((s, n) => (
+            <li key={s.src}>
+              <button type="button" className={n === i ? "is-on" : ""} onClick={() => pick(n)} aria-label={s.alt} aria-current={n === i}>
+                <img src={s.src} alt="" style={{ objectPosition: s.pos ?? "50% 50%" }} loading="lazy" decoding="async" />
+                {n === i && !paused && <i className="gallery__timer" key={`${n}-${tick}`} style={{ animationDuration: `${SLIDE_MS}ms` }} />}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </figure>
+  );
+}
+
+/** Five stars, filled to a fraction. */
+function Stars({ value }: { value: number }) {
+  const pct = Math.max(0, Math.min(5, value)) / 5 * 100;
+  return (
+    <span className="stars" role="img" aria-label={`${value.toFixed(1)} out of 5`}>
+      <span aria-hidden="true">★★★★★</span>
+      <span className="stars__on" aria-hidden="true" style={{ width: `${pct}%` }}>★★★★★</span>
     </span>
   );
 }
 
 function ReviewItem({ r }: { r: Review }) {
   const date = new Date(r.date).toLocaleDateString("en-US", { month: "long", year: "numeric" });
-
   return (
     <li className="review">
       <div className="review__side">
@@ -171,6 +216,12 @@ function ReviewItem({ r }: { r: Review }) {
           <b className="mono">{r.rating}.0</b>
         </div>
       </div>
+        <span className="review__verified">✓ Verified order</span>
+        <ul className="review__meta">
+          <li>{r.business}</li>
+          <li>{r.country}</li>
+          <li>{num(r.units)} units{r.orders > 1 ? ` · ordered ${r.orders}×` : ""}</li>
+        </ul>
       <div className="review__body">
         <h3 className="review__title">{r.title}</h3>
         <p className="review__text">{r.text}</p>
@@ -182,13 +233,7 @@ function ReviewItem({ r }: { r: Review }) {
           </ul>
         )}
       </div>
+        <time className="review__date muted small" dateTime={r.date}>{date}</time>
     </li>
   );
 }
-        <span className="review__verified">✓ Verified order</span>
-        <ul className="review__meta">
-          <li>{r.business}</li>
-          <li>{r.country}</li>
-          <li>{num(r.units)} units{r.orders > 1 ? ` · ordered ${r.orders}×` : ""}</li>
-        </ul>
-        <time className="review__date muted small" dateTime={r.date}>{date}</time>

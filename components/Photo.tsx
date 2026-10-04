@@ -7,6 +7,7 @@ const POS: Record<string, string> = {
 };
 
 export function photoSrc(p: Product) { return `/img/${p.id}.jpg`; }
+export function photoPos(p: Product) { return POS[p.id] ?? "50% 50%"; }
 
 export default function Photo({ p, sizes, priority }: { p: Product; sizes?: string; priority?: boolean }) {
   const b = brandById(p.brandId);

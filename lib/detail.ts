@@ -25,6 +25,7 @@ export interface Copy {
   shelfMonths: number;
 }
 
+/** Reviews never expose who the buyer is: only the kind of business, the market and the order it is tied to. */
 export interface Review {
   id: string;
   productId: string;
@@ -34,8 +35,8 @@ export interface Review {
   business: string; // kind of business, e.g. "Online retailer"
   country: string;
   units: number; // verified order size
-  date: string;
   orders: number; // how many orders this buyer has placed for the product
+  date: string;
   photos: string[];
 }
 
@@ -84,6 +85,46 @@ const COPY: Record<string, Copy> = {
 };
 
 export const copyOf = (p: Product): Copy => COPY[p.id];
+
+/* ───────────── Product photos ───────────── */
+
+export interface Shot {
+  src: string;
+  alt: string;
+  pos?: string; // object-position for the crop
+}
+
+/** Extra shots a brand registers next to the pack shot: texture, in-use, set. Mocked from the shared library per category. */
+const EXTRA: Record<Category, string[][]> = {
+  Skincare: [["brand-set", "facial"], ["facial", "brand-pink"], ["brand-set", "hero"]],
+  "Sun Care": [["hero", "brand-set"], ["brand-set", "facial"]],
+  Cleansing: [["facial", "brand-pink"], ["brand-set", "facial"]],
+  Masks: [["facial", "salon"], ["brand-pink", "facial"]],
+  Haircare: [["salon", "dark"], ["dark", "salon"]],
+  Body: [["brand-set", "hero"], ["hero", "dark"]],
+  Makeup: [["brand-makeup", "lips"], ["lips", "brand-makeup"]],
+};
+
+const SHOT_ALT: Record<string, string> = {
+  "brand-set": "Full range on the shelf",
+  "brand-pink": "Texture and packaging",
+  "brand-makeup": "Shade range",
+  facial: "In use at a treatment room",
+  salon: "On the salon backbar",
+  hero: "Lifestyle shot",
+  dark: "Pack shot on dark",
+  lips: "Applied swatch",
+};
+
+export function photosOf(p: Product, name: string, pos?: string): Shot[] {
+  const idx = parseInt(p.id.slice(1), 10);
+  const sets = EXTRA[p.category];
+  const extra = sets[idx % sets.length];
+  return [
+    { src: `/img/${p.id}.jpg`, alt: name, pos },
+    ...extra.map((k) => ({ src: `/img/${k}.jpg`, alt: `${name} — ${SHOT_ALT[k]}` })),
+  ];
+}
 export const certsOf = (p: Product): Cert[] => COPY[p.id].certs.map((c) => CERTS[c]);
 
 /* ───────────── Volume pricing ───────────── */
