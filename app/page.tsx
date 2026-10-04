@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Collection from "@/components/Collection";
-import { BRANDS, FREE_SHIPPING_SKUS } from "@/lib/data";
+import Brands from "@/components/Brands";
+import HeroSlides from "@/components/HeroSlides";
+import { FREE_SHIPPING_SKUS } from "@/lib/data";
 
 export default function Home() {
   return (
@@ -9,30 +11,40 @@ export default function Home() {
         <div className="wrap hero__grid">
           <div>
             <h1 className="hero__title">
-              Sample at wholesale price.
-              <em>Source what fits your business.</em>
+              Samples at wholesale price.
+              <em>Even just one unit.</em>
             </h1>
             <p className="hero__lede">
-              From hidden gems to proven K-beauty icons — order a single unit at the price you&rsquo;ll actually pay,
-              and meet the brands matched to how you sell.
+              Not free testers, not retail markups. Order a single unit of any K-beauty product at the exact wholesale
+              price you&rsquo;ll pay in bulk &mdash; then reorder what sells.
             </p>
 
             <div className="hero__cta">
-              <Link href="/match" className="btn btn--solid">Get your free samples</Link>
+              <Link href="/#collection" className="btn btn--solid">Browse &amp; sample</Link>
+              <Link href="/match" className="link small">Not sure what to pick? Get matched</Link>
             </div>
           </div>
 
-          <Link href="/#collection" className="hero__photo" aria-label="Browse Gyeol in the collection">
-            <img src="/img/hero.jpg" alt="Peptide ampoule with eucalyptus on linen" loading="eager" fetchPriority="high" />
-            <span className="hero__cap"><span>Gyeol</span><span className="hero__arrow">→</span></span>
-          </Link>
+          <HeroSlides />
         </div>
 
         <div className="wrap">
           <ul className="pillars" data-reveal>
-            <li><span className="pillars__n">1 unit</span><p><b>Sample anything.</b> Every product, from a single unit — at wholesale, not retail.</p></li>
-            <li><span className="pillars__n">{FREE_SHIPPING_SKUS} SKUs</span><p><b>Ships complimentary.</b> Mix any {FREE_SHIPPING_SKUS} products across brands and shipping is on us.</p></li>
-            <li><span className="pillars__n">Matched</span><p><b>Brands that fit.</b> Aligned to your channel, market, margins and documentation needs.</p></li>
+            <li>
+              <span className="pillars__k">Wholesale price on every sample</span>
+              <span className="pillars__n">1 unit</span>
+              <p><b>No MOQ, no case packs.</b> Sample any product on its own, at the exact price you&rsquo;ll reorder at.</p>
+            </li>
+            <li>
+              <span className="pillars__k">Free shipping at {FREE_SHIPPING_SKUS} SKUs</span>
+              <span className="pillars__n">{FREE_SHIPPING_SKUS} SKUs</span>
+              <p><b>Ships complimentary.</b> Mix any {FREE_SHIPPING_SKUS} products across brands and shipping is on us.</p>
+            </li>
+            <li>
+              <span className="pillars__k">Brands that fit</span>
+              <span className="pillars__n">Matched</span>
+              <p><b>Aligned to your business.</b> Your channel, market, margins and documentation needs.</p>
+            </li>
           </ul>
           <a href="#sampling" className="hero__more" aria-label="Scroll to the sample program"><span>↓</span></a>
         </div>
@@ -67,22 +79,7 @@ export default function Home() {
             </div>
             <Link href="/match" className="btn btn--ghost">Find brands for my business</Link>
           </div>
-          <div className="brands__grid" data-reveal>
-            <div className="brands__mood">
-              <figure><img src="/img/brand-pink.jpg" alt="K-beauty skincare set" loading="lazy" /><figcaption>K-Beauty icons</figcaption></figure>
-              <figure><img src="/img/brand-set.jpg" alt="Minimal skincare line" loading="lazy" /><figcaption>Hidden gems</figcaption></figure>
-            </div>
-            <ul className="brandwall">
-              {BRANDS.map((b) => (
-                <li key={b.id}>
-                  <span className={`eyebrow tier ${b.tier === "gem" ? "tier--gem" : ""}`}>{b.tier === "icon" ? "K-Beauty icon" : "Hidden gem"}</span>
-                  <span className="serif">{b.name}</span>
-                  <span className="muted small">{b.tagline}</span>
-                  <div className="brandwall__meta"><span>{b.city} · est. {b.founded}</span><span>MOQ <b>{b.moq}</b></span></div>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <Brands />
         </div>
       </section>
 
