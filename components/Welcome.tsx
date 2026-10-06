@@ -1,21 +1,31 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { FREE_SHIPPING_SKUS, money, productById } from "@/lib/data";
+import { BRANDS, FREE_SHIPPING_SKUS, PRODUCTS, SAMPLE_SHIPPING_FEE, brandById, money, productById } from "@/lib/data";
 import { COUNTRIES, countryName, loadCheckout, saveCheckout } from "@/lib/buyer";
+import { photoPos, photoSrc } from "./Photo";
 import { DEMO_EMAIL, useBuyer } from "./Buyer";
 
 /* ────────────────────────────────────────────────────────────────
-   First visit: ask where the buyer is from, then show the opening
-   offer — any product from 1 unit at wholesale, free shipping at
-   five SKUs. Shown once per browser; /?welcome=1 reopens it.
+   First visit: ask where the buyer ships to, then sell the opening
+   offer: any product from 1 unit at wholesale, and free shipping
+   once five SKUs are in the box. /?welcome=1 reopens it.
    Design only: every market reads in English for now.
    ──────────────────────────────────────────────────────────────── */
 
+/** DESIGN PREVIEW: set to false before launch.
+ *  While true, the modal opens on every page load so it can be reviewed; afterwards it shows once per browser. */
+const DESIGN_PREVIEW = true;
+
 const KEY = "klow.welcome";
 const QUIET_ROUTES = ["/checkout", "/signup", "/signin"];
-const EXAMPLE = "p01"; // the product used to make the offer concrete
+const POPULAR = ["US", "GB", "DE", "FR", "AE", "SG", "AU", "CA"];
+const BOX = ["p01", "p05", "p11", "p03", "p15"]; // the example sample box, one per brand
+const EXAMPLE = "p01";
+
+const flag = (code: string) => `https://flagcdn.com/w80/${code.toLowerCase()}.png`;
 
 export default function Welcome() {
   const path = usePathname();
@@ -30,11 +40,8 @@ export default function Welcome() {
     const again = new URLSearchParams(window.location.search).get("welcome") === "1";
     let seen = false;
     try { seen = !!localStorage.getItem(KEY); } catch {}
-    if (again || (!seen && !QUIET_ROUTES.some((r) => path.startsWith(r)))) {
-      setStep("where");
-      setOpen(true);
-    }
-    // Only on first load; route changes don't reopen it.
+    if (again || ((DESIGN_PREVIEW || !seen) && !QUIET_ROUTES.some((r) => path.startsWith(r)))) setOpen(true);
+    // First load only; route changes never reopen it.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -48,9 +55,10 @@ export default function Welcome() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
-  const list = useMemo(() => {
+  const others = useMemo(() => {
     const t = q.trim().toLowerCase();
-    return COUNTRIES.filter((c) => !t || c.name.toLowerCase().includes(t) || c.code.toLowerCase() === t);
+    if (!t) return [];
+    return COUNTRIES.filter((c) => c.name.toLowerCase().includes(t) || c.code.toLowerCase() === t).slice(0, 6);
   }, [q]);
 
   const remember = (c: string | null) => {
@@ -58,82 +66,157 @@ export default function Welcome() {
     if (c) saveCheckout({ ...loadCheckout(), country: c }); // pre-fills ship-to at checkout
   };
   const close = () => { remember(country); setOpen(false); };
-  const pick = (c: string | null) => { setCountry(c); setStep("offer"); };
-  const start = () => { close(); router.push("/#collection"); };
+  const pick = (c: string | null) => { setCountry(c); setQ(""); setStep("offer"); };
+  const go = (href: string) => { close(); router.push(href); };
 
   if (!open) return null;
-  const ex = productById(EXAMPLE);
-  const where = country ? countryName(country) : null;
 
   return (
-    <div className="welcome" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
-      <div className="welcome__scrim" onClick={close} />
-      <div className="welcome__win">
-        <button className="welcome__x" onClick={close} aria-label="Close">×</button>
+    <div className="wel" role="dialog" aria-modal="true" aria-labelledby="wel-title">
+      <div className="wel__scrim" onClick={close} />
+      <div className={`wel__win wel__win--${step}`}>
+        <button className="wel__x" onClick={close} aria-label="Close">×</button>
+        {step === "where"
+          ? <Where onPick={pick} q={q} setQ={setQ} others={others} />
+          : <Offer country={country} onChange={() => setStep("where")} onStart={() => go("/#collection")} onMatch={() => go("/match")} onSignIn={buyer ? undefined : () => { signIn(DEMO_EMAIL); close(); }} />}
+      </div>
+    </div>
+  );
+}
 
-        {step === "where" ? (
-          <div className="welcome__step" key="where">
-            <span className="eyebrow">Welcome to KLOW Wholesale</span>
-            <h2 id="welcome-title" className="welcome__h">Where are you buying from?</h2>
-            <p className="muted">We&rsquo;ll set shipping, documents and the site language for your market.</p>
+/* ── Step 1: where to ship ── */
 
-            <input className="welcome__search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search your country" aria-label="Search your country" autoFocus />
-            <ul className="welcome__countries">
-              {list.map((c) => (
-                <li key={c.code}>
-                  <button type="button" onClick={() => pick(c.code)}>
-                    <span className="mono">{c.code}</span>{c.name}
-                  </button>
-                </li>
-              ))}
-              {list.length === 0 && <li className="muted small welcome__none">No match. Continue below and we&rsquo;ll ship to you case by case.</li>}
+function Where({ onPick, q, setQ, others }: { onPick: (c: string | null) => void; q: string; setQ: (s: string) => void; others: typeof COUNTRIES }) {
+  return (
+    <div className="wel__grid" key="where">
+      <div className="wel__visual">
+        <img src="/img/hero.jpg" alt="" />
+        <div className="wel__visual-in">
+          <span className="wel__tag mono">Samples from 1 unit</span>
+          <div>
+            <p className="wel__visual-h">K-beauty at wholesale,<br />from Seoul to your shelf.</p>
+            <ul className="wel__stats">
+              <li><b className="mono">{BRANDS.length}</b><span>verified Korean brands</span></li>
+              <li><b className="mono">{PRODUCTS.length}</b><span>products to sample</span></li>
+              <li><b className="mono">{FREE_SHIPPING_SKUS}</b><span>SKUs ship free</span></li>
             </ul>
-            <button type="button" className="link small welcome__skip" onClick={() => pick(null)}>My country isn&rsquo;t listed — continue in English</button>
           </div>
-        ) : (
-          <div className="welcome__step" key="offer">
-            <div className="welcome__where">
-              <span className="mono">{country ?? "—"}</span>
-              <span>{where ?? "International"} · English</span>
-              <button type="button" className="link small" onClick={() => setStep("where")}>Change</button>
-            </div>
+        </div>
+      </div>
 
-            <span className="eyebrow eyebrow--accent">Our opening offer</span>
-            <h2 id="welcome-title" className="welcome__h">Sample any product from just 1 unit, at wholesale price.</h2>
+      <div className="wel__body">
+        <span className="eyebrow">Welcome to KLOW Wholesale</span>
+        <h2 id="wel-title" className="wel__h">Where should we ship your samples?</h2>
+        <p className="wel__sub">Pick your market. Shipping, documents and language follow.</p>
 
-            <div className="welcome__perks">
-              <div>
-                <b className="mono">1 unit</b>
-                <p>No MOQ to sample. You pay wholesale, never retail.</p>
-              </div>
-              <div>
-                <b className="mono">{FREE_SHIPPING_SKUS}+ SKUs</b>
-                <p>Free shipping from Seoul{where ? ` to ${where}` : ""}.</p>
-              </div>
-            </div>
+        <ul className="wel__flags">
+          {POPULAR.map((code) => (
+            <li key={code}>
+              <button type="button" onClick={() => onPick(code)}>
+                <img src={flag(code)} alt="" loading="eager" />
+                <span>{countryName(code)}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
 
-            {/* Five slots: the fifth sample is where shipping turns free */}
-            <ol className="welcome__slots" aria-label={`Free shipping at ${FREE_SHIPPING_SKUS} samples`}>
-              {Array.from({ length: FREE_SHIPPING_SKUS }, (_, i) => (
-                <li key={i} className={i === FREE_SHIPPING_SKUS - 1 ? "is-free" : ""}>
-                  <span className="mono">{i + 1}</span>
-                  {i === FREE_SHIPPING_SKUS - 1 && <em>Free shipping</em>}
+        <div className="wel__other">
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Another country? Type to search" aria-label="Search your country" />
+          {others.length > 0 && (
+            <ul className="wel__results">
+              {others.map((c) => (
+                <li key={c.code}>
+                  <button type="button" onClick={() => onPick(c.code)}><img src={flag(c.code)} alt="" />{c.name}</button>
                 </li>
               ))}
-            </ol>
+            </ul>
+          )}
+          {q.trim() && others.length === 0 && <p className="muted small wel__none">No match. Continue below and we&rsquo;ll quote shipping for you.</p>}
+        </div>
 
-            <p className="welcome__ex small">
-              <span className="muted">For example:</span> {ex.name} — <b className="mono">{money(ex.sample)}</b> a sample <span className="muted">· retails at {money(ex.msrp)}</span>
-            </p>
+        <button type="button" className="wel__skip" onClick={() => onPick(null)}>Not listed? Continue in English <span className="mono">→</span></button>
+      </div>
+    </div>
+  );
+}
 
-            <button className="btn btn--solid btn--block" onClick={start}>Start sampling</button>
-            {!buyer && (
-              <p className="muted small welcome__in">
-                Already a registered buyer? <button type="button" className="link" onClick={() => { signIn(DEMO_EMAIL); close(); }}>Sign in</button>
-              </p>
-            )}
+/* ── Step 2: the offer ── */
+
+function Offer({ country, onChange, onStart, onMatch, onSignIn }: { country: string | null; onChange: () => void; onStart: () => void; onMatch: () => void; onSignIn?: () => void }) {
+  const box = BOX.map(productById);
+  const sampleTotal = box.reduce((s, p) => s + p.sample, 0);
+  const retailTotal = box.reduce((s, p) => s + p.msrp, 0);
+  const ex = productById(EXAMPLE);
+  const off = Math.round((1 - ex.sample / ex.msrp) * 100);
+  const where = country ? countryName(country) : "you";
+
+  return (
+    <div className="wel__grid" key="offer">
+      {/* The sample box filling up, one product at a time, until shipping turns free */}
+      <div className="wel__box" aria-label={`Example: ${FREE_SHIPPING_SKUS} samples, free shipping`}>
+        <span className="wel__tag wel__tag--dark mono">Your first sample box</span>
+        <ul className="wel__slots">
+          {box.map((p, i) => (
+            <li key={p.id} style={{ animationDelay: `${300 + i * 380}ms` }}>
+              <img src={photoSrc(p)} alt="" style={{ objectPosition: photoPos(p) }} />
+              <span className="wel__slot-n mono">{i + 1}</span>
+              <div className="wel__slot-meta">
+                <span>{brandById(p.brandId).name}</span>
+                <b className="mono">{money(p.sample)}</b>
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        <div className="wel__ship">
+          <div className="wel__bar"><i /></div>
+          <div className="wel__ship-row">
+            <span>Shipping to {country ? countryName(country) : "your market"}</span>
+            <span className="wel__fee mono"><s>{money(SAMPLE_SHIPPING_FEE)}</s><b>Free</b></span>
           </div>
-        )}
+        </div>
+
+        <dl className="wel__sum">
+          <div><dt>{FREE_SHIPPING_SKUS} samples</dt><dd className="mono">{money(sampleTotal)}</dd></div>
+          <div><dt>Retail value</dt><dd className="mono">{money(retailTotal)}</dd></div>
+        </dl>
+      </div>
+
+      <div className="wel__body">
+        <div className="wel__where">
+          {country ? <img src={flag(country)} alt="" /> : <span className="wel__globe mono">—</span>}
+          <span>Shipping to <b>{country ? countryName(country) : "International"}</b> · English</span>
+          <button type="button" className="link small" onClick={onChange}>Change</button>
+        </div>
+
+        <span className="eyebrow eyebrow--accent">Opening offer</span>
+        <h2 id="wel-title" className="wel__h wel__h--big">Start with one unit.<br /><em>Get five shipped free.</em></h2>
+
+        <ol className="wel__perks">
+          <li>
+            <span className="mono">01</span>
+            <p><b>Any product from just 1 unit, at wholesale price.</b> No MOQ, no case packs, no retail markup.</p>
+          </li>
+          <li>
+            <span className="mono">05</span>
+            <p><b>Five SKUs and shipping is on us</b>, from Seoul to {where}.</p>
+          </li>
+        </ol>
+
+        <div className="wel__proof">
+          <img src={photoSrc(ex)} alt="" style={{ objectPosition: photoPos(ex) }} />
+          <div>
+            <span className="muted small">{brandById(ex.brandId).name} {ex.name}</span>
+            <p><b className="mono">{money(ex.sample)}</b> <s className="mono muted">{money(ex.msrp)} retail</s></p>
+          </div>
+          <span className="wel__off mono">−{off}%</span>
+        </div>
+
+        <button className="btn btn--solid btn--block wel__cta" onClick={onStart}>Start sampling</button>
+        <div className="wel__alt">
+          <button type="button" className="link small" onClick={onMatch}>Not sure where to start? Get matched to brands</button>
+          {onSignIn && <span className="small muted">Registered buyer? <button type="button" className="link" onClick={onSignIn}>Sign in</button></span>}
+        </div>
       </div>
     </div>
   );

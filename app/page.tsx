@@ -15,8 +15,8 @@ export default function Home() {
               <em>Even just one unit.</em>
             </h1>
             <p className="hero__lede">
-              Not free testers, not retail markups. Order a single unit of any K-beauty product at the exact wholesale
-              price you&rsquo;ll pay in bulk &mdash; then reorder what sells.
+              Not free testers, not retail markups. Order a single unit of any K-beauty product at a wholesale-level
+              price &mdash; then reorder what sells at MOQ, for less again.
             </p>
 
             <div className="hero__cta">
