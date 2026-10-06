@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BRANDS, FREE_SHIPPING_SKUS, PRODUCTS, SAMPLE_SHIPPING_FEE, brandById, money, productById } from "@/lib/data";
+import { FREE_SHIPPING_SKUS, PRODUCTS, SAMPLE_SHIPPING_FEE, brandById, money, productById } from "@/lib/data";
 import { COUNTRIES, countryName, loadCheckout, saveCheckout } from "@/lib/buyer";
 import { photoPos, photoSrc } from "./Photo";
 import { DEMO_EMAIL, useBuyer } from "./Buyer";
@@ -121,17 +121,6 @@ function Where({ onPick, q, setQ, others }: { onPick: (c: string | null) => void
     <div className="wel__grid" key="where">
       <div className="wel__visual">
         <Reel />
-        <div className="wel__visual-in">
-          <div className="wel__copy">
-            <span className="wel__tag mono">Samples from 1 unit</span>
-            <p className="wel__visual-h">K-beauty at wholesale,<br />from Seoul to your shelf.</p>
-            <ul className="wel__stats">
-              <li><b className="mono">{BRANDS.length}</b><span>verified Korean brands</span></li>
-              <li><b className="mono">{PRODUCTS.length}</b><span>products to sample</span></li>
-              <li><b className="mono">{FREE_SHIPPING_SKUS}</b><span>SKUs ship free</span></li>
-            </ul>
-          </div>
-        </div>
       </div>
 
       <div className="wel__body">
