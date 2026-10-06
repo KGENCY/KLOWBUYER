@@ -371,6 +371,9 @@ body:has(.samplebar.is-on) .concierge { padding-bottom: 136px; }
   .hide-sm { display: none !important; }
   .header__in { grid-template-columns: auto 1fr; height: 60px; }
   .header__nav { display: none; }
+  .header__act { gap: 14px; }
+  .header__box { white-space: nowrap; }
+  .wordmark__w { display: none; }
   .notice { font-size: 10px; gap: 10px; padding: 0 16px; text-align: center; }
   .hero { padding-top: 40px; }
   .hero__grid { grid-template-columns: 1fr; gap: 36px; }
@@ -684,8 +687,9 @@ body:has(.samplebar.is-on) .concierge { padding-bottom: 136px; }
 .header__verified { position: absolute; right: -4px; bottom: -4px; width: 12px; height: 12px; background: var(--accent); border: 2px solid var(--bg); }
 .header__me { display: flex; align-items: center; gap: 10px; font: inherit; font-weight: 500; }
 .header__me:hover .header__avatar { background: var(--accent); }
+.header__act .header__avatar span { color: #fff; }
 .header__name { font-weight: 500; }
-.header__signin { font: inherit; font-weight: 500; }
+.header__signin { font: inherit; font-weight: 500; white-space: nowrap; }
 .header__signin:hover { color: var(--accent); }
 
 /* ───────────── Account ───────────── */
