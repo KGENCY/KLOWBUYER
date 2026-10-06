@@ -9,6 +9,7 @@ import ProductCard from "./ProductCard";
 import AskProduct from "./AskProduct";
 import { useSamples } from "./SampleBox";
 import { useRequest } from "./RequestBrand";
+import { DEMO_EMAIL, useBuyer } from "./Buyer";
 
 const num = (n: number) => n.toLocaleString("en-US");
 
@@ -22,6 +23,8 @@ export default function ProductDetail({ p }: { p: Product }) {
 
   const { has, toggle } = useSamples();
   const { openWith } = useRequest();
+  const { buyer, signIn } = useBuyer();
+  const signedIn = !!buyer;
   const added = has(p.id);
   const [asking, setAsking] = useState(false);
   const [lang, setLang] = useState<string | null>(null); // review translation
@@ -59,6 +62,13 @@ export default function ProductDetail({ p }: { p: Product }) {
 
           <div className="pdp__info">
             <h1 className="pdp__name">{p.name}</h1>
+            {/* The consumer shelf price, entered per product at listing — public, unlike the wholesale tiers */}
+            <p className="msrp">
+              <span className="msrp__k eyebrow">MSRP</span>
+              <b className="mono">{money(p.msrp)}</b>
+              <span className="muted">Suggested retail price</span>
+              {signedIn && <span className="msrp__margin mono">{(p.msrp / tiers[1].unit).toFixed(1)}× at MOQ price</span>}
+            </p>
             {/* What the brand does for the buyer, before any number */}
             <p className="support" title={b.support.join(", ")}><i aria-hidden="true" />Marketing support available from {b.name}.</p>
 
@@ -75,18 +85,40 @@ export default function ProductDetail({ p }: { p: Product }) {
 
             <div className="pricing">
               <span className="eyebrow">Wholesale price by quantity</span>
-              <ul className="pricing__tiers">
+              <ul className={`pricing__tiers ${signedIn ? "" : "is-locked"}`}>
                 {tiers.map((t, i) => (
-                  <li key={t.minUnits} className={i === ti ? "is-on" : ""} onClick={() => setU(t.minUnits)}>
+                  <li key={t.minUnits} className={signedIn && i === ti ? "is-on" : ""} onClick={signedIn ? () => setU(t.minUnits) : undefined}>
                     <span className="pricing__qty">
                       <span className="mono">{num(t.minUnits)}{i < tiers.length - 1 ? `–${num(tiers[i + 1].minUnits - 1)}` : "+"}</span>
                       <small>{i === 0 ? "sample" : i === 1 ? "minimum order" : "units"}</small>
                     </span>
-                    <span className="pricing__unit mono">{money(t.unit)}<small>/ unit</small></span>
+                    {signedIn ? (
+                      <span className="pricing__unit mono">{money(t.unit)}<small>/ unit</small></span>
+                    ) : (
+                      // A placeholder, not the real figure blurred, so the price never reaches the page source.
+                      <span className="pricing__unit pricing__unit--hidden mono" aria-label="Sign in to see the price">
+                        <Lock /><span aria-hidden="true">$00.00</span><small>/ unit</small>
+                      </span>
+                    )}
                   </li>
                 ))}
               </ul>
 
+              {!signedIn ? (
+                <div className="gate">
+                  <b className="gate__title">Wholesale prices are for registered buyers.</b>
+                  <ul className="gate__list">
+                    <li>See the unit price at every quantity</li>
+                    <li>Order directly at MOQ — no quote round-trip</li>
+                    <li>Sample from 1 unit at wholesale price</li>
+                  </ul>
+                  <div className="pdp__cta">
+                    <Link href={`/signup?next=${encodeURIComponent(`/products/${p.id}`)}`} className="btn btn--solid">Create a buyer account</Link>
+                    <button className="btn btn--ghost btn--plain" onClick={() => signIn(DEMO_EMAIL)}>Sign in</button>
+                  </div>
+                  <span className="muted small">Free for businesses. Takes about two minutes.</span>
+                </div>
+              ) : (<>
               <div className="pricing__calc">
                 <div className="qty">
                   <button onClick={() => setU(units - 1)} aria-label="Decrease">−</button>
@@ -105,6 +137,7 @@ export default function ProductDetail({ p }: { p: Product }) {
                   {added ? "In your sample box" : "Sample 1 unit"}
                 </button>
               </div>
+              </>)}
 
               <button type="button" className="pdp__ask" onClick={() => setAsking(true)}>
                 <span>Need more detail? Ask the brand team directly.</span>
@@ -205,6 +238,15 @@ function Gallery({ shots }: { shots: Shot[] }) {
         </ul>
       )}
     </figure>
+  );
+}
+
+function Lock() {
+  return (
+    <svg className="lock" width="11" height="13" viewBox="0 0 11 13" aria-hidden="true">
+      <rect x="0.75" y="5.75" width="9.5" height="6.5" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M2.75 5.75V3.5a2.75 2.75 0 0 1 5.5 0v2.25" fill="none" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
   );
 }
 

@@ -681,6 +681,11 @@ body:has(.samplebar.is-on) .concierge { padding-bottom: 136px; }
 .header__avatar { position: relative; width: 38px; height: 38px; display: grid; place-items: center; background: var(--ink); color: #fff; font-family: var(--mono); font-size: 12.5px; font-weight: 500; letter-spacing: .04em; transition: background .25s var(--ease); }
 .header__avatar:hover { background: var(--accent); color: #fff; }
 .header__verified { position: absolute; right: -4px; bottom: -4px; width: 12px; height: 12px; background: var(--accent); border: 2px solid var(--bg); }
+.header__me { display: flex; align-items: center; gap: 10px; }
+.header__me:hover .header__avatar { background: var(--accent); }
+.header__name { font-weight: 500; }
+.header__signin { font: inherit; font-weight: 500; }
+.header__signin:hover { color: var(--accent); }
 
 /* ───────────── Account ───────────── */
 .acct { display: grid; grid-template-columns: 72px 1fr auto; gap: 24px; align-items: center; padding-bottom: 32px; }
@@ -845,7 +850,26 @@ body:has(.samplebar.is-on) .concierge { padding-bottom: 136px; }
 .certs span { font-size: 11.5px; color: var(--muted); line-height: 1.35; }
 
 /* Pricing by quantity, stacked beside the photo */
+/* MSRP: the consumer shelf price, read at a glance under the name */
+.msrp { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 12px; margin-top: -6px; }
+.msrp__k { align-self: center; }
+.msrp b { font-size: 22px; font-weight: 500; letter-spacing: -.02em; }
+.msrp .muted { font-size: 13px; }
+.msrp__margin { font-size: 12px; padding: 3px 8px; background: var(--accent); color: var(--accent-ink); align-self: center; }
+
 .pricing { display: flex; flex-direction: column; gap: 16px; margin-top: 8px; }
+/* Signed out: quantities stay readable, unit prices are locked */
+.pricing__tiers.is-locked li { cursor: default; }
+.pricing__tiers.is-locked li:hover { background: none; }
+.pricing__unit--hidden { align-items: center; gap: 8px; color: var(--muted); }
+.pricing__unit--hidden > span { filter: blur(5px); user-select: none; color: var(--ink); }
+.lock { flex: none; color: var(--ink); }
+.gate { display: flex; flex-direction: column; gap: 14px; padding: 20px; background: var(--card); border: var(--bw) solid var(--ink); }
+.gate__title { font-size: 17px; font-weight: 500; letter-spacing: -.01em; }
+.gate__list { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--ink-2); }
+.gate__list li { display: flex; align-items: center; gap: 10px; }
+.gate__list li::before { content: ""; flex: none; width: 6px; height: 6px; background: var(--accent); }
+.gate .pdp__cta { margin-top: 4px; }
 .pricing__tiers { border-top: var(--bw-2) solid var(--ink); }
 .pricing__tiers li { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 13px 12px; margin: 0 -12px; border-bottom: var(--bw) solid var(--line-2); cursor: pointer; transition: background .2s var(--ease), color .2s var(--ease); }
 .pricing__tiers li:hover { background: var(--surface); }

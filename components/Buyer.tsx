@@ -21,6 +21,7 @@ export const useBuyer = () => useContext(BuyerCtx)!;
 const BUYER_KEY = "klow.buyer";
 const ORDERS_KEY = "klow.orders";
 const LAST_KEY = "klow.buyer.last"; // profile kept across sign-out so a mock sign-in can restore it
+export const DEMO_EMAIL = "buyer@welkit.com"; // the header's one-click sign-in (design mock)
 
 export function BuyerProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
@@ -71,18 +72,18 @@ export function BuyerProvider({ children }: { children: ReactNode }) {
           ? b
           : {
               id: `b_${now.toString(36)}`,
-              name: "Demo Buyer",
+              name: "Welkit Buyer",
               email,
               dial: "+1",
               phone: "415 555 0132",
               country: "US",
-              company: "Lumen Beauty Co.",
+              company: "welkit",
               businessType: "online",
               currency: "USD",
               channels: ["own_store", "amazon_us"],
               interestedBrands: ["haeum", "morae"],
               certFileName: "business-registration.pdf",
-              website: "lumenbeauty.co",
+              website: "welkit.com",
               verifiedAt: now - 40 * 86_400_000,
               createdAt: now - 40 * 86_400_000,
             };
