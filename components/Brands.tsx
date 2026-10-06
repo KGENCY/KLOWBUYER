@@ -50,7 +50,7 @@ export default function Brands() {
                 <span>{p.name}</span>
                 {signedIn
                   ? <span className="mono small">{money(p.wholesale)} <em className="muted">wholesale</em></span>
-                  : <span className="mono small">MSRP {money(p.msrp)}</span>}
+                  : <span className="mono small">{money(p.wholesale)} <em className="muted">sample · MSRP {money(p.msrp)}</em></span>}
                 <button className="link small" onClick={() => toggle(p.id)}>{has(p.id) ? "In your sample box — remove" : "Sample 1 unit"}</button>
               </div>
             </li>

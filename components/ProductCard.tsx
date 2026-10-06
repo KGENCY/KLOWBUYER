@@ -25,25 +25,20 @@ export default function ProductCard({ p, index = 0, tag }: { p: Product; index?:
           {added ? (
             <><span>In your sample box</span><span>Remove</span></>
           ) : (
-            <><span>Sample 1 unit</span><span>{signedIn ? <>{money(p.wholesale)} <em>wholesale</em></> : <em>at wholesale price</em>}</span></>
+            <><span>Sample 1 unit</span><span>{money(p.wholesale)} <em>wholesale</em></span></>
           )}
         </button>
       </div>
       <div className="card__body">
         <span className="eyebrow">{b.name} · {p.size}</span>
         <h3 className="card__name"><Link href={href}>{p.name}</Link></h3>
-        {/* Wholesale is for signed-in buyers; MSRP is public */}
-        {signedIn ? (
-          <div className="card__price">
-            <span className="card__ws">{money(p.wholesale)}</span>
-            <span className="card__msrp">MSRP {money(p.msrp)}</span>
-          </div>
-        ) : (
-          <div className="card__price">
-            <span className="card__ws">MSRP {money(p.msrp)}</span>
-            <span className="card__msrp card__lock">Wholesale · sign in</span>
-          </div>
-        )}
+        {/* Signed out, the wholesale figure is shown as the 1-unit sample price (the opening offer); MSRP is always public */}
+        <div className="card__price">
+          {signedIn
+            ? <span className="card__ws">{money(p.wholesale)}</span>
+            : <span className="card__ws"><em className="card__k">Sample</em>{money(p.wholesale)}</span>}
+          <span className="card__msrp">MSRP {money(p.msrp)}</span>
+        </div>
         {tag && <span className="card__tag">{tag}</span>}
         <div className="card__support" title={`Marketing support from ${b.name}: ${b.support.join(", ")}`}>
           <span className="card__support-k"><i />Marketing support</span>

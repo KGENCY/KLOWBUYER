@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Product, brandById, money, productsOf } from "@/lib/data";
+import { FREE_SHIPPING_SKUS, Product, brandById, money, productsOf } from "@/lib/data";
 import { LANGS, Review, Shot, certsOf, copyOf, photosOf, reviewsOf, tierIndexFor, tiersFor, translateReview } from "@/lib/detail";
 import { photoPos } from "./Photo";
 import ProductCard from "./ProductCard";
@@ -92,7 +92,8 @@ export default function ProductDetail({ p }: { p: Product }) {
                       <span className="mono">{num(t.minUnits)}{i < tiers.length - 1 ? `–${num(tiers[i + 1].minUnits - 1)}` : "+"}</span>
                       <small>{i === 0 ? "sample" : i === 1 ? "minimum order" : "units"}</small>
                     </span>
-                    {signedIn ? (
+                    {/* The sample price is public (it's the offer); MOQ tiers open on sign-in */}
+                    {signedIn || i === 0 ? (
                       <span className="pricing__unit mono">{money(t.unit)}<small>/ unit</small></span>
                     ) : (
                       // A placeholder, not the real figure blurred, so the price never reaches the page source.
@@ -104,13 +105,23 @@ export default function ProductDetail({ p }: { p: Product }) {
                 ))}
               </ul>
 
-              {!signedIn ? (
+              {!signedIn ? (<>
+                {/* KLOW's opening offer: any product, one unit, at its wholesale price */}
+                <div className="sampleoffer">
+                  <div className="sampleoffer__text">
+                    <b>Sample 1 unit at {money(tiers[0].unit)}</b>
+                    <span className="muted small">Wholesale price, not retail · free shipping at {FREE_SHIPPING_SKUS} SKUs</span>
+                  </div>
+                  <button className={`btn btn--solid ${added ? "is-added" : ""}`} onClick={() => toggle(p.id)} aria-pressed={added}>
+                    {added ? "In your sample box" : "Add sample"}
+                  </button>
+                </div>
+
                 <div className="gate">
-                  <b className="gate__title">Wholesale prices are for registered buyers.</b>
+                  <b className="gate__title">MOQ prices are for registered buyers.</b>
                   <ul className="gate__list">
-                    <li>See the unit price at every quantity</li>
+                    <li>See the unit price at every order quantity</li>
                     <li>Order directly at MOQ — no quote round-trip</li>
-                    <li>Sample from 1 unit at wholesale price</li>
                   </ul>
                   <div className="pdp__cta">
                     <Link href={`/signup?next=${encodeURIComponent(`/products/${p.id}`)}`} className="btn btn--solid">Create a buyer account</Link>
@@ -118,7 +129,7 @@ export default function ProductDetail({ p }: { p: Product }) {
                   </div>
                   <span className="muted small">Free for businesses. Takes about two minutes.</span>
                 </div>
-              ) : (<>
+              </>) : (<>
               <div className="pricing__calc">
                 <div className="qty">
                   <button onClick={() => setU(units - 1)} aria-label="Decrease">−</button>

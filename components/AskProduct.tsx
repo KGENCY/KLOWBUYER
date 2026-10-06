@@ -18,7 +18,7 @@ type Msg =
   | { role: "bot" | "user"; text: string; at: number }
   | { role: "handoff"; at: number; sent?: Contact; ref: string }; // the contact card, inline in the thread
 
-type Quick = { label: string; answer?: (p: Product, b: Brand, signedIn: boolean) => string }; // no answer → handed to the team
+type Quick = { label: string; answer?: (p: Product, b: Brand) => string }; // no answer → handed to the team
 
 const KEY = (id: string) => `klow.ask.${id}`;
 const CONTACT_KEY = "klow.ask.contact";
@@ -40,8 +40,7 @@ const QUICK: Quick[] = [
   },
   {
     label: "What is the minimum order, and can I start smaller?",
-    // Wholesale prices are for signed-in buyers only.
-    answer: (p, b, signedIn) => `You can sample ${p.name} from 1 unit at the wholesale price${signedIn ? ` of ${money(p.wholesale)}` : " (shown once you sign in)"}. The opening wholesale order is ${num(b.moq)} units per SKU, with the unit price stepping down from ${num(b.moq * 3)} units. Opening orders below ${num(b.moq)} units are negotiated case by case: ask below and the ${b.name} team will come back to you.`,
+    answer: (p, b) => `You can sample ${p.name} from 1 unit at the wholesale price of ${money(p.wholesale)}. The opening wholesale order is ${num(b.moq)} units per SKU, with the unit price stepping down from ${num(b.moq * 3)} units. Opening orders below ${num(b.moq)} units are negotiated case by case: ask below and the ${b.name} team will come back to you.`,
   },
   {
     label: "Which documents are ready for my market?",
@@ -154,7 +153,7 @@ export default function AskProduct({ p, b, open, first, onClose }: { p: Product;
     if (!t) return;
     setMsgs((xs) => [...xs, { role: "user", text: t, at: Date.now() }]);
     setDraft("");
-    if (q?.answer) reply(q.answer(p, b, !!buyer));
+    if (q?.answer) reply(q.answer(p, b));
     else handoff();
   };
 
