@@ -49,8 +49,8 @@ export default function Brands() {
               <div className="bpanel__p">
                 <span>{p.name}</span>
                 {signedIn
-                  ? <span className="mono small">{money(p.wholesale)} <em className="muted">wholesale</em></span>
-                  : <span className="mono small">{money(p.wholesale)} <em className="muted">sample · MSRP {money(p.msrp)}</em></span>}
+                  ? <span className="mono small">{money(p.wholesale)} <em className="muted">MOQ price</em></span>
+                  : <span className="mono small">{money(p.sample)} <em className="muted">sample · MSRP {money(p.msrp)}</em></span>}
                 <button className="link small" onClick={() => toggle(p.id)}>{has(p.id) ? "In your sample box — remove" : "Sample 1 unit"}</button>
               </div>
             </li>

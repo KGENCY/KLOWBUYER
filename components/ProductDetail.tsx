@@ -106,11 +106,11 @@ export default function ProductDetail({ p }: { p: Product }) {
               </ul>
 
               {!signedIn ? (<>
-                {/* KLOW's opening offer: any product, one unit, at its wholesale price */}
+                {/* KLOW's opening offer: any product, one unit, at its listed sample price */}
                 <div className="sampleoffer">
                   <div className="sampleoffer__text">
                     <b>Sample 1 unit at {money(tiers[0].unit)}</b>
-                    <span className="muted small">Wholesale price, not retail · free shipping at {FREE_SHIPPING_SKUS} SKUs</span>
+                    <span className="muted small">{Math.round((1 - tiers[0].unit / p.msrp) * 100)}% below MSRP · free shipping at {FREE_SHIPPING_SKUS} SKUs</span>
                   </div>
                   <button className={`btn btn--solid ${added ? "is-added" : ""}`} onClick={() => toggle(p.id)} aria-pressed={added}>
                     {added ? "In your sample box" : "Add sample"}

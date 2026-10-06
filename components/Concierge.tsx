@@ -223,7 +223,7 @@ function Results({ answers }: { answers: Answers }) {
                     {ps.map((p) => (
                       <div key={p.id} className={`thumb ${has(p.id) ? "is-added" : ""}`} title={p.name}>
                         <Photo p={p} sizes="120px" />
-                        <span>{money(p.wholesale)}</span>
+                        <span>{money(p.sample)}</span>
                       </div>
                     ))}
                   </div>
@@ -231,7 +231,7 @@ function Results({ answers }: { answers: Answers }) {
                     className={`btn ${allIn ? "btn--ghost" : "btn--solid"} btn--block`}
                     onClick={() => (allIn ? setOpen(true) : addMany(ps.map((p) => p.id)))}
                   >
-                    {allIn ? "In your sample box" : `Sample ${ps.length} products · ${money(ps.reduce((s, p) => s + p.wholesale, 0))}`}
+                    {allIn ? "In your sample box" : `Sample ${ps.length} products · ${money(ps.reduce((s, p) => s + p.sample, 0))}`}
                   </button>
                 </div>
               </li>

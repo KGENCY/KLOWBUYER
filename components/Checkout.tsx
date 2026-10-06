@@ -77,7 +77,7 @@ export default function Checkout() {
                       <span className="muted small">1 unit · {p.size} · MSRP {money(p.msrp)}</span>
                     </div>
                     <div className="line__price">
-                      <span className="mono">{money(p.wholesale)}</span>
+                      <span className="mono">{money(p.sample)}</span>
                       <button className="link small" onClick={() => toggle(id)}>Remove</button>
                     </div>
                   </li>

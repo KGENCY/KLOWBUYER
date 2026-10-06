@@ -77,7 +77,7 @@ function SampleBar() {
   const pathname = usePathname();
   const quiet = QUIET_ROUTES.some((r) => pathname.startsWith(r));
   const n = items.length;
-  const subtotal = items.reduce((s, id) => s + productById(id).wholesale, 0);
+  const subtotal = items.reduce((s, id) => s + productById(id).sample, 0);
   return (
     <div className={`samplebar ${n && !quiet ? "is-on" : ""}`} aria-hidden={!n || quiet}>
       <div className="samplebar__in">
@@ -102,7 +102,7 @@ function SampleDrawer() {
   const { items, toggle, open, setOpen } = useSamples();
   const router = useRouter();
   const n = items.length;
-  const subtotal = items.reduce((s, id) => s + productById(id).wholesale, 0);
+  const subtotal = items.reduce((s, id) => s + productById(id).sample, 0);
   const free = n >= FREE_SHIPPING_SKUS;
 
   return (
@@ -136,7 +136,7 @@ function SampleDrawer() {
                   <span className="muted small">1 unit · {p.size}</span>
                 </div>
                 <div className="drawer__price">
-                  <span>{money(p.wholesale)}</span>
+                  <span>{money(p.sample)}</span>
                   <button className="link small" onClick={() => toggle(id)}>Remove</button>
                 </div>
               </li>

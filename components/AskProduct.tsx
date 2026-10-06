@@ -40,7 +40,7 @@ const QUICK: Quick[] = [
   },
   {
     label: "What is the minimum order, and can I start smaller?",
-    answer: (p, b) => `You can sample ${p.name} from 1 unit at the wholesale price of ${money(p.wholesale)}. The opening wholesale order is ${num(b.moq)} units per SKU, with the unit price stepping down from ${num(b.moq * 3)} units. Opening orders below ${num(b.moq)} units are negotiated case by case: ask below and the ${b.name} team will come back to you.`,
+    answer: (p, b) => `You can sample ${p.name} from 1 unit at ${money(p.sample)}. The opening wholesale order is ${num(b.moq)} units per SKU at a lower unit price, stepping down again from ${num(b.moq * 3)} units. Opening orders below ${num(b.moq)} units are negotiated case by case: ask below and the ${b.name} team will come back to you.`,
   },
   {
     label: "Which documents are ready for my market?",

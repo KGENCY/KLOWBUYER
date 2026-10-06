@@ -89,7 +89,7 @@ export default function RequestDetail({ id }: { id: string }) {
                       <span className="line__name">{p.name}</span>
                       <span className="muted small">1 unit · {p.size} · wholesale MOQ {b.moq} units</span>
                     </div>
-                    <div className="line__price"><span className="mono">{money(p.wholesale)}</span></div>
+                    <div className="line__price"><span className="mono">{money(p.sample)}</span></div>
                   </li>
                 );
               })}

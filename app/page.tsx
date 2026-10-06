@@ -33,7 +33,7 @@ export default function Home() {
             <li>
               <span className="pillars__k">Wholesale price on every sample</span>
               <span className="pillars__n">1 unit</span>
-              <p><b>No MOQ, no case packs.</b> Sample any product on its own, at the exact price you&rsquo;ll reorder at.</p>
+              <p><b>No MOQ, no case packs.</b> Sample any product on its own; once it sells, the MOQ price is lower still.</p>
             </li>
             <li>
               <span className="pillars__k">Free shipping at {FREE_SHIPPING_SKUS} SKUs</span>

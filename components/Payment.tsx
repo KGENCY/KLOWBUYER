@@ -87,7 +87,7 @@ export default function Payment() {
                       <span className="eyebrow">{brandById(p.brandId).name}</span>
                       <span className="line__name">{p.name}</span>
                     </div>
-                    <div className="line__price"><span className="mono">{money(p.wholesale)}</span></div>
+                    <div className="line__price"><span className="mono">{money(p.sample)}</span></div>
                   </li>
                 );
               })}

@@ -42,7 +42,8 @@ export interface Product {
   size: string;
   category: Category;
   lines: Line[];
-  wholesale: number;
+  wholesale: number; // MOQ unit price
+  sample: number; // 1-unit sample price, a little above MOQ; entered per product at listing
   msrp: number;
   shape: Shape;
   tone: string;
@@ -72,30 +73,30 @@ export const BRANDS: Brand[] = [
 ];
 
 export const PRODUCTS: Product[] = [
-  { id: "p01", brandId: "haeum", name: "Ceramide Barrier Cream", size: "50 ml", category: "Skincare", lines: ["hydration", "sensitive"], wholesale: 9.8, msrp: 26, shape: "jar", tone: "#ECE7DF", cap: "#2A2A2A", badge: "Bestseller" },
-  { id: "p02", brandId: "haeum", name: "Panthenol Essence Toner", size: "200 ml", category: "Skincare", lines: ["hydration"], wholesale: 7.6, msrp: 21, shape: "bottle", tone: "#E4E8E6", cap: "#2A2A2A" },
-  { id: "p03", brandId: "bom", name: "Airy Sun Fluid SPF 50+", size: "50 ml", category: "Sun Care", lines: ["sun", "sensitive"], wholesale: 7.2, msrp: 18, shape: "tube", tone: "#F2EEE6", cap: "#C9B99A", badge: "Bestseller" },
-  { id: "p04", brandId: "bom", name: "Mineral Tone-Up Sun Milk", size: "50 ml", category: "Sun Care", lines: ["sun", "sensitive", "brightening"], wholesale: 8.1, msrp: 22, shape: "pump", tone: "#EFE4DE", cap: "#FFFFFF" },
-  { id: "p05", brandId: "sooan", name: "Red Ginseng Firming Serum", size: "30 ml", category: "Skincare", lines: ["antiaging"], wholesale: 14.5, msrp: 42, shape: "dropper", tone: "#8C3B2E", cap: "#1E1E1E", badge: "Bestseller" },
-  { id: "p06", brandId: "sooan", name: "Ginseng Contour Eye Cream", size: "20 ml", category: "Skincare", lines: ["antiaging"], wholesale: 12.2, msrp: 36, shape: "jar", tone: "#B4876A", cap: "#C9A86A" },
-  { id: "p07", brandId: "morae", name: "Volcanic Clay Cleansing Foam", size: "120 ml", category: "Cleansing", lines: ["sensitive"], wholesale: 6.4, msrp: 20, shape: "tube", tone: "#5A5753", cap: "#1E1E1E", badge: "Hidden gem" },
-  { id: "p08", brandId: "morae", name: "Jeju Mineral Calming Mist", size: "100 ml", category: "Skincare", lines: ["sensitive", "hydration"], wholesale: 6.9, msrp: 22, shape: "bottle", tone: "#C7CCC9", cap: "#FFFFFF" },
-  { id: "p09", brandId: "gyeol", name: "Peptide Lift Ampoule", size: "30 ml", category: "Skincare", lines: ["antiaging"], wholesale: 13.9, msrp: 48, shape: "dropper", tone: "#DCD3C6", cap: "#9C8A6E", badge: "Hidden gem" },
-  { id: "p10", brandId: "gyeol", name: "Collagen Sleeping Mask", size: "70 ml", category: "Masks", lines: ["antiaging", "hydration"], wholesale: 11.4, msrp: 38, shape: "jar", tone: "#F0EBE3", cap: "#9C8A6E" },
-  { id: "p11", brandId: "ilmi", name: "Rice Niacinamide Glow Serum", size: "30 ml", category: "Skincare", lines: ["brightening"], wholesale: 8.6, msrp: 28, shape: "dropper", tone: "#F3EFE6", cap: "#D2C4A6", badge: "Hidden gem" },
-  { id: "p12", brandId: "ilmi", name: "Rice Water Hydra Mask", size: "5 sheets", category: "Masks", lines: ["hydration", "brightening"], wholesale: 6.2, msrp: 20, shape: "pouch", tone: "#EAE3D5", cap: "#B9A782", badge: "New" },
-  { id: "p13", brandId: "nokdu", name: "Mung Bean Pore Cleansing Oil", size: "200 ml", category: "Cleansing", lines: ["sensitive"], wholesale: 8.9, msrp: 26, shape: "pump", tone: "#D7DCC9", cap: "#2F3A2A" },
-  { id: "p14", brandId: "nokdu", name: "Green Clay Pack", size: "100 ml", category: "Masks", lines: ["sensitive"], wholesale: 7.1, msrp: 22, shape: "jar", tone: "#AAB49A", cap: "#2F3A2A" },
-  { id: "p15", brandId: "yeon", name: "Scalp Clinic Shampoo", size: "300 ml", category: "Haircare", lines: ["hair"], wholesale: 9.4, msrp: 28, shape: "pump", tone: "#2B2B2B", cap: "#BFBFBF", badge: "Bestseller" },
-  { id: "p16", brandId: "yeon", name: "Protein Repair Hair Serum", size: "100 ml", category: "Haircare", lines: ["hair"], wholesale: 8.2, msrp: 24, shape: "bottle", tone: "#D9CFC2", cap: "#2B2B2B" },
-  { id: "p17", brandId: "ondo", name: "Hinoki Body Wash", size: "400 ml", category: "Body", lines: ["body"], wholesale: 9.6, msrp: 34, shape: "pump", tone: "#C8B79F", cap: "#2A2622", badge: "Hidden gem" },
-  { id: "p18", brandId: "ondo", name: "Shea Silk Body Lotion", size: "250 ml", category: "Body", lines: ["body", "hydration"], wholesale: 10.2, msrp: 36, shape: "tube", tone: "#E8DDCF", cap: "#2A2622" },
-  { id: "p19", brandId: "seorin", name: "Second Skin Cushion", size: "15 g", category: "Makeup", lines: ["makeup"], wholesale: 10.8, msrp: 29, shape: "compact", tone: "#1E1E1E", cap: "#C9A86A", badge: "Bestseller" },
-  { id: "p20", brandId: "seorin", name: "Water Glow Lip Tint", size: "4 g", category: "Makeup", lines: ["makeup"], wholesale: 4.9, msrp: 14, shape: "stick", tone: "#A3443B", cap: "#1E1E1E" },
-  { id: "p21", brandId: "dain", name: "Encapsulated Retinal 0.1%", size: "30 ml", category: "Skincare", lines: ["antiaging", "sensitive"], wholesale: 12.8, msrp: 42, shape: "pump", tone: "#E6DDD0", cap: "#6E5B45", badge: "New" },
-  { id: "p22", brandId: "dain", name: "Bakuchiol Night Cream", size: "50 ml", category: "Skincare", lines: ["antiaging"], wholesale: 11.6, msrp: 38, shape: "jar", tone: "#CFC3B2", cap: "#6E5B45" },
-  { id: "p23", brandId: "purehan", name: "Hanbang Radiance Essence", size: "150 ml", category: "Skincare", lines: ["antiaging", "brightening"], wholesale: 13.2, msrp: 39, shape: "bottle", tone: "#7A5A3A", cap: "#C9A86A", badge: "Bestseller" },
-  { id: "p24", brandId: "purehan", name: "Ginseng Sun Cream SPF 50", size: "50 ml", category: "Sun Care", lines: ["sun", "antiaging"], wholesale: 7.9, msrp: 23, shape: "tube", tone: "#E9DFD0", cap: "#7A5A3A" },
+  { id: "p01", brandId: "haeum", name: "Ceramide Barrier Cream", size: "50 ml", category: "Skincare", lines: ["hydration", "sensitive"], wholesale: 9.8, sample: 11.3, msrp: 26, shape: "jar", tone: "#ECE7DF", cap: "#2A2A2A", badge: "Bestseller" },
+  { id: "p02", brandId: "haeum", name: "Panthenol Essence Toner", size: "200 ml", category: "Skincare", lines: ["hydration"], wholesale: 7.6, sample: 8.8, msrp: 21, shape: "bottle", tone: "#E4E8E6", cap: "#2A2A2A" },
+  { id: "p03", brandId: "bom", name: "Airy Sun Fluid SPF 50+", size: "50 ml", category: "Sun Care", lines: ["sun", "sensitive"], wholesale: 7.2, sample: 8.3, msrp: 18, shape: "tube", tone: "#F2EEE6", cap: "#C9B99A", badge: "Bestseller" },
+  { id: "p04", brandId: "bom", name: "Mineral Tone-Up Sun Milk", size: "50 ml", category: "Sun Care", lines: ["sun", "sensitive", "brightening"], wholesale: 8.1, sample: 9.4, msrp: 22, shape: "pump", tone: "#EFE4DE", cap: "#FFFFFF" },
+  { id: "p05", brandId: "sooan", name: "Red Ginseng Firming Serum", size: "30 ml", category: "Skincare", lines: ["antiaging"], wholesale: 14.5, sample: 16.7, msrp: 42, shape: "dropper", tone: "#8C3B2E", cap: "#1E1E1E", badge: "Bestseller" },
+  { id: "p06", brandId: "sooan", name: "Ginseng Contour Eye Cream", size: "20 ml", category: "Skincare", lines: ["antiaging"], wholesale: 12.2, sample: 14.1, msrp: 36, shape: "jar", tone: "#B4876A", cap: "#C9A86A" },
+  { id: "p07", brandId: "morae", name: "Volcanic Clay Cleansing Foam", size: "120 ml", category: "Cleansing", lines: ["sensitive"], wholesale: 6.4, sample: 7.4, msrp: 20, shape: "tube", tone: "#5A5753", cap: "#1E1E1E", badge: "Hidden gem" },
+  { id: "p08", brandId: "morae", name: "Jeju Mineral Calming Mist", size: "100 ml", category: "Skincare", lines: ["sensitive", "hydration"], wholesale: 6.9, sample: 8, msrp: 22, shape: "bottle", tone: "#C7CCC9", cap: "#FFFFFF" },
+  { id: "p09", brandId: "gyeol", name: "Peptide Lift Ampoule", size: "30 ml", category: "Skincare", lines: ["antiaging"], wholesale: 13.9, sample: 16, msrp: 48, shape: "dropper", tone: "#DCD3C6", cap: "#9C8A6E", badge: "Hidden gem" },
+  { id: "p10", brandId: "gyeol", name: "Collagen Sleeping Mask", size: "70 ml", category: "Masks", lines: ["antiaging", "hydration"], wholesale: 11.4, sample: 13.2, msrp: 38, shape: "jar", tone: "#F0EBE3", cap: "#9C8A6E" },
+  { id: "p11", brandId: "ilmi", name: "Rice Niacinamide Glow Serum", size: "30 ml", category: "Skincare", lines: ["brightening"], wholesale: 8.6, sample: 9.9, msrp: 28, shape: "dropper", tone: "#F3EFE6", cap: "#D2C4A6", badge: "Hidden gem" },
+  { id: "p12", brandId: "ilmi", name: "Rice Water Hydra Mask", size: "5 sheets", category: "Masks", lines: ["hydration", "brightening"], wholesale: 6.2, sample: 7.2, msrp: 20, shape: "pouch", tone: "#EAE3D5", cap: "#B9A782", badge: "New" },
+  { id: "p13", brandId: "nokdu", name: "Mung Bean Pore Cleansing Oil", size: "200 ml", category: "Cleansing", lines: ["sensitive"], wholesale: 8.9, sample: 10.3, msrp: 26, shape: "pump", tone: "#D7DCC9", cap: "#2F3A2A" },
+  { id: "p14", brandId: "nokdu", name: "Green Clay Pack", size: "100 ml", category: "Masks", lines: ["sensitive"], wholesale: 7.1, sample: 8.2, msrp: 22, shape: "jar", tone: "#AAB49A", cap: "#2F3A2A" },
+  { id: "p15", brandId: "yeon", name: "Scalp Clinic Shampoo", size: "300 ml", category: "Haircare", lines: ["hair"], wholesale: 9.4, sample: 10.9, msrp: 28, shape: "pump", tone: "#2B2B2B", cap: "#BFBFBF", badge: "Bestseller" },
+  { id: "p16", brandId: "yeon", name: "Protein Repair Hair Serum", size: "100 ml", category: "Haircare", lines: ["hair"], wholesale: 8.2, sample: 9.5, msrp: 24, shape: "bottle", tone: "#D9CFC2", cap: "#2B2B2B" },
+  { id: "p17", brandId: "ondo", name: "Hinoki Body Wash", size: "400 ml", category: "Body", lines: ["body"], wholesale: 9.6, sample: 11.1, msrp: 34, shape: "pump", tone: "#C8B79F", cap: "#2A2622", badge: "Hidden gem" },
+  { id: "p18", brandId: "ondo", name: "Shea Silk Body Lotion", size: "250 ml", category: "Body", lines: ["body", "hydration"], wholesale: 10.2, sample: 11.8, msrp: 36, shape: "tube", tone: "#E8DDCF", cap: "#2A2622" },
+  { id: "p19", brandId: "seorin", name: "Second Skin Cushion", size: "15 g", category: "Makeup", lines: ["makeup"], wholesale: 10.8, sample: 12.5, msrp: 29, shape: "compact", tone: "#1E1E1E", cap: "#C9A86A", badge: "Bestseller" },
+  { id: "p20", brandId: "seorin", name: "Water Glow Lip Tint", size: "4 g", category: "Makeup", lines: ["makeup"], wholesale: 4.9, sample: 5.7, msrp: 14, shape: "stick", tone: "#A3443B", cap: "#1E1E1E" },
+  { id: "p21", brandId: "dain", name: "Encapsulated Retinal 0.1%", size: "30 ml", category: "Skincare", lines: ["antiaging", "sensitive"], wholesale: 12.8, sample: 14.8, msrp: 42, shape: "pump", tone: "#E6DDD0", cap: "#6E5B45", badge: "New" },
+  { id: "p22", brandId: "dain", name: "Bakuchiol Night Cream", size: "50 ml", category: "Skincare", lines: ["antiaging"], wholesale: 11.6, sample: 13.4, msrp: 38, shape: "jar", tone: "#CFC3B2", cap: "#6E5B45" },
+  { id: "p23", brandId: "purehan", name: "Hanbang Radiance Essence", size: "150 ml", category: "Skincare", lines: ["antiaging", "brightening"], wholesale: 13.2, sample: 15.2, msrp: 39, shape: "bottle", tone: "#7A5A3A", cap: "#C9A86A", badge: "Bestseller" },
+  { id: "p24", brandId: "purehan", name: "Ginseng Sun Cream SPF 50", size: "50 ml", category: "Sun Care", lines: ["sun", "antiaging"], wholesale: 7.9, sample: 9.1, msrp: 23, shape: "tube", tone: "#E9DFD0", cap: "#7A5A3A" },
 ];
 
 export const brandById = (id: string) => BRANDS.find((b) => b.id === id)!;

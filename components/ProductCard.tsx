@@ -25,18 +25,18 @@ export default function ProductCard({ p, index = 0, tag }: { p: Product; index?:
           {added ? (
             <><span>In your sample box</span><span>Remove</span></>
           ) : (
-            <><span>Sample 1 unit</span><span>{money(p.wholesale)} <em>wholesale</em></span></>
+            <><span>Sample 1 unit</span><span>{money(p.sample)}</span></>
           )}
         </button>
       </div>
       <div className="card__body">
         <span className="eyebrow">{b.name} · {p.size}</span>
         <h3 className="card__name"><Link href={href}>{p.name}</Link></h3>
-        {/* Signed out, the wholesale figure is shown as the 1-unit sample price (the opening offer); MSRP is always public */}
+        {/* Signed in: the MOQ unit price. Signed out: only the 1-unit sample price (the opening offer). MSRP is always public. */}
         <div className="card__price">
           {signedIn
-            ? <span className="card__ws">{money(p.wholesale)}</span>
-            : <span className="card__ws"><em className="card__k">Sample</em>{money(p.wholesale)}</span>}
+            ? <span className="card__ws"><em className="card__k">MOQ</em>{money(p.wholesale)}</span>
+            : <span className="card__ws"><em className="card__k">Sample</em>{money(p.sample)}</span>}
           <span className="card__msrp">MSRP {money(p.msrp)}</span>
         </div>
         {tag && <span className="card__tag">{tag}</span>}

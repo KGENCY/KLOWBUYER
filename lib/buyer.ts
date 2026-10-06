@@ -108,7 +108,7 @@ export const ORDER_STATUS: Record<OrderStatus, { label: string; note: string }> 
 /* ───────────── Helpers ───────────── */
 
 export function totals(items: string[]) {
-  const subtotal = items.reduce((s, id) => s + productById(id).wholesale, 0);
+  const subtotal = items.reduce((s, id) => s + productById(id).sample, 0);
   const free = items.length >= FREE_SHIPPING_SKUS;
   const shipping = !items.length || free ? 0 : SAMPLE_SHIPPING_FEE;
   return { subtotal, shipping, total: subtotal + shipping, free };

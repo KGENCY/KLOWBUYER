@@ -135,7 +135,7 @@ const r2 = (n: number) => Math.round(n * 100) / 100;
 export function tiersFor(p: Product, b: Brand): Tier[] {
   const m = b.moq;
   return [
-    { minUnits: 1, unit: p.wholesale },
+    { minUnits: 1, unit: p.sample },
     { minUnits: m, unit: p.wholesale },
     { minUnits: m * 3, unit: r2(p.wholesale * 0.94) },
     { minUnits: m * 8, unit: r2(p.wholesale * 0.88) },

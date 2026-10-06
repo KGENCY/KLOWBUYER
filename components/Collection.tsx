@@ -108,7 +108,7 @@ export default function Collection() {
           <div className="rule-note">
             <Progress count={items.length} />
             <p>
-              <b>One unit, wholesale price.</b> No minimum to sample — the price you test at is the price you reorder at. Reach {FREE_SHIPPING_SKUS} SKUs and shipping is on us.
+              <b>One unit, wholesale price.</b> No minimum to sample, and the unit price drops further once you reorder at MOQ. Reach {FREE_SHIPPING_SKUS} SKUs and shipping is on us.
               <span className="muted"> {items.length ? shippingNote(items.length) + "." : ""}</span>
             </p>
           </div>
