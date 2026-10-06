@@ -87,14 +87,43 @@ export default function Welcome() {
 
 /* ── Step 1: where to ship ── */
 
+const ROWS = 3;
+const shuffle = <T,>(xs: T[]) => {
+  const a = xs.slice();
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+};
+
+/** Every listed product, shuffled into three rows that drift right, left, right. Each row is doubled so the loop is seamless. */
+function Reel() {
+  const [rows] = useState(() => {
+    const all = shuffle(PRODUCTS);
+    return Array.from({ length: ROWS }, (_, r) => all.filter((_, i) => i % ROWS === r));
+  });
+  return (
+    <div className="wel__reel" aria-hidden="true">
+      {rows.map((row, r) => (
+        <div key={r} className={`wel__row ${r % 2 === 0 ? "wel__row--right" : "wel__row--left"}`} style={{ animationDuration: `${[46, 54, 50][r]}s` }}>
+          {[...row, ...row].map((p, i) => (
+            <figure key={`${p.id}-${i}`} className="wel__card">
+              <img src={photoSrc(p)} alt="" style={{ objectPosition: photoPos(p) }} loading="eager" decoding="async" />
+              <figcaption className="mono">{money(p.sample)}</figcaption>
+            </figure>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function Where({ onPick, q, setQ, others }: { onPick: (c: string | null) => void; q: string; setQ: (s: string) => void; others: typeof COUNTRIES }) {
   return (
     <div className="wel__grid" key="where">
       <div className="wel__visual">
-        <img src="/img/hero.jpg" alt="" />
+        <Reel />
         <div className="wel__visual-in">
-          <span className="wel__tag mono">Samples from 1 unit</span>
-          <div>
+          <div className="wel__copy">
+            <span className="wel__tag mono">Samples from 1 unit</span>
             <p className="wel__visual-h">K-beauty at wholesale,<br />from Seoul to your shelf.</p>
             <ul className="wel__stats">
               <li><b className="mono">{BRANDS.length}</b><span>verified Korean brands</span></li>
