@@ -21,11 +21,12 @@ const DESIGN_PREVIEW = true;
 
 const KEY = "klow.welcome";
 const QUIET_ROUTES = ["/checkout", "/signup", "/signin"];
-const POPULAR = ["US", "GB", "DE", "FR", "AE", "SG", "AU", "CA"];
+const POPULAR = ["US", "GB", "DE", "FR", "CA", "AU", "AE", "SG", "JP", "NL", "ES", "MY"]; // 4 × 3 tiles fill the column exactly
 const BOX = ["p01", "p05", "p11", "p03", "p15"]; // the example sample box, one per brand
 const EXAMPLE = "p01";
 
 const flag = (code: string) => `https://flagcdn.com/w80/${code.toLowerCase()}.png`;
+const SHORT: Record<string, string> = { AE: "UAE" }; // keeps every tile to two lines
 
 export default function Welcome() {
   const path = usePathname();
@@ -58,7 +59,7 @@ export default function Welcome() {
   const others = useMemo(() => {
     const t = q.trim().toLowerCase();
     if (!t) return [];
-    return COUNTRIES.filter((c) => c.name.toLowerCase().includes(t) || c.code.toLowerCase() === t).slice(0, 6);
+    return COUNTRIES.filter((c) => c.name.toLowerCase().includes(t) || c.code.toLowerCase() === t).slice(0, 5);
   }, [q]);
 
   const remember = (c: string | null) => {
@@ -114,7 +115,7 @@ function Where({ onPick, q, setQ, others }: { onPick: (c: string | null) => void
             <li key={code}>
               <button type="button" onClick={() => onPick(code)}>
                 <img src={flag(code)} alt="" loading="eager" />
-                <span>{countryName(code)}</span>
+                <span>{SHORT[code] ?? countryName(code)}</span>
               </button>
             </li>
           ))}
