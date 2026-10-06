@@ -6,6 +6,7 @@ import Reveal from "@/components/Reveal";
 import { SampleProvider } from "@/components/SampleBox";
 import { RequestProvider } from "@/components/RequestBrand";
 import { BuyerProvider } from "@/components/Buyer";
+import Welcome from "@/components/Welcome";
 import "./globals.css";
 
 const sans = Geist({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-sans" });
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Header />
               <main>{children}</main>
               <Footer />
+              <Welcome />
             </RequestProvider>
           </BuyerProvider>
         </SampleProvider>
