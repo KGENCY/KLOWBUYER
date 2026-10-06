@@ -10,7 +10,7 @@ import { DEMO_EMAIL, useBuyer } from "./Buyer";
 export default function Header() {
   const { items, setOpen } = useSamples();
   const { openWith } = useRequest();
-  const { buyer, signIn } = useBuyer();
+  const { buyer, signIn, signOut } = useBuyer();
   return (
     <>
       <div className="notice">
@@ -34,13 +34,14 @@ export default function Header() {
           </nav>
           <div className="header__act">
             {buyer ? (
-              <Link href="/account" className="header__me" title={`${buyer.name} · ${buyer.company}`} aria-label="My account">
+              // Design mock: clicking the account signs out, so the signed-in and signed-out views can be flipped back and forth.
+              <button className="header__me" onClick={signOut} title={`Signed in as ${buyer.company} · click to sign out`}>
                 <span className="header__avatar">
                   <span>{initials(buyer.company)}</span>
                   <i className="header__verified" aria-hidden />
                 </span>
                 <span className="header__name hide-sm">{buyer.company}</span>
-              </Link>
+              </button>
             ) : (
               // Design mock: signs straight in as the demo buyer so both views can be compared.
               <button className="header__signin" onClick={() => signIn(DEMO_EMAIL)}>Sign in</button>

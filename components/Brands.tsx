@@ -7,10 +7,12 @@ import BrandLogo from "./BrandLogo";
 import Photo from "./Photo";
 import { showBrand } from "./Collection";
 import { useSamples } from "./SampleBox";
+import { useBuyer } from "./Buyer";
 
 export default function Brands() {
   const [id, setId] = useState(BRANDS[0].id);
   const { has, toggle } = useSamples();
+  const signedIn = !!useBuyer().buyer;
   const b = BRANDS.find((x) => x.id === id)!;
   const products = productsOf(b.id);
 
@@ -46,7 +48,9 @@ export default function Brands() {
               <div className="bpanel__img"><Photo p={p} sizes="120px" /></div>
               <div className="bpanel__p">
                 <span>{p.name}</span>
-                <span className="mono small">{money(p.wholesale)} <em className="muted">wholesale</em></span>
+                {signedIn
+                  ? <span className="mono small">{money(p.wholesale)} <em className="muted">wholesale</em></span>
+                  : <span className="mono small">MSRP {money(p.msrp)}</span>}
                 <button className="link small" onClick={() => toggle(p.id)}>{has(p.id) ? "In your sample box — remove" : "Sample 1 unit"}</button>
               </div>
             </li>

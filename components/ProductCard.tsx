@@ -4,10 +4,12 @@ import Link from "next/link";
 import { Product, brandById, money } from "@/lib/data";
 import Photo from "./Photo";
 import { useSamples } from "./SampleBox";
+import { useBuyer } from "./Buyer";
 
 export default function ProductCard({ p, index = 0, tag }: { p: Product; index?: number; tag?: string }) {
   const { has, toggle } = useSamples();
   const b = brandById(p.brandId);
+  const signedIn = !!useBuyer().buyer;
   const added = has(p.id);
   const href = `/products/${p.id}`;
 
@@ -23,17 +25,25 @@ export default function ProductCard({ p, index = 0, tag }: { p: Product; index?:
           {added ? (
             <><span>In your sample box</span><span>Remove</span></>
           ) : (
-            <><span>Sample 1 unit</span><span>{money(p.wholesale)} <em>wholesale</em></span></>
+            <><span>Sample 1 unit</span><span>{signedIn ? <>{money(p.wholesale)} <em>wholesale</em></> : <em>at wholesale price</em>}</span></>
           )}
         </button>
       </div>
       <div className="card__body">
         <span className="eyebrow">{b.name} · {p.size}</span>
         <h3 className="card__name"><Link href={href}>{p.name}</Link></h3>
-        <div className="card__price">
-          <span className="card__ws">{money(p.wholesale)}</span>
-          <span className="card__msrp">MSRP {money(p.msrp)}</span>
-        </div>
+        {/* Wholesale is for signed-in buyers; MSRP is public */}
+        {signedIn ? (
+          <div className="card__price">
+            <span className="card__ws">{money(p.wholesale)}</span>
+            <span className="card__msrp">MSRP {money(p.msrp)}</span>
+          </div>
+        ) : (
+          <div className="card__price">
+            <span className="card__ws">MSRP {money(p.msrp)}</span>
+            <span className="card__msrp card__lock">Wholesale · sign in</span>
+          </div>
+        )}
         {tag && <span className="card__tag">{tag}</span>}
         <div className="card__support" title={`Marketing support from ${b.name}: ${b.support.join(", ")}`}>
           <span className="card__support-k"><i />Marketing support</span>
