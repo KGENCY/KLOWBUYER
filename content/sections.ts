@@ -77,7 +77,7 @@ export type AboutAddon =
 
 export type SectionType =
   | "hero" | "split" | "grid" | "gallery" | "regions" | "steps"
-  | "companyInfo" | "facts" | "pricing" | "inquiry" | "table" | "faq" | "cta" | "related";
+  | "companyInfo" | "facts" | "pricing" | "inquiry" | "table" | "contact" | "faq" | "cta" | "related";
 
 export interface AboutSection {
   /** Also the anchor id on the page (e.g. /about#company). */
@@ -91,6 +91,8 @@ export interface AboutSection {
   title?: Localized;
   /** Second line of the title, shown in grey. */
   subtitle?: Localized;
+  /** hero: false keeps the grey line out of the H1, so the H1 is exactly `title`. Default true. */
+  subtitleInHeading?: boolean;
   body?: Localized;
   items?: AboutItem[];
   images?: AboutImage[];
@@ -101,6 +103,8 @@ export interface AboutSection {
   logos?: Localized[];
   /** companyInfo: team placeholders. */
   people?: AboutPerson[];
+  /** companyInfo: Google Maps embed of this place (search text or address). */
+  map?: { query: string; label: Localized };
   /** table: rows and columns. */
   table?: AboutTable;
   /** Short highlighted tag beside the heading, e.g. "Samples ship free at 5 SKUs". */

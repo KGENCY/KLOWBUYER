@@ -13,6 +13,7 @@ import RelatedSection from "./sections/RelatedSection";
 import PricingSection from "./sections/PricingSection";
 import InquirySection from "./sections/InquirySection";
 import TableSection from "./sections/TableSection";
+import ContactSection from "./sections/ContactSection";
 
 /** The shared FAQ, filtered to this section's category (with FAQPage JSON-LD). */
 function FaqFromData({ s, locale, page }: SectionProps) {
@@ -31,6 +32,7 @@ const BY_TYPE: Record<SectionType, (p: SectionProps) => React.ReactNode> = {
   pricing: PricingSection,
   inquiry: InquirySection,
   table: TableSection,
+  contact: ContactSection,
   faq: FaqFromData,
   cta: CtaSection,
   related: RelatedSection,

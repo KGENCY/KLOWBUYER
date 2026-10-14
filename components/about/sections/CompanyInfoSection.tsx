@@ -7,9 +7,28 @@ import { SectionAddons, SectionHead, type SectionProps } from "../parts";
  * Label/value table (company facts, shipping terms…), with an inquiry form beside it when one is attached,
  * then an optional map and team placeholders.
  */
-export default function CompanyInfoSection({ s, locale }: SectionProps) {
+export default function CompanyInfoSection({ s, locale, page }: SectionProps) {
   const map = s.images?.[0];
   const form = s.addons?.find((a) => a.type === "inquiryForm");
+  const mapFrame = s.map ? (
+    <figure className="media">
+      <div className="media__frame" style={{ aspectRatio: "4 / 3" }}>
+        <iframe
+          className="media__map"
+          title={t(s.map.label, locale)}
+          src={`https://www.google.com/maps?q=${encodeURIComponent(s.map.query)}&output=embed`}
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        />
+      </div>
+      <figcaption className="media__cap">
+        {t(s.map.label, locale)}
+        <a className="link" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.map.query)}`} target="_blank" rel="noopener noreferrer" data-cta-id={`${page}_company_map`}>
+          Open in Google Maps
+        </a>
+      </figcaption>
+    </figure>
+  ) : null;
   const side = form ? (
     <QuickInquiryForm
       id={form.anchor}
@@ -18,6 +37,8 @@ export default function CompanyInfoSection({ s, locale }: SectionProps) {
       lede={form.lede && t(form.lede, locale)}
       submitLabel={form.submitLabel && t(form.submitLabel, locale)}
     />
+  ) : mapFrame ? (
+    mapFrame
   ) : map ? (
     <MediaFrame src={map.src} alt={t(map.alt, locale)} caption={t(map.caption, locale)} fallback={map.fallback} ratio="4 / 3" />
   ) : null;

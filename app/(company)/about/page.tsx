@@ -10,10 +10,10 @@ export const metadata: Metadata = {
   openGraph: { title: t(about.seo.title), description: t(about.seo.description), type: "website" },
 };
 
-/** Organization structured data, built from the company facts the page shows. (FAQPage comes from the FAQ section.) */
+/** Organization structured data, built from the company facts and contact details the page shows. (FAQPage comes from the FAQ section.) */
 function organizationLd(sections: AboutSection[]) {
-  const company = sections.find((s) => s.type === "companyInfo" && s.enabled);
-  const fact = (key: string) => t(company?.items?.find((i) => i.key === key)?.value);
+  const items = sections.filter((s) => s.enabled && (s.type === "companyInfo" || s.type === "contact")).flatMap((s) => s.items ?? []);
+  const fact = (key: string) => t(items.find((i) => i.key === key)?.value);
   return {
     "@context": "https://schema.org",
     "@type": "Organization",

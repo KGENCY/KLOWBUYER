@@ -28,8 +28,9 @@ export const about: AboutPage = {
       enabled: true,
       order: 0,
       label: { en: "About KLOW" },
-      title: { en: "Korean cosmetics wholesale, direct from Korea." },
+      title: { en: "Korean Cosmetics Wholesale, Direct from Korea" },
       subtitle: { en: "Verified brands. Real warehouse." },
+      subtitleInHeading: false,
       body: {
         en: "KLOW is a Korea-based export and logistics partner working directly with K-beauty brands. Every order ships from our own warehouse in Korea — 100% authentic, with the export documents your market requires.",
       },
@@ -39,7 +40,7 @@ export const about: AboutPage = {
       ],
       images: [
         {
-          alt: { en: "KLOW K-beauty wholesale warehouse in Korea" },
+          alt: { en: "KLOW K-beauty wholesale warehouse, Korea" },
           caption: { en: "Warehouse · [CITY], Korea" },
           fallback: "warehouse",
         },
@@ -55,7 +56,7 @@ export const about: AboutPage = {
       label: { en: "Who we are" },
       title: { en: "Not a reseller. A direct partner to Korean brands." },
       body: {
-        en: "We sign with each brand directly, receive and inspect stock in our own warehouse in Korea, prepare the export documents, and ship to buyers worldwide. One team handles every step — so nothing passes through a middleman between the brand and you.",
+        en: "KLOW is a Korean export and logistics company that contracts directly with K-beauty brands — not a reseller. We receive and inspect stock in our own warehouse in Korea, prepare the export documents, and ship to buyers worldwide: one team, with no middleman between the brand and you.",
       },
       items: [
         { key: "brands", value: { en: "[00]+" }, title: { en: "Partner brands" } },
@@ -108,17 +109,17 @@ export const about: AboutPage = {
       body: { en: "Every product you sample or reorder is picked, checked and packed here." },
       images: [
         {
-          alt: { en: "Shelves of K-beauty stock in KLOW’s warehouse in Korea" },
+          alt: { en: "KLOW K-beauty wholesale warehouse, Korea — storage shelves of cosmetics stock" },
           caption: { en: "Storage · [CITY], Korea" },
           fallback: "shelves",
         },
         {
-          alt: { en: "Inspection bench where incoming cosmetics are checked for expiry and packaging" },
+          alt: { en: "KLOW K-beauty wholesale warehouse, Korea — inspection bench checking expiry dates and packaging" },
           caption: { en: "Inspection · Incoming stock" },
           fallback: "inspection",
         },
         {
-          alt: { en: "Packing area where wholesale and sample orders are boxed for export" },
+          alt: { en: "KLOW K-beauty wholesale warehouse, Korea — packing area for export orders" },
           caption: { en: "Packing · Outbound" },
           fallback: "packing",
         },
@@ -168,20 +169,46 @@ export const about: AboutPage = {
       title: { en: "The paperwork, handled." },
       columns: 4,
       items: [
-        { title: { en: "Export documents" }, description: { en: "Commercial invoice, packing list, certificate of origin (C/O)." } },
-        { title: { en: "Product documents" }, description: { en: "Ingredient list, certificate of analysis (CoA), MSDS." } },
-        { title: { en: "Local labels" }, description: { en: "Spanish, Russian and Arabic labels, applied before dispatch." } },
-        { title: { en: "Customs & duties" }, description: { en: "Duties paid by the buyer on arrival by default. DDP on request." } },
+        { title: { en: "Export documents" }, description: { en: "Commercial invoice, packing list and certificate of origin with every shipment." } },
+        { title: { en: "Product documents" }, description: { en: "Ingredient list (INCI), certificate of analysis (CoA) and MSDS, per product on request." } },
+        { title: { en: "Certifications" }, description: { en: "Copies of the brand’s registrations — CPNP, FDA cosmetic listing, EAC — where filed [per brand]." } },
+        { title: { en: "Local labels" }, description: { en: "Spanish, Russian and Arabic labels, printed and applied before dispatch." } },
       ],
-      links: [{ label: { en: "See payment & shipping →" }, href: "/shipping", variant: "secondary", ctaId: "about_export_shipping" }],
+      links: [
+        { label: { en: "Country import guides →" }, href: "/shipping#duties", variant: "secondary", ctaId: "about_export_guides" },
+        { label: { en: "All documents we provide →" }, href: "/shipping#documents", variant: "secondary", ctaId: "about_export_documents" },
+      ],
+    },
+
+    {
+      id: "shipping-payment",
+      type: "split",
+      enabled: true,
+      order: 6,
+      number: "06",
+      label: { en: "Shipping & payment" },
+      title: { en: "Free shipping at 5 SKUs. Paid in USD." },
+      body: {
+        en: "Sample orders are paid by card at checkout — Visa, Mastercard, AMEX, JCB, UnionPay, PayPal or Alipay+ — and ship free once your box reaches 5 SKUs. Wholesale orders are invoiced in USD by [PAYMENT METHODS]. Every order leaves Korea within 2–7 days.",
+      },
+      items: [
+        { key: "free", value: { en: "5 SKUs" }, title: { en: "Free sample shipping" } },
+        { key: "dispatch", value: { en: "2–7 days" }, title: { en: "Dispatch from Korea" } },
+        { key: "lead", value: { en: "[x–x] days" }, title: { en: "Average lead time to you" } },
+        { key: "currency", value: { en: "USD" }, title: { en: "Card · PayPal · Invoice" } },
+      ],
+      links: [
+        { label: { en: "Shipping details →" }, href: "/shipping", variant: "secondary", ctaId: "about_payment_shipping" },
+        { label: { en: "Ordering & payment →" }, href: "/ordering-payment", variant: "secondary", ctaId: "about_payment_ordering" },
+      ],
     },
 
     {
       id: "how-it-works",
       type: "steps",
       enabled: true,
-      order: 6,
-      number: "06",
+      order: 7,
+      number: "07",
       label: { en: "How it works" },
       title: { en: "From one unit to a full order." },
       items: [
@@ -196,8 +223,8 @@ export const about: AboutPage = {
       id: "company",
       type: "companyInfo",
       enabled: true,
-      order: 7,
-      number: "07",
+      order: 8,
+      number: "08",
       label: { en: "Company information" },
       title: { en: "A registered Korean company." },
       subtitle: { en: "You can check who you are buying from." },
@@ -206,23 +233,40 @@ export const about: AboutPage = {
         { key: "registration", title: { en: "Business registration No." }, value: { en: "634-81-04211" } },
         { key: "office", title: { en: "Office" }, value: { en: "Gwanggyo, Suwon, Gyeonggi-do, Republic of Korea" } },
         { key: "warehouse", title: { en: "Warehouse" }, value: { en: "[WAREHOUSE ADDRESS]" } },
-        { key: "email", title: { en: "Email" }, value: { en: "[EMAIL]" } },
-        { key: "whatsapp", title: { en: "WhatsApp" }, value: { en: "[NUMBER]" } },
-        { key: "response", title: { en: "Response time" }, value: { en: "Within 24 hours on business days (KST)" } },
       ],
+      /** Replace with the full street address once confirmed. */
+      map: { query: "Gwanggyo, Suwon-si, Gyeonggi-do, South Korea", label: { en: "Office · Gwanggyo, Suwon" } },
       images: [{ alt: { en: "Map of KLOW’s office in Gwanggyo, Suwon, Korea" }, caption: { en: "Map" }, fallback: "location" }],
       people: [1, 2, 3].map(() => ({
         name: { en: "[NAME]" },
         role: { en: "[ROLE]" },
         image: { alt: { en: "KLOW team member" }, fallback: "portrait" as const },
       })),
+    },
+
+    {
+      id: "contact",
+      type: "contact",
+      enabled: true,
+      order: 9,
+      number: "09",
+      label: { en: "Contact" },
+      title: { en: "Talk to our team." },
+      subtitle: { en: "Reply within 24h." },
+      body: { en: "Email or WhatsApp us directly, or leave your details and we’ll come to you — in English, Spanish, Russian or Arabic." },
+      items: [
+        // Add href ("mailto:…", "https://wa.me/…") once the real address and number are set; until then the rows aren't links.
+        { key: "email", title: { en: "Email" }, value: { en: "[EMAIL]" }, description: { en: "Quotes, documents and partnerships" } },
+        { key: "whatsapp", title: { en: "WhatsApp" }, value: { en: "[NUMBER]" }, description: { en: "Fastest for buyers outside Korea" } },
+        { key: "response", title: { en: "Response time" }, value: { en: "Within 24 hours" }, description: { en: "Business days, Korea time (KST)" } },
+      ],
       addons: [
         {
           type: "inquiryForm",
-          anchor: "contact",
-          ctaId: "about_company_inquiry",
-          title: { en: "Talk to our team" },
-          lede: { en: "Tell us where you sell. A real person replies within 24 hours on business days." },
+          anchor: "contact-form",
+          ctaId: "about_contact_form",
+          title: { en: "Leave your details" },
+          lede: { en: "Three fields. A real person replies within 24 hours on business days." },
         },
       ],
     },
@@ -231,8 +275,8 @@ export const about: AboutPage = {
       id: "faq",
       type: "faq",
       enabled: true,
-      order: 8,
-      number: "08",
+      order: 10,
+      number: "10",
       label: { en: "FAQ" },
       title: { en: "Questions buyers ask first." },
       faqCategory: "about",
@@ -242,7 +286,7 @@ export const about: AboutPage = {
       id: "start",
       type: "cta",
       enabled: true,
-      order: 9,
+      order: 11,
       title: { en: "Start with one unit." },
       links: [
         { label: { en: "Browse & sample" }, href: "/#collection", variant: "primary", ctaId: "about_final_sample" },
@@ -254,7 +298,7 @@ export const about: AboutPage = {
       id: "more",
       type: "related",
       enabled: true,
-      order: 10,
+      order: 12,
       label: { en: "Keep reading" },
       items: [
         {

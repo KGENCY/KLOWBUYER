@@ -1,5 +1,5 @@
 import { t } from "@/content/sections";
-import { SectionAddons, SectionLabel, type SectionProps } from "../parts";
+import { Links, SectionAddons, SectionLabel, type SectionProps } from "../parts";
 
 /** Big statement on one side, explanation on the other, then a row of figures. */
 export default function SplitSection({ s, locale }: SectionProps) {
@@ -21,6 +21,7 @@ export default function SplitSection({ s, locale }: SectionProps) {
             ))}
           </dl>
         )}
+        <Links links={s.links} locale={locale} />
         <SectionAddons s={s} locale={locale} />
       </div>
     </section>

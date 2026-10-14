@@ -11,10 +11,18 @@ export default function HeroSection({ s, locale }: SectionProps) {
       <div className={`wrap about-hero__grid ${img ? "" : "about-hero__grid--solo"}`}>
         <div>
           <span className="eyebrow eyebrow--accent about-hero__label">{t(s.label, locale)}</span>
-          <h1 className="hero__title">
-            {t(s.title, locale)}
-            {s.subtitle && <>{" "}<em>{t(s.subtitle, locale)}</em></>}
-          </h1>
+          {s.subtitleInHeading === false ? (
+            // H1 is exactly the title; the grey line keeps the same look but sits outside it.
+            <div className="hero__title">
+              <h1>{t(s.title, locale)}</h1>
+              {s.subtitle && <p><em>{t(s.subtitle, locale)}</em></p>}
+            </div>
+          ) : (
+            <h1 className="hero__title">
+              {t(s.title, locale)}
+              {s.subtitle && <>{" "}<em>{t(s.subtitle, locale)}</em></>}
+            </h1>
+          )}
           <p className="hero__lede">{t(s.body, locale)}</p>
           <Links links={s.links} locale={locale} className="hero__cta" />
           {s.addons?.map((a, i) => a.type === "countryFinder" && (
