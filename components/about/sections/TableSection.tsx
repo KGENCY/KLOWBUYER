@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { t } from "@/content/sections";
+import { LockIcon } from "@/components/conversion/LockedPrice";
 import { SectionAddons, SectionHead, type SectionProps } from "../parts";
 
 /**
@@ -46,6 +47,12 @@ export default function TableSection({ s, locale }: SectionProps) {
           </div>
         )}
         {s.footnote && <p className="about-footnote">{t(s.footnote, locale)}</p>}
+        {s.callout && (
+          <p className="about-callout" role="note">
+            {s.callout.icon === "lock" && <span className="about-callout__icon"><LockIcon size={16} /></span>}
+            <span>{t(s.callout.text, locale)}</span>
+          </p>
+        )}
         <SectionAddons s={s} locale={locale} />
       </div>
     </section>

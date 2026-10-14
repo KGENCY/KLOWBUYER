@@ -26,6 +26,8 @@ export interface AboutItem {
   value?: Localized;
   /** related: where the card goes. */
   href?: string;
+  /** facts: a link shown after the value (label + where it goes via `href`). */
+  linkLabel?: Localized;
   /** checklist: the lines of this list, each with an optional muted note. */
   points?: { text: Localized; note?: Localized }[];
 }
@@ -39,6 +41,21 @@ export interface AboutPerson {
   name: Localized;
   role: Localized;
   image: AboutImage;
+}
+
+/** One card in an "orderWays" section. */
+export interface OrderWay {
+  key: string;
+  name: Localized;
+  /** Short line under the name, e.g. "from 1 unit". */
+  tag: Localized;
+  /** Label/value lines: For, How, Payment, Shipping. */
+  rows: { label: Localized; value: Localized }[];
+  /** Price example (sample price public, MOQ price locked until sign-in). Text, so placeholders work. */
+  price?: { sample: string; moq: string; moqUnits: string };
+  cta: CtaLink;
+  /** Marks the card as the one most buyers choose, with this label. */
+  highlight?: Localized;
 }
 
 /** A simple table: header row, then rows; a row can be highlighted with a note under it. */
@@ -67,7 +84,7 @@ export type AboutAddon =
 
 export type SectionType =
   | "hero" | "split" | "grid" | "gallery" | "regions" | "steps"
-  | "companyInfo" | "facts" | "pricing" | "inquiry" | "table" | "checklist" | "countryFinder" | "contact" | "faq" | "cta" | "related";
+  | "companyInfo" | "facts" | "pricing" | "inquiry" | "table" | "checklist" | "countryFinder" | "orderWays" | "contact" | "faq" | "cta" | "related";
 
 export interface AboutSection {
   /** Also the anchor id on the page (e.g. /about#company). */
@@ -97,6 +114,11 @@ export interface AboutSection {
   map?: { query: string; label: Localized };
   /** table: rows and columns. */
   table?: AboutTable;
+  /** orderWays: the cards, and the label of the "preview as signed-in buyer" switch. */
+  ways?: OrderWay[];
+  previewToggle?: Localized;
+  /** A bordered notice under the main content, e.g. a payment-safety warning. */
+  callout?: { text: Localized; icon?: "lock" };
   /** Small print under the section's main content, e.g. "Times vary by country and customs." */
   footnote?: Localized;
   /** facts/companyInfo: put the image on the start side instead of the end. */

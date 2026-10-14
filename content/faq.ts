@@ -1,5 +1,6 @@
 import type { CtaLink } from "@/types/content";
 import type { Localized } from "./i18n";
+import { ORDER_POLICY as P } from "./orderPolicy";
 
 /**
  * Every FAQ on the site lives here, once. Pages pull their category with `faqsFor()`;
@@ -152,7 +153,7 @@ export const FAQS: FaqItem[] = [
     cta: { label: { en: "Ask about labels for your market →" }, href: "/shipping#quote", ctaId: "local_labels_quote" },
   },
 
-  /* Ordering & payment */
+  /* Ordering & payment — wording built from content/orderPolicy.ts */
   {
     id: "minimum-order",
     category: "ordering",
@@ -160,29 +161,28 @@ export const FAQS: FaqItem[] = [
     enabled: true,
     question: { en: "Is there a minimum order?" },
     answer: {
-      en: "Not for samples: order 1 unit of any product at its wholesale price. Wholesale reorders follow each product’s MOQ, from [MOQ] units.",
+      en: `Not for samples: order ${P.sampleMinUnits} unit of any product at its wholesale price. Wholesale orders start at ${P.wholesaleMOA}, and each product has its own MOQ for the lower reorder price.`,
     },
     cta: { label: { en: "Browse & sample →" }, href: "/#collection", ctaId: "minimum_order_sample" },
   },
   {
-    id: "free-shipping",
-    category: "shipping",
-    order: 6,
+    id: "sample-vs-wholesale",
+    category: "ordering",
+    order: 1,
     enabled: true,
-    question: { en: "Is shipping free for samples?" },
+    question: { en: "Is the sample price the same as wholesale?" },
     answer: {
-      en: "Sample orders ship free once your box reaches 5 SKUs, mixed across any brands. Below that, sample shipping is a flat $18.",
+      en: "Yes — samples are priced at wholesale level, the same as an opening order, never retail. When you reorder at a product’s MOQ, the unit price drops further.",
     },
-    cta: { label: { en: "Browse & sample →" }, href: "/#collection", ctaId: "free_shipping_sample" },
   },
   {
     id: "bulk-pricing",
     category: "ordering",
     order: 2,
     enabled: true,
-    question: { en: "How do I see bulk prices?" },
+    question: { en: "Why do I need an account to see bulk prices?" },
     answer: {
-      en: "Sample prices are public. MOQ and volume prices show once you sign in with a buyer account — it’s free and takes about two minutes.",
+      en: "Brands ask us to show volume prices only to verified businesses, to protect their retail partners. A buyer account is free and takes about two minutes.",
     },
     cta: { label: { en: "Create a buyer account →" }, href: "/signup", ctaId: "bulk_pricing_signup" },
   },
@@ -191,16 +191,48 @@ export const FAQS: FaqItem[] = [
     category: "ordering",
     order: 3,
     enabled: true,
-    question: { en: "How can I pay?" },
+    question: { en: "Which payment methods do you accept?" },
     answer: {
-      en: "Sample orders are paid by card in USD (Visa, Mastercard, AMEX, JCB, UnionPay, PayPal, Alipay+). Wholesale orders are invoiced in USD and paid by [PAYMENT METHODS].",
+      en: `Card and PayPal for samples and small wholesale orders (PayPal up to ${P.paypalLimit}), bank transfer (T/T) for wholesale and bulk, and Letter of Credit (L/C) for large bulk orders by agreement. All prices are in ${P.currency}.`,
     },
   },
   {
-    id: "bulk-quote",
+    id: "bank-fees",
     category: "ordering",
     order: 4,
     enabled: true,
+    question: { en: "Who pays bank fees?" },
+    answer: {
+      en: "The buyer. When you send a bank transfer, choose OUR so the full invoice amount reaches us.",
+    },
+  },
+  {
+    id: "cancel-change",
+    category: "ordering",
+    order: 5,
+    enabled: true,
+    question: { en: "Can I cancel or change my order?" },
+    answer: {
+      en: `Yes, within ${P.cancellationWindow} after you submit it. Once packing starts, the order can’t be changed. Refunds: ${P.refundPolicy}.`,
+    },
+  },
+  {
+    id: "repeat-terms",
+    category: "ordering",
+    order: 6,
+    enabled: true,
+    question: { en: "Do you offer payment terms for repeat buyers?" },
+    answer: {
+      en: `Yes. Your first order is paid ${P.firstOrderTerms}; after that, repeat buyers pay ${P.repeatBuyerTerms}.`,
+    },
+    cta: { label: { en: "Ask about terms →" }, href: "/ordering-payment#quote", ctaId: "repeat_terms_inquiry" },
+  },
+  {
+    // Not in the current Ordering FAQ; kept so it can be switched back on.
+    id: "bulk-quote",
+    category: "ordering",
+    order: 99,
+    enabled: false,
     question: { en: "Can I get a quote for a large order?" },
     answer: {
       en: "Yes. Send us the products and quantities you have in mind and we’ll reply within 24 hours on business days with prices, lead time and shipping to your market.",

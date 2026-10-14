@@ -182,7 +182,7 @@ export const shipping: AboutPage = {
 
     /* ───── 06 Packing & claims ───── */
     {
-      id: "packing",
+      id: "claims",
       type: "facts",
       enabled: true,
       order: 6,

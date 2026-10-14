@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { t } from "@/content/sections";
 import QuickInquiryForm from "@/components/conversion/QuickInquiryForm";
 import MediaFrame from "@/components/media/MediaFrame";
@@ -55,7 +56,16 @@ export default function CompanyInfoSection({ s, locale, page }: SectionProps) {
         <div className={side ? `about-company ${s.imageSide === "start" && !formBeside ? "about-company--media-start" : ""}` : ""}>
           <div className="about-company__main">
             {s.body && <p className="about-company__body">{t(s.body, locale)}</p>}
-            <InfoTable rows={(s.items ?? []).map((it) => ({ key: it.key, label: t(it.title, locale), value: t(it.value, locale) }))} />
+            <InfoTable rows={(s.items ?? []).map((it) => ({
+              key: it.key,
+              label: t(it.title, locale),
+              value: it.href && it.linkLabel ? (
+                <>
+                  {t(it.value, locale)}{" "}
+                  <Link href={it.href} className="link small" data-cta-id={`${page}_${s.id}_${(it.key ?? "link").replace(/-/g, "_")}`}>{t(it.linkLabel, locale)}</Link>
+                </>
+              ) : t(it.value, locale),
+            }))} />
             {formBeside && mapView}
           </div>
           {side && <div className="about-company__side">{side}</div>}
