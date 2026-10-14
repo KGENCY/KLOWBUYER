@@ -15,7 +15,7 @@ export default function FaqList({ items, ctaPrefix, locale = "en", openFirst = t
           <div className="about-faq__a">
             <p>{t(f.answer, locale)}</p>
             {f.cta && (
-              <Link href={f.cta.href} className="link small" data-cta-id={`${ctaPrefix}_${f.id.replace(/-/g, "_")}`}>
+              <Link href={f.cta.href} className="link small" data-cta-id={`${ctaPrefix}_${f.cta.ctaId}`}>
                 {t(f.cta.label, locale)}
               </Link>
             )}

@@ -13,7 +13,7 @@ export default function FaqSection({
   head,
   ctaPrefix,
   locale = "en",
-  jsonLd = true,
+  withSchema = true,
 }: {
   category: FaqCategory;
   id?: string;
@@ -21,13 +21,14 @@ export default function FaqSection({
   /** data-cta-id prefix for the inline answer links, e.g. "about_faq". */
   ctaPrefix: string;
   locale?: Locale;
-  jsonLd?: boolean;
+  /** Output FAQPage JSON-LD. Keep true on the page that owns these questions; false on the FAQ hub. */
+  withSchema?: boolean;
 }) {
   const items = faqsFor(category);
   if (!items.length) return null;
   return (
     <section id={id} className="section about-sec">
-      {jsonLd && (
+      {withSchema && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(items, locale)).replace(/</g, "\\u003c") }} />
       )}
       <div className="wrap about-split">

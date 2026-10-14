@@ -1,3 +1,4 @@
+import type { CtaLink } from "@/types/content";
 import type { Localized } from "./i18n";
 
 /**
@@ -14,8 +15,8 @@ export interface FaqItem {
   answer: Localized;
   order: number;
   enabled: boolean;
-  /** Optional inline link at the end of the answer. */
-  cta?: { label: Localized; href: string };
+  /** Optional inline link at the end of the answer. Its ctaId is the action part; pages prefix it with [page]_faq_. */
+  cta?: CtaLink;
 }
 
 export const FAQ_CATEGORIES: Record<FaqCategory, { label: Localized; href: string; more: Localized }> = {
@@ -39,7 +40,7 @@ export const FAQS: FaqItem[] = [
     answer: {
       en: "Yes. Every product is supplied under a direct contract with the brand and inspected in our warehouse in Korea. We can send the brand’s confirmation of authentic supply on request.",
     },
-    cta: { label: { en: "Ask for proof of supply →" }, href: CONTACT },
+    cta: { label: { en: "Ask for proof of supply →" }, href: CONTACT, ctaId: "authentic_inquiry" },
   },
   {
     id: "who",
@@ -60,7 +61,7 @@ export const FAQS: FaqItem[] = [
     answer: {
       en: "Yes. You can start with a single unit of any product at its wholesale price, and move to MOQ quantities once something sells. Many of our buyers are independent shops and new distributors.",
     },
-    cta: { label: { en: "Browse & sample →" }, href: "/#collection" },
+    cta: { label: { en: "Browse & sample →" }, href: "/#collection", ctaId: "small_buyers_sample" },
   },
   /* Shipping */
   {
@@ -72,7 +73,7 @@ export const FAQS: FaqItem[] = [
     answer: {
       en: "We ship worldwide from Korea, with labels and documents prepared for Mexico & Latin America, Kazakhstan & Central Asia, and the UAE & GCC. Europe support is [coming soon]. Some categories are restricted in some markets — tell us where you are and we’ll confirm.",
     },
-    cta: { label: { en: "Ask about your country →" }, href: "/shipping#quote" },
+    cta: { label: { en: "Ask about your country →" }, href: "/shipping#quote", ctaId: "ship_to_country_quote" },
   },
   {
     id: "delivery-time",
@@ -93,7 +94,7 @@ export const FAQS: FaqItem[] = [
     answer: {
       en: "By default the buyer pays import duties and taxes on arrival. DDP — where we pay them up front and include them in your quote — is available on request for [MARKETS].",
     },
-    cta: { label: { en: "Request a DDP quote →" }, href: "/shipping#quote" },
+    cta: { label: { en: "Request a DDP quote →" }, href: "/shipping#quote", ctaId: "customs_duties_quote" },
   },
 
   {
@@ -125,7 +126,7 @@ export const FAQS: FaqItem[] = [
     answer: {
       en: "Yes, in Spanish, Russian and Arabic. We print and apply them in our warehouse before dispatch, so stock arrives ready to sell. Other languages: [on request].",
     },
-    cta: { label: { en: "Ask about labels for your market →" }, href: "/shipping#quote" },
+    cta: { label: { en: "Ask about labels for your market →" }, href: "/shipping#quote", ctaId: "local_labels_quote" },
   },
 
   /* Ordering & payment */
@@ -138,7 +139,7 @@ export const FAQS: FaqItem[] = [
     answer: {
       en: "Not for samples: order 1 unit of any product at its wholesale price. Wholesale reorders follow each product’s MOQ, from [MOQ] units.",
     },
-    cta: { label: { en: "Browse & sample →" }, href: "/#collection" },
+    cta: { label: { en: "Browse & sample →" }, href: "/#collection", ctaId: "minimum_order_sample" },
   },
   {
     id: "free-shipping",
@@ -149,7 +150,7 @@ export const FAQS: FaqItem[] = [
     answer: {
       en: "Sample orders ship free once your box reaches 5 SKUs, mixed across any brands. Below that, sample shipping is a flat $18.",
     },
-    cta: { label: { en: "Browse & sample →" }, href: "/#collection" },
+    cta: { label: { en: "Browse & sample →" }, href: "/#collection", ctaId: "free_shipping_sample" },
   },
   {
     id: "bulk-pricing",
@@ -160,7 +161,7 @@ export const FAQS: FaqItem[] = [
     answer: {
       en: "Sample prices are public. MOQ and volume prices show once you sign in with a buyer account — it’s free and takes about two minutes.",
     },
-    cta: { label: { en: "Create a buyer account →" }, href: "/signup" },
+    cta: { label: { en: "Create a buyer account →" }, href: "/signup", ctaId: "bulk_pricing_signup" },
   },
   {
     id: "payment-methods",
@@ -181,7 +182,7 @@ export const FAQS: FaqItem[] = [
     answer: {
       en: "Yes. Send us the products and quantities you have in mind and we’ll reply within 24 hours on business days with prices, lead time and shipping to your market.",
     },
-    cta: { label: { en: "Request bulk quote →" }, href: "/ordering-payment#quote" },
+    cta: { label: { en: "Request bulk quote →" }, href: "/ordering-payment#quote", ctaId: "bulk_quote_quote" },
   },
 ];
 
