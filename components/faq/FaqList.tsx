@@ -2,6 +2,9 @@ import Link from "next/link";
 import { t, type Locale } from "@/content/i18n";
 import type { FaqItem } from "@/content/faq";
 
+/** What the accordion needs — site FAQ items and brand FAQs both fit. */
+export type FaqEntry = Pick<FaqItem, "id" | "question" | "answer" | "cta">;
+
 /** DOM id of a question, so cards and links can open it: <details id="q-{id}">. */
 export const faqAnchor = (id: string) => `q-${id}`;
 
@@ -13,7 +16,7 @@ export default function FaqList({
   openFirst = true,
   openAll = false,
 }: {
-  items: FaqItem[];
+  items: FaqEntry[];
   ctaPrefix: string;
   locale?: Locale;
   openFirst?: boolean;
@@ -43,7 +46,7 @@ export default function FaqList({
 }
 
 /** FAQPage structured data for a set of questions. */
-export function faqJsonLd(items: FaqItem[], locale: Locale = "en") {
+export function faqJsonLd(items: FaqEntry[], locale: Locale = "en") {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",

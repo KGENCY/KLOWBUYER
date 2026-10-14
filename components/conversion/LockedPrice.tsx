@@ -25,6 +25,9 @@ export default function LockedPrice({
   isLoggedIn,
   ctaId,
   next,
+  publicLabel = "Sample",
+  publicNote = "1 unit",
+  lockedLabel = "Reorder at MOQ",
 }: {
   sample: number | string;
   moq: number | string;
@@ -33,16 +36,20 @@ export default function LockedPrice({
   ctaId: string;
   /** Where to come back to after signing in. */
   next?: string;
+  /** The public row, e.g. "MSRP" for brands that aren't sampled. */
+  publicLabel?: string;
+  publicNote?: string;
+  lockedLabel?: string;
 }) {
   const saving = typeof sample === "number" && typeof moq === "number" ? Math.round((1 - moq / sample) * 100) : null;
   return (
     <dl className={`lp ${isLoggedIn ? "" : "lp--locked"}`}>
       <div className="lp__row">
-        <dt>Sample <small>1 unit</small></dt>
+        <dt>{publicLabel} {publicNote && <small>{publicNote}</small>}</dt>
         <dd>{show(sample)}</dd>
       </div>
       <div className="lp__row">
-        <dt>Reorder at MOQ <small>{moqUnits}+ units</small></dt>
+        <dt>{lockedLabel} <small>{moqUnits}+ units</small></dt>
         {isLoggedIn ? (
           <dd>{show(moq)} {saving !== null && <small className="lp__save">−{saving}%</small>}</dd>
         ) : (

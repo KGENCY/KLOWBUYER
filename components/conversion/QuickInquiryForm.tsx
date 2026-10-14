@@ -1,7 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BUSINESS_TYPES, COUNTRY_GROUPS } from "./options";
+
+const TYPE_EVENT = "klow:inquiry-type";
+
+/** Preselect the inquiry type of the form on this page (e.g. from an "Ask about exclusivity" link). */
+export function selectInquiryType(type: string) {
+  window.dispatchEvent(new CustomEvent(TYPE_EVENT, { detail: type }));
+}
 
 /**
  * Three-field inquiry: email, country, business type. WhatsApp stays folded away until asked for.
@@ -16,6 +23,8 @@ export default function QuickInquiryForm({
   children,
   defaultState = "form",
   compact,
+  inquiryTypes,
+  defaultInquiryType = "",
 }: {
   ctaId: string;
   /** Anchor id so other pages can link straight to this form. */
@@ -29,10 +38,21 @@ export default function QuickInquiryForm({
   defaultState?: "form" | "sent";
   /** Email + country only (no business type, no WhatsApp) — for small in-page prompts. */
   compact?: boolean;
+  /** Adds a "What's it about?" select with these options. */
+  inquiryTypes?: string[];
+  defaultInquiryType?: string;
 }) {
   const [email, setEmail] = useState(defaultState === "sent" ? "buyer@company.com" : "");
   const [withWa, setWithWa] = useState(false);
   const [sent, setSent] = useState(defaultState === "sent");
+  const [type, setType] = useState(defaultInquiryType);
+
+  useEffect(() => {
+    if (!inquiryTypes) return;
+    const onType = (e: Event) => setType((e as CustomEvent<string>).detail);
+    window.addEventListener(TYPE_EVENT, onType);
+    return () => window.removeEventListener(TYPE_EVENT, onType);
+  }, [inquiryTypes]);
 
   if (sent) {
     return (
@@ -56,6 +76,15 @@ export default function QuickInquiryForm({
         <h3>{title}</h3>
         {lede && <p className="muted">{lede}</p>}
       </div>
+      {inquiryTypes && (
+        <label className="field">
+          <span className="eyebrow">What’s it about?</span>
+          <select value={type} onChange={(e) => setType(e.target.value)} data-cta-id={`${ctaId}_type`}>
+            <option value="" disabled>Select</option>
+            {inquiryTypes.map((t) => <option key={t} value={t}>{t}</option>)}
+          </select>
+        </label>
+      )}
       <label className="field">
         <span className="eyebrow">Email</span>
         <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@company.com" autoComplete="email" />

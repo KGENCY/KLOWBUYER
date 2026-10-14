@@ -11,6 +11,7 @@ export default function ContextCTA({
   text,
   secondary,
   href,
+  secondaryHref,
   tone = "light",
 }: {
   id: string;
@@ -20,6 +21,8 @@ export default function ContextCTA({
   secondary?: CtaVariant | false;
   /** Send the main button somewhere other than the variant's default, e.g. a form on the same page. */
   href?: string;
+  /** Send the text link somewhere other than its variant's default. */
+  secondaryHref?: string;
   /** light: white band with a green edge (default). dark: deep green band, inverted button. */
   tone?: "light" | "dark";
 }) {
@@ -30,7 +33,7 @@ export default function ContextCTA({
       <p className="ccta__text">{text}</p>
       <div className="ccta__act">
         <Link href={href ?? main.href} className={`btn ${tone === "dark" ? "btn--invert" : "btn--solid"}`} data-cta-id={`${id}_${variant}`}>{main.label}</Link>
-        {alt && <Link href={CTA_TARGETS[alt].href} className="link small" data-cta-id={`${id}_${alt}`}>{CTA_TARGETS[alt].label}</Link>}
+        {alt && <Link href={secondaryHref ?? CTA_TARGETS[alt].href} className="link small" data-cta-id={`${id}_${alt}`}>{CTA_TARGETS[alt].label}</Link>}
       </div>
     </div>
   );
