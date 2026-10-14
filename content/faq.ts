@@ -164,6 +164,18 @@ export const FAQS: FaqItem[] = [
     cta: { label: { en: "Ask about labels for your market →" }, href: "/shipping#quote", ctaId: "local_labels_quote" },
   },
 
+  {
+    id: "free-shipping",
+    category: "shipping",
+    order: 6,
+    enabled: true,
+    question: { en: "Is shipping free for samples?" },
+    answer: {
+      en: `Sample orders ship free once your box reaches ${P.freeShippingSkus} SKUs, mixed across any brands. Below that, sample shipping is a flat $18.`,
+    },
+    cta: { label: { en: "Browse & sample →" }, href: "/#collection", ctaId: "free_shipping_sample" },
+  },
+
   /* Ordering & payment — wording built from content/orderPolicy.ts */
   {
     id: "minimum-order",
