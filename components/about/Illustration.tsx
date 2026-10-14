@@ -85,11 +85,12 @@ function Warehouse() {
 function Shelves() {
   return (
     <>
-      <rect width="640" height="400" fill={C.wall} />
-      <rect y="340" width="640" height="60" fill={C.floor} />
-      <Rack x={30} w={190} top={40} floor={340} levels={3} seed={0} />
-      <Rack x={225} w={190} top={40} floor={340} levels={3} seed={5} />
-      <Rack x={420} w={190} top={40} floor={340} levels={3} seed={2} />
+      <rect width="640" height="560" fill={C.wall} />
+      <rect y="480" width="640" height="80" fill={C.floor} />
+      <rect y="500" width="640" height="3" fill={C.accent} opacity=".5" />
+      <Rack x={30} w={190} top={40} floor={480} levels={4} seed={0} />
+      <Rack x={225} w={190} top={40} floor={480} levels={4} seed={5} />
+      <Rack x={420} w={190} top={40} floor={480} levels={4} seed={2} />
       {["A-01", "A-02", "A-03"].map((s, i) => (
         <g key={s}>
           <rect x={44 + i * 195} y="18" width="44" height="16" fill={i === 1 ? C.accent : C.dark} />
@@ -273,7 +274,7 @@ function WorldMap() {
 
 const ART: Record<Fallback, { viewBox: string; Draw: () => React.ReactNode }> = {
   warehouse: { viewBox: "0 0 400 460", Draw: Warehouse },
-  shelves: { viewBox: "0 0 640 400", Draw: Shelves },
+  shelves: { viewBox: "0 0 640 560", Draw: Shelves },
   inspection: { viewBox: "0 0 400 300", Draw: Inspection },
   packing: { viewBox: "0 0 400 300", Draw: Packing },
   location: { viewBox: "0 0 400 300", Draw: Location },
