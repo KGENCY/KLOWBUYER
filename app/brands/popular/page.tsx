@@ -1,9 +1,6 @@
-import ComingSoon, { comingSoonMetadata } from "@/components/ComingSoon";
+import { permanentRedirect } from "next/navigation";
 
-const PATH = "/brands/popular";
-
-export const metadata = comingSoonMetadata(PATH);
-
+/** Old menu URL — brands are now filtered on /brands. */
 export default function Page() {
-  return <ComingSoon path={PATH} />;
+  permanentRedirect("/brands?filter=popular");
 }

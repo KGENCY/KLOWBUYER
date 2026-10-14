@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import BrandDetail from "@/components/BrandDetail";
-import ComingSoon, { comingSoonMetadata } from "@/components/ComingSoon";
 import PartnerBrandPage from "@/components/brand/PartnerBrandPage";
 import { brandProfile, brandsOfType } from "@/content/brands";
-import { MENU_PARTNER_SLUGS } from "@/content/navigation";
 import { t } from "@/content/i18n";
 import { BRANDS, productsOf } from "@/lib/data";
 
@@ -34,21 +32,19 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     };
   }
   const b = BRANDS.find((x) => x.id === id);
-  if (!b) return MENU_PARTNER_SLUGS.includes(id) ? comingSoonMetadata(`/brands/${id}`) : {};
+  if (!b) return {};
   return {
     title: `${b.name} · KLOW Wholesale`,
     description: `${b.tagline}. ${productsOf(b.id).length} products from ${b.name}, ${b.city}: wholesale pricing, MOQ ${b.moq} units, dispatch in ${b.leadDays} days.`,
   };
 }
 
-/** Partner brand page → existing catalog brand page → menu placeholder → 404. */
+/** Partner brand page → existing catalog brand page → 404. */
 export default async function BrandPage({ params }: { params: Params }) {
   const { id } = await params;
   const p = partner(id);
   if (p) return <PartnerBrandPage brand={p} />;
   const b = BRANDS.find((x) => x.id === id);
-  // Partner brands already in the menu but without data yet get a placeholder, not a 404.
-  if (!b && MENU_PARTNER_SLUGS.includes(id)) return <ComingSoon path={`/brands/${id}`} />;
   if (!b) notFound();
   return <BrandDetail b={b} />;
 }

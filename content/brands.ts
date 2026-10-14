@@ -8,6 +8,7 @@
  * [BRACKETS] = not confirmed yet. Partner brand details are sample data.
  */
 import type { LocalizedText, MediaImage, MediaVideoItem } from "@/types/content";
+import { PRODUCTS } from "./products";
 
 export type BrandType = "major" | "partner";
 export type ExclusivityStatus = "open" | "taken" | "ask";
@@ -51,6 +52,8 @@ export interface BrandProfile {
   similarBrands: string[];
   faq: { question: LocalizedText; answer: LocalizedText }[];
   seo?: { title?: LocalizedText; description?: LocalizedText };
+  /** Position in menus and lists (lower first); brands without it follow, A–Z. */
+  order?: number;
   enabled: boolean;
 }
 
@@ -240,8 +243,23 @@ export const BRANDS: BrandProfile[] = [
   },
 ];
 
+const byOrder = (a: BrandProfile, b: BrandProfile) =>
+  (a.order ?? Infinity) - (b.order ?? Infinity) || a.name.localeCompare(b.name);
+
 export const brandProfile = (slug: string) => BRANDS.find((b) => b.slug === slug && b.enabled);
-export const brandsOfType = (type: BrandType) => BRANDS.filter((b) => b.enabled && b.type === type);
+/** Enabled brands of a type, by `order` then name. */
+export const brandsOfType = (type: BrandType) => BRANDS.filter((b) => b.enabled && b.type === type).sort(byOrder);
+export const allBrands = () => BRANDS.filter((b) => b.enabled).sort(byOrder);
+
+/** Where a brand's page lives: major → /brands/[slug]/wholesale, partner → /brands/[slug]. */
+export const brandHref = (b: Pick<BrandProfile, "slug" | "type">) => (b.type === "major" ? `/brands/${b.slug}/wholesale` : `/brands/${b.slug}`);
+
+/** Partners featured in the Brands menu: `flags.featured` ones, or the first partner if none are. */
+export const featuredPartners = (limit = 2) => {
+  const partners = brandsOfType("partner");
+  const featured = partners.filter((p) => p.flags.featured);
+  return (featured.length ? featured : partners).slice(0, featured.length ? limit : 1);
+};
 
 /**
  * Partner brands to show next to `brand`: the hand-picked `similarBrands` when set;
@@ -267,3 +285,13 @@ export function similarPartners(brand: BrandProfile, limit = 4): BrandProfile[] 
 /** Major brands that list `partner` as similar — for the partner page's "fits the same shelf" links. */
 export const majorsListing = (partner: BrandProfile) =>
   brandsOfType("major").filter((m) => similarPartners(m).some((p) => p.slug === partner.slug));
+
+/* Dev check: every similarBrands slug and productId must point at something real. */
+if (process.env.NODE_ENV !== "production") {
+  for (const b of BRANDS) {
+    for (const slug of b.similarBrands)
+      if (!BRANDS.some((x) => x.slug === slug && x.enabled)) console.warn(`[brands] ${b.slug}.similarBrands → "${slug}" doesn't exist`);
+    for (const id of b.productIds)
+      if (!PRODUCTS.some((p) => p.id === id)) console.warn(`[brands] ${b.slug}.productIds → "${id}" doesn't exist`);
+  }
+}

@@ -1,13 +1,7 @@
-import ComingSoon, { comingSoonMetadata } from "@/components/ComingSoon";
+import { permanentRedirect } from "next/navigation";
 
-type Params = Promise<{ slug: string }>;
-
-export async function generateMetadata({ params }: { params: Params }) {
+/** Old menu URL — brands are now filtered on /brands. */
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  return comingSoonMetadata(`/brands/category/${slug}`);
-}
-
-export default async function Page({ params }: { params: Params }) {
-  const { slug } = await params;
-  return <ComingSoon path={`/brands/category/${slug}`} />;
+  permanentRedirect(`/brands?category=${encodeURIComponent(slug)}`);
 }

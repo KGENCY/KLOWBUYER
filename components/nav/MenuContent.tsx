@@ -65,7 +65,7 @@ export function MenuAside({ aside, menuId, onNavigate }: { aside: NavAside; menu
         {aside.cards.map((c) => (
           <Link key={c.id} href={c.href} className="menu__card" onClick={onNavigate} data-cta-id={`nav_${menuId}_card_${c.id}`}>
             <MediaFrame src={c.image.src} alt={t(c.image.alt)} fallback={c.image.fallback} ratio="4 / 3" />
-            <span className="menu__card-name">{t(c.name)}<em className="menu__badge">Only on KLOW</em></span>
+            <span className="menu__card-name">{t(c.name)}{c.badge && <em className="menu__badge">{t(c.badge)}</em>}</span>
             <span className="menu__card-tag">{t(c.tagline)}</span>
             <span className="menu__card-go">{t(c.cta)} →</span>
           </Link>

@@ -5,6 +5,7 @@
  */
 import type { CtaLink, Locale, LocalizedText, MediaImage } from "@/types/content";
 import { t } from "./i18n";
+import { brandHref, brandsOfType, featuredPartners } from "./brands";
 
 /* ───────────── Types ───────────── */
 
@@ -38,7 +39,7 @@ export interface NavColumn {
 export type NavAside =
   | {
       type: "brandCards";
-      cards: { id: string; name: LocalizedText; tagline: LocalizedText; href: string; image: MediaImage; cta: LocalizedText }[];
+      cards: { id: string; name: LocalizedText; tagline: LocalizedText; href: string; image: MediaImage; cta: LocalizedText; badge?: LocalizedText }[];
     }
   | { type: "leadMagnet"; magnetId: string }
   | { type: "contact"; title: LocalizedText; link: CtaLink; whatsapp: CtaLink };
@@ -109,64 +110,46 @@ export const NAV: NavItem[] = [
     enabled: true,
     order: 1,
     match: ["/brands"],
+    // Brand lists come from content/brands.ts — add or reorder brands there, not here.
     columns: [
       {
         id: "popular",
         heading: { en: "Popular K-beauty" },
         note: { en: "Wholesale at MOQ, shipped from Korea" },
-        links: [
-          link("anua", "Anua", "/brands/anua/wholesale", 0),
-          link("cosrx", "COSRX", "/brands/cosrx/wholesale", 1),
-          link("round-lab", "Round Lab", "/brands/round-lab/wholesale", 2),
-          link("beauty-of-joseon", "Beauty of Joseon", "/brands/beauty-of-joseon/wholesale", 3),
-          link("torriden", "Torriden", "/brands/torriden/wholesale", 4),
-        ],
-        more: link("popular-all", "All popular brands", "/brands/popular", 99),
+        links: brandsOfType("major").slice(0, 8).map((b, i) => link(b.slug, b.name, brandHref(b), i)),
+        more: link("popular-all", "All popular brands", "/brands?filter=popular", 99),
       },
       {
         id: "new",
         heading: { en: "Discover new brands" },
         note: { en: "Partner brands, sample from 1 unit" },
-        links: [
-          link("airmood", "AIRMOOD", "/brands/airmood", 0, { badge: ONLY_ON_KLOW }),
-          link("inyoe", "INYOE", "/brands/inyoe", 1, { badge: ONLY_ON_KLOW }),
-          link("partner-03", "[PARTNER 03]", "/brands/partner-03", 2, { badge: ONLY_ON_KLOW }),
-          link("partner-04", "[PARTNER 04]", "/brands/partner-04", 3, { badge: ONLY_ON_KLOW }),
-        ],
-        more: link("new-all", "All new brands", "/brands/new", 99),
+        links: brandsOfType("partner").slice(0, 8).map((b, i) =>
+          link(b.slug, b.name, brandHref(b), i, b.flags.onlyOnKlow ? { badge: ONLY_ON_KLOW } : {})),
+        more: link("new-all", "All new brands", "/brands?filter=new", 99),
       },
       {
         id: "browse",
         heading: { en: "Browse by" },
         links: [
-          link("skincare", "Skincare", "/brands/category/skincare", 0),
-          link("sun-care", "Sun care", "/brands/category/sun-care", 1),
-          link("makeup", "Makeup", "/brands/category/makeup", 2),
-          link("ingredient", "By ingredient", "/brands/ingredients", 3),
+          link("skincare", "Skincare", "/brands?category=skincare", 0),
+          link("sun-care", "Sun care", "/brands?category=sun-care", 1),
+          link("makeup", "Makeup", "/brands?category=makeup", 2),
+          link("ingredient", "By ingredient", "/brands#ingredients", 3),
           link("a-z", "All brands A–Z", "/brands", 4),
         ],
       },
     ],
     aside: {
       type: "brandCards",
-      cards: [
-        {
-          id: "airmood",
-          name: { en: "AIRMOOD" },
-          tagline: { en: "No MOQ. Sample from 1 unit." },
-          href: "/brands/airmood",
-          cta: { en: "View brand" },
-          image: { alt: { en: "AIRMOOD K-beauty products, available wholesale on KLOW" }, fallback: "brand-placeholder" },
-        },
-        {
-          id: "inyoe",
-          name: { en: "INYOE" },
-          tagline: { en: "No MOQ. Sample from 1 unit." },
-          href: "/brands/inyoe",
-          cta: { en: "View brand" },
-          image: { alt: { en: "INYOE K-beauty products, available wholesale on KLOW" }, fallback: "brand-placeholder" },
-        },
-      ],
+      cards: featuredPartners(2).map((b) => ({
+        id: b.slug,
+        name: { en: b.name },
+        tagline: { en: "No MOQ. Sample from 1 unit." },
+        href: brandHref(b),
+        cta: { en: "View brand" },
+        badge: b.flags.onlyOnKlow ? ONLY_ON_KLOW : undefined,
+        image: b.images[0] ?? { alt: { en: `${b.name} K-beauty products, available wholesale on KLOW` }, fallback: "brand-placeholder" },
+      })),
     },
     footer: { text: { en: "Can’t find a brand?" }, label: { en: "Request a brand" }, ctaId: "nav_brands_request" },
   },
@@ -267,8 +250,8 @@ export const FOOTER = {
       heading: { en: "Shop" },
       links: [
         link("collection", "Collection", "/#collection", 0),
-        link("popular", "Popular K-beauty", "/brands/popular", 1),
-        link("new", "Discover new brands", "/brands/new", 2),
+        link("popular", "Popular K-beauty", "/brands?filter=popular", 1),
+        link("new", "Discover new brands", "/brands?filter=new", 2),
         { id: "request", label: { en: "Request a brand" }, action: "requestBrand", enabled: true, order: 3 } as NavLink,
       ],
     },
@@ -327,8 +310,3 @@ export function navLabelFor(path: string): string | undefined {
   const hit = allLinks().find((l) => l.href === path);
   return hit && t(hit.label);
 }
-
-/** Partner brands listed in the menu but not yet in the catalog (their pages show "coming soon"). */
-export const MENU_PARTNER_SLUGS = (NAV.find((n) => n.id === "brands") as Extract<NavItem, { type: "menu" }>).columns
-  .find((c) => c.id === "new")!
-  .links.map((l) => l.href!.split("/").pop()!);
