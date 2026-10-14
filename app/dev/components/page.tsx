@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ABOUT_LINKS } from "@/content/nav";
+import { ABOUT_LINKS } from "@/content/navigation";
 import { leadMagnetsById } from "@/content/leadMagnets";
 import type { CtaVariant } from "@/content/cta";
 import MediaFrame from "@/components/media/MediaFrame";

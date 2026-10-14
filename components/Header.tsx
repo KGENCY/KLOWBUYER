@@ -1,46 +1,123 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FREE_SHIPPING_SKUS } from "@/lib/data";
 import { initials } from "@/lib/buyer";
-import { ABOUT_LINKS } from "@/content/nav";
+import { t } from "@/content/i18n";
+import { NAV, isActive, visible, type NavItem } from "@/content/navigation";
+import LanguageSelect from "./nav/LanguageSelect";
+import MobileNav from "./nav/MobileNav";
+import { MenuAside, MenuColumns, MenuFooter } from "./nav/MenuContent";
 import { useSamples } from "./SampleBox";
 import { useRequest } from "./RequestBrand";
 import { DEMO_EMAIL, useBuyer } from "./Buyer";
 
-/** "About" opens the About group: on hover with a mouse, on click/tap and keyboard otherwise. */
-function AboutMenu() {
-  const path = usePathname();
-  const [open, setOpen] = useState(false);
-  const active = ABOUT_LINKS.some((l) => l.href === path);
-  useEffect(() => setOpen(false), [path]);
+type Menu = Extract<NavItem, { type: "menu" }>;
+
+/** How long the pointer may be outside a menu (e.g. crossing the gap to the panel) before it closes. */
+const HOVER_CLOSE_MS = 160;
+
+/**
+ * Desktop menus open on hover (mouse) and on click (touch, keyboard). Esc, a click outside,
+ * or moving focus out closes them. Only one is open at a time.
+ */
+function DesktopNav({ path }: { path: string }) {
+  const { openWith } = useRequest();
+  const [openId, setOpenId] = useState<string | null>(null);
+  const navRef = useRef<HTMLElement>(null);
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  useEffect(() => setOpenId(null), [path]);
+
+  useEffect(() => {
+    if (!openId) return;
+    const onDown = (e: PointerEvent) => { if (!navRef.current?.contains(e.target as Node)) setOpenId(null); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      document.getElementById(`nav-btn-${openId}`)?.focus();
+      setOpenId(null);
+    };
+    document.addEventListener("pointerdown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => { document.removeEventListener("pointerdown", onDown); document.removeEventListener("keydown", onKey); };
+  }, [openId]);
+
+  const hoverOpen = (id: string) => (e: React.PointerEvent) => {
+    if (e.pointerType !== "mouse") return;
+    clearTimeout(timer.current);
+    setOpenId(id);
+  };
+  const hoverClose = (e: React.PointerEvent) => {
+    if (e.pointerType !== "mouse") return;
+    timer.current = setTimeout(() => setOpenId(null), HOVER_CLOSE_MS);
+  };
+  const close = () => setOpenId(null);
+
   return (
-    <div
-      className="navdrop"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-      onKeyDown={(e) => e.key === "Escape" && setOpen(false)}
-      onBlur={(e) => !e.currentTarget.contains(e.relatedTarget) && setOpen(false)}
-    >
-      <button className={`navdrop__btn ${active ? "is-on" : ""}`} aria-expanded={open} aria-haspopup="true" onClick={() => setOpen((o) => !o)}>
-        About <i aria-hidden />
-      </button>
-      <div className={`navdrop__menu ${open ? "is-on" : ""}`}>
-        {ABOUT_LINKS.map((l) => (
-          <Link key={l.href} href={l.href} aria-current={l.href === path ? "page" : undefined} onClick={() => setOpen(false)}>
-            {l.label}
-          </Link>
-        ))}
+    <nav ref={navRef} className="header__nav" aria-label="Main">
+      {visible(NAV).map((item) => {
+        const active = isActive(item, path);
+        if (item.type === "link") {
+          return item.action === "requestBrand" ? (
+            <button key={item.id} type="button" className="nav__item" onClick={() => openWith()}>{t(item.label)}</button>
+          ) : (
+            <Link key={item.id} href={item.href ?? "#"} className={`nav__item ${active ? "is-on" : ""}`} aria-current={active ? "page" : undefined}>
+              {t(item.label)}
+            </Link>
+          );
+        }
+        const open = openId === item.id;
+        const panelId = `nav-panel-${item.id}`;
+        return (
+          <div
+            key={item.id}
+            className="nav__menu"
+            onPointerEnter={hoverOpen(item.id)}
+            onPointerLeave={hoverClose}
+            onBlur={(e) => !e.currentTarget.contains(e.relatedTarget) && setOpenId((o) => (o === item.id ? null : o))}
+          >
+            <button
+              id={`nav-btn-${item.id}`}
+              type="button"
+              className={`nav__item nav__trigger ${active ? "is-on" : ""}`}
+              aria-expanded={open}
+              aria-controls={panelId}
+              onClick={() => setOpenId(open ? null : item.id)}
+            >
+              {t(item.label)} <i aria-hidden />
+            </button>
+            <MenuPanel menu={item} id={panelId} open={open} onNavigate={close} />
+          </div>
+        );
+      })}
+    </nav>
+  );
+}
+
+/** Full-width panel under the header. Kept in the DOM (hidden) so its links stay crawlable. */
+function MenuPanel({ menu, id, open, onNavigate }: { menu: Menu; id: string; open: boolean; onNavigate: () => void }) {
+  return (
+    <div id={id} className={`menu menu--${menu.size} ${open ? "is-on" : ""}`} aria-hidden={!open} inert={!open}>
+      <div className="wrap menu__in">
+        <div className={`menu__cols menu__cols--${menu.columns.length}`}>
+          <MenuColumns menu={menu} onNavigate={onNavigate} />
+        </div>
+        {menu.aside && <MenuAside aside={menu.aside} menuId={menu.id} onNavigate={onNavigate} />}
       </div>
+      {menu.footer && (
+        <div className="menu__band">
+          <div className="wrap"><MenuFooter footer={menu.footer} onNavigate={onNavigate} /></div>
+        </div>
+      )}
     </div>
   );
 }
 
 export default function Header() {
+  const path = usePathname();
   const { items, setOpen } = useSamples();
-  const { openWith } = useRequest();
   const { buyer, signIn, signOut } = useBuyer();
   return (
     <>
@@ -57,14 +134,9 @@ export default function Header() {
             <span className="wordmark__k">KLOW</span>
             <span className="wordmark__w">Wholesale</span>
           </Link>
-          <nav className="header__nav">
-            <Link href="/#collection">Collection</Link>
-            <Link href="/#brands">Brands</Link>
-            <Link href="/match">Find my brands</Link>
-            <button onClick={() => openWith()}>Request a brand</button>
-            <AboutMenu />
-          </nav>
+          <DesktopNav path={path} />
           <div className="header__act">
+            <span className="hide-sm"><LanguageSelect /></span>
             {buyer ? (
               // Design mock: clicking the account signs out, so the signed-in and signed-out views can be flipped back and forth.
               <button className="header__me" onClick={signOut} title={`Signed in as ${buyer.company} · click to sign out`}>
@@ -81,6 +153,7 @@ export default function Header() {
             <button className="header__box" onClick={() => setOpen(true)}>
               Sample box <span className="header__count">{items.length}/{FREE_SHIPPING_SKUS}</span>
             </button>
+            <MobileNav path={path} />
           </div>
         </div>
       </header>
