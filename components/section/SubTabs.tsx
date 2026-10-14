@@ -2,15 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ABOUT_LINKS } from "@/content/nav";
 
-/** The same tab bar on every About-group page, marking the current one. */
-export default function AboutTabs() {
+/** Tab bar linking the pages of one group; the current page is marked with aria-current. */
+export default function SubTabs({ links, label }: { links: readonly { href: string; label: string }[]; /** Accessible name of the nav. */ label: string }) {
   const path = usePathname();
   return (
-    <nav className="subnav" aria-label="About KLOW">
+    <nav className="subnav" aria-label={label}>
       <div className="wrap subnav__in">
-        {ABOUT_LINKS.map((l) => (
+        {links.map((l) => (
           <Link key={l.href} href={l.href} aria-current={l.href === path ? "page" : undefined}>
             {l.label}
           </Link>

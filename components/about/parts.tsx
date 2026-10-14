@@ -2,6 +2,7 @@ import Link from "next/link";
 import { t, type AboutLink, type AboutSection, type Locale } from "@/content/sections";
 import ContextCTA from "@/components/conversion/ContextCTA";
 import LeadMagnets from "@/components/conversion/LeadMagnets";
+import SectionHeader from "@/components/section/SectionHeader";
 
 /** `page` is the page's data-cta-id prefix, e.g. "about". */
 export type SectionProps = { s: AboutSection; locale: Locale; page: string };
@@ -23,16 +24,13 @@ export function SectionLabel({ s, locale }: { s: HeadFields; locale: Locale }) {
 /** Label + H2, with the subtitle as a grey second line (same pattern as the landing hero). */
 export function SectionHead({ s, locale }: { s: HeadFields; locale: Locale }) {
   return (
-    <div className="about-head">
-      <SectionLabel s={s} locale={locale} />
-      {s.title && (
-        <h2 className="h2">
-          {t(s.title, locale)}
-          {s.subtitle && <>{" "}<em>{t(s.subtitle, locale)}</em></>}
-        </h2>
-      )}
-      {s.badge && <span className="about-badge">{t(s.badge, locale)}</span>}
-    </div>
+    <SectionHeader
+      number={s.number}
+      label={s.label && t(s.label, locale)}
+      title={s.title && t(s.title, locale)}
+      subtitle={s.subtitle && t(s.subtitle, locale)}
+      badge={s.badge && t(s.badge, locale)}
+    />
   );
 }
 

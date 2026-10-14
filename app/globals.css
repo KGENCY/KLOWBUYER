@@ -1649,3 +1649,8 @@ button.video__play:focus-visible { outline: 2px solid var(--accent); outline-off
 .ccta--dark .link:hover { color: var(--accent-ink); }
 .ccta--dark .btn--invert { height: 52px; }
 .ccta--dark .btn--invert:hover { background: var(--ink); border-color: var(--ink); }
+
+/* Section header description, three related cards */
+.about-head__desc { margin-block-start: 18px; max-width: 560px; font-size: 16px; color: var(--ink-2); }
+.about-related__grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 860px) { .about-related__grid--3 { grid-template-columns: 1fr; } }

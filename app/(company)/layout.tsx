@@ -1,10 +1,11 @@
-import AboutTabs from "@/components/about/AboutTabs";
+import SubTabs from "@/components/section/SubTabs";
+import { ABOUT_LINKS } from "@/content/nav";
 
 /** About group (/about, /shipping, /ordering-payment, /faq): shared tab bar above each page. */
 export default function CompanyLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <AboutTabs />
+      <SubTabs links={ABOUT_LINKS} label="About KLOW" />
       {children}
     </>
   );

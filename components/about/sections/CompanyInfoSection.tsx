@@ -1,6 +1,7 @@
 import { t } from "@/content/sections";
 import QuickInquiryForm from "@/components/conversion/QuickInquiryForm";
 import MediaFrame from "@/components/media/MediaFrame";
+import InfoTable from "@/components/section/InfoTable";
 import { SectionAddons, SectionHead, type SectionProps } from "../parts";
 
 /**
@@ -49,14 +50,7 @@ export default function CompanyInfoSection({ s, locale, page }: SectionProps) {
         <SectionHead s={s} locale={locale} />
         <div className={side ? "about-company" : ""}>
           <div className="about-company__main">
-            <dl className="about-facts">
-              {s.items?.map((it, i) => (
-                <div key={it.key ?? i}>
-                  <dt>{t(it.title, locale)}</dt>
-                  <dd>{t(it.value, locale)}</dd>
-                </div>
-              ))}
-            </dl>
+            <InfoTable rows={(s.items ?? []).map((it) => ({ key: it.key, label: t(it.title, locale), value: t(it.value, locale) }))} />
             {form && map && (
               <MediaFrame src={map.src} alt={t(map.alt, locale)} caption={t(map.caption, locale)} fallback={map.fallback} ratio="16 / 7" />
             )}
