@@ -1542,3 +1542,35 @@ body:has(.drawer.is-on) .wa, body:has(.wel) .wa { opacity: 0; pointer-events: no
   .about-related a { min-height: 0; padding: 24px 20px; }
   .about-related h2 { font-size: 24px; }
 }
+
+/* ───────────── About group: tab bar, imageless hero, pricing, quote, FAQ page ───────────── */
+.subnav { border-block-end: var(--bw) solid var(--line); background: var(--bg); }
+.subnav__in { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+.subnav__in::-webkit-scrollbar { display: none; }
+.subnav a { padding: 16px 16px 14px; font-size: 13.5px; font-weight: 500; color: var(--muted); border-block-end: 2px solid transparent; margin-block-end: calc(var(--bw) * -1); white-space: nowrap; transition: color .2s; }
+.subnav a:first-child { padding-inline-start: 0; }
+.subnav a:hover { color: var(--ink); }
+.subnav a[aria-current="page"] { color: var(--ink); border-color: var(--ink); }
+.about-hero__grid--solo { grid-template-columns: minmax(0, 860px); }
+.about-hero__grid--solo .hero__lede { max-width: 620px; }
+
+.about-pricing { display: flex; flex-direction: column; gap: 20px; }
+.about-pricing__card { background: var(--card); border: var(--bw) solid var(--line); padding: 28px; display: flex; flex-direction: column; gap: 10px; }
+.about-pricing__card h3 { font-size: 22px; font-weight: 500; letter-spacing: -.02em; margin-block-end: 14px; }
+.about-pricing__card h3 small { font-family: var(--mono); font-size: 12px; font-weight: 400; color: var(--muted); margin-inline-start: 6px; letter-spacing: 0; }
+
+.about-inquiry .about-split { align-items: start; }
+.about-ticks { margin-block-start: 28px; display: flex; flex-direction: column; border-block-start: var(--bw) solid var(--line); max-width: 460px; }
+.about-ticks li { position: relative; padding-block: 14px; padding-inline-start: 26px; border-block-end: var(--bw) solid var(--line); font-size: 15px; }
+.about-ticks li::before { content: ""; position: absolute; inset-inline-start: 0; top: 22px; width: 12px; height: 2px; background: var(--accent); }
+
+.faq-jump { margin-block-start: 32px; display: flex; gap: 8px; flex-wrap: wrap; }
+.faq-jump a { height: 40px; padding: 0 16px; display: inline-flex; align-items: center; border: var(--bw) solid var(--line); background: var(--surface); font-size: 13.5px; font-weight: 500; transition: border-color .2s, background .2s; }
+.faq-jump a:hover { border-color: var(--ink); background: var(--card); }
+.faq-cat__head { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
+@media (max-width: 860px) {
+  .subnav a { padding: 14px 12px 12px; font-size: 13px; }
+  .about-pricing__card { padding: 22px 20px; }
+}
+.about-hero:has(.about-hero__grid--solo) { padding-block-end: 24px; }
+.faq-cat__head .about-head + * { margin-block-start: 0; }

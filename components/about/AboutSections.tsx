@@ -10,6 +10,8 @@ import StepsSection from "./sections/StepsSection";
 import CompanyInfoSection from "./sections/CompanyInfoSection";
 import CtaSection from "./sections/CtaSection";
 import RelatedSection from "./sections/RelatedSection";
+import PricingSection from "./sections/PricingSection";
+import InquirySection from "./sections/InquirySection";
 
 /** The shared FAQ, filtered to this section's category (with FAQPage JSON-LD). */
 function FaqFromData({ s, locale, page }: SectionProps) {
@@ -24,6 +26,9 @@ const BY_TYPE: Record<SectionType, (p: SectionProps) => React.ReactNode> = {
   regions: RegionsSection,
   steps: StepsSection,
   companyInfo: CompanyInfoSection,
+  facts: CompanyInfoSection,
+  pricing: PricingSection,
+  inquiry: InquirySection,
   faq: FaqFromData,
   cta: CtaSection,
   related: RelatedSection,

@@ -7,7 +7,7 @@ export default function HeroSection({ s, locale }: SectionProps) {
   const img = s.images?.[0];
   return (
     <section id={s.id} className="about-hero">
-      <div className="wrap about-hero__grid">
+      <div className={`wrap about-hero__grid ${img ? "" : "about-hero__grid--solo"}`}>
         <div>
           <span className="eyebrow eyebrow--accent about-hero__label">{t(s.label, locale)}</span>
           <h1 className="hero__title">

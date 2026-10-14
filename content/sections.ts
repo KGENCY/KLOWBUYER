@@ -54,7 +54,7 @@ export type AboutAddon =
 
 export type SectionType =
   | "hero" | "split" | "grid" | "gallery" | "regions" | "steps"
-  | "companyInfo" | "faq" | "cta" | "related";
+  | "companyInfo" | "facts" | "pricing" | "inquiry" | "faq" | "cta" | "related";
 
 export interface AboutSection {
   /** Also the anchor id on the page (e.g. /about#company). */
