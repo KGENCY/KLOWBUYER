@@ -62,7 +62,19 @@ export type AboutAddon =
   | { type: "contextCta"; variant: CtaVariant; text: Localized; ctaId: string; secondary?: CtaVariant | false; href?: string; tone?: "light" | "dark" }
   | { type: "countryFinder"; label: Localized; placeholder: Localized; quoteLabel: Localized; quoteHref: string; ctaPrefix: string; destinations: Destination[] }
   | { type: "leadMagnets"; ids: string[]; title?: Localized; ctaPrefix: string }
-  | { type: "inquiryForm"; ctaId: string; anchor?: string; title?: Localized; lede?: Localized; submitLabel?: Localized };
+  | {
+      type: "inquiryForm";
+      ctaId: string;
+      /** Anchor id for links like "#contact". */
+      anchor?: string;
+      title?: Localized;
+      lede?: Localized;
+      submitLabel?: Localized;
+      /** companyInfo: beside the table, or in its own block at the bottom of the section. */
+      placement?: "side" | "below";
+      /** companyInfo "below": the short text shown next to the form. */
+      intro?: { label: Localized; text: Localized };
+    };
 
 export type SectionType =
   | "hero" | "split" | "grid" | "gallery" | "regions" | "steps"

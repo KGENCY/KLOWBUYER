@@ -5,13 +5,26 @@ import InfoTable from "@/components/section/InfoTable";
 import { SectionAddons, SectionHead, type SectionProps } from "../parts";
 
 /**
- * Label/value table (company facts, shipping terms…), with an inquiry form beside it when one is attached,
- * then an optional map and team placeholders.
+ * Label/value table (company facts, shipping terms…) with a map or image beside it,
+ * optional team placeholders, and an inquiry form — beside the table (placement "side")
+ * or in its own block at the bottom (placement "below", the default when there's a map/image).
  */
 export default function CompanyInfoSection({ s, locale, page }: SectionProps) {
-  const map = s.images?.[0];
+  const image = s.images?.[0];
   const form = s.addons?.find((a) => a.type === "inquiryForm");
-  const mapFrame = s.map ? (
+  const formBeside = form && (form.placement === "side" || (!form.placement && !s.map && !image));
+
+  const formView = form && (
+    <QuickInquiryForm
+      id={formBeside ? form.anchor : undefined}
+      ctaId={form.ctaId}
+      title={form.title && t(form.title, locale)}
+      lede={form.lede && t(form.lede, locale)}
+      submitLabel={form.submitLabel && t(form.submitLabel, locale)}
+    />
+  );
+
+  const mapView = s.map ? (
     <figure className="media">
       <div className="media__frame" style={{ aspectRatio: "4 / 3" }}>
         <iframe
@@ -29,20 +42,11 @@ export default function CompanyInfoSection({ s, locale, page }: SectionProps) {
         </a>
       </figcaption>
     </figure>
+  ) : image ? (
+    <MediaFrame src={image.src} alt={t(image.alt, locale)} caption={t(image.caption, locale)} fallback={image.fallback} ratio={image.ratio ?? "4 / 3"} fit={image.fit} />
   ) : null;
-  const side = form ? (
-    <QuickInquiryForm
-      id={form.anchor}
-      ctaId={form.ctaId}
-      title={form.title && t(form.title, locale)}
-      lede={form.lede && t(form.lede, locale)}
-      submitLabel={form.submitLabel && t(form.submitLabel, locale)}
-    />
-  ) : mapFrame ? (
-    mapFrame
-  ) : map ? (
-    <MediaFrame src={map.src} alt={t(map.alt, locale)} caption={t(map.caption, locale)} fallback={map.fallback} ratio="4 / 3" />
-  ) : null;
+
+  const side = formBeside ? formView : mapView;
 
   return (
     <section id={s.id} className="section about-sec">
@@ -51,9 +55,7 @@ export default function CompanyInfoSection({ s, locale, page }: SectionProps) {
         <div className={side ? "about-company" : ""}>
           <div className="about-company__main">
             <InfoTable rows={(s.items ?? []).map((it) => ({ key: it.key, label: t(it.title, locale), value: t(it.value, locale) }))} />
-            {form && map && (
-              <MediaFrame src={map.src} alt={t(map.alt, locale)} caption={t(map.caption, locale)} fallback={map.fallback} ratio="16 / 7" />
-            )}
+            {formBeside && mapView}
           </div>
           {side && <div className="about-company__side">{side}</div>}
         </div>
@@ -67,6 +69,15 @@ export default function CompanyInfoSection({ s, locale, page }: SectionProps) {
               </li>
             ))}
           </ul>
+        )}
+        {form && !formBeside && (
+          <div id={form.anchor} className="about-contact about-split">
+            <div>
+              <span className="eyebrow about-label">{form.intro ? t(form.intro.label, locale) : "Contact"}</span>
+              {form.intro && <p className="about-contact__text">{t(form.intro.text, locale)}</p>}
+            </div>
+            {formView}
+          </div>
         )}
         <SectionAddons s={s} locale={locale} />
       </div>

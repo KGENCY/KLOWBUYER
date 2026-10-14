@@ -17,15 +17,16 @@ function organizationLd(sections: AboutSection[]) {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "KLOW Wholesale",
+    name: "KLOW",
     legalName: "Welkit Inc.",
     alternateName: "주식회사 웰킷",
     description: t(about.seo.description),
     taxID: fact("registration"),
     email: fact("email"),
+    telephone: fact("whatsapp"),
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Gwanggyo",
+      streetAddress: "Gwanggyo", // [FULL STREET ADDRESS]
       addressLocality: "Suwon",
       addressRegion: "Gyeonggi-do",
       addressCountry: "KR",

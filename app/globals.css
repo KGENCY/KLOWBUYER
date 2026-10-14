@@ -1793,3 +1793,11 @@ body:has(.mnav.is-on) .wa { opacity: 0; pointer-events: none; }
   .footer__legal { flex-direction: column; }
   .footer__legal span + span::before { content: none; }
 }
+
+/* About: contact block under company info, closing CTA band */
+.about-contact { margin-block-start: 72px; padding-block-start: 48px; border-block-start: var(--bw) solid var(--line); scroll-margin-top: 110px; }
+.about-contact__text { font-size: 22px; font-weight: 500; letter-spacing: -.02em; line-height: 1.25; max-width: 460px; text-wrap: balance; }
+.about-final { padding-block: 0; }
+.about-final .ccta { margin-block-start: 0; padding: 40px; }
+.about-final .ccta__text { font-size: clamp(28px, 3vw, 40px); letter-spacing: -.03em; line-height: 1.05; }
+@media (max-width: 860px) { .about-final .ccta { padding: 28px 20px; } .about-contact { margin-block-start: 48px; } }

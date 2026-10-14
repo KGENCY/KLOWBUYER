@@ -43,26 +43,49 @@ export const FAQS: FaqItem[] = [
     cta: { label: { en: "Ask for proof of supply →" }, href: CONTACT, ctaId: "authentic_inquiry" },
   },
   {
-    id: "who",
+    id: "reseller-or-distributor",
     category: "about",
     order: 1,
     enabled: true,
-    question: { en: "Who is behind KLOW?" },
+    question: { en: "Are you a reseller or a distributor?" },
     answer: {
-      en: "KLOW is run by Welkit Inc. (주식회사 웰킷), a registered Korean company (business registration No. 634-81-04211) based in Gwanggyo, Suwon. We sign with brands directly and ship from our own warehouse in Korea.",
+      en: "Neither, in the usual sense. We contract directly with each brand, hold stock in our own warehouse in Korea and export to buyers abroad. Some brands are open to an exclusive distributor in your country.",
     },
+    cta: { label: { en: "Ask about exclusivity →" }, href: CONTACT, ctaId: "reseller_or_distributor_inquiry" },
   },
   {
-    id: "small-buyers",
+    id: "warehouse-location",
     category: "about",
     order: 2,
     enabled: true,
-    question: { en: "Do you work with small buyers?" },
+    question: { en: "Where is your warehouse?" },
     answer: {
-      en: "Yes. You can start with a single unit of any product at its wholesale price, and move to MOQ quantities once something sells. Many of our buyers are independent shops and new distributors.",
+      en: "In [CITY], Korea. Our office is in Gwanggyo, Suwon (Gyeonggi-do). Every order is picked, checked and packed in the warehouse before it’s exported.",
     },
-    cta: { label: { en: "Browse & sample →" }, href: "/#collection", ctaId: "small_buyers_sample" },
   },
+  {
+    id: "countries",
+    category: "about",
+    order: 3,
+    enabled: true,
+    question: { en: "Which countries do you work with?" },
+    answer: {
+      en: "Buyers in [00] countries so far. We prepare documents and local-language labels for Mexico & Latin America, Kazakhstan & Central Asia and the UAE & GCC; Europe is [coming soon].",
+    },
+    cta: { label: { en: "See shipping details →" }, href: "/shipping", ctaId: "countries_shipping" },
+  },
+  {
+    id: "visit-or-call",
+    category: "about",
+    order: 4,
+    enabled: true,
+    question: { en: "Can I visit or video-call your team?" },
+    answer: {
+      en: "Yes. Book a video call with our team, or visit our office in Gwanggyo, Suwon by appointment. Warehouse visits: [by arrangement].",
+    },
+    cta: { label: { en: "Book a call →" }, href: CONTACT, ctaId: "visit_or_call_inquiry" },
+  },
+
   /* Shipping */
   {
     id: "ship-to-country",
