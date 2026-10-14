@@ -16,6 +16,8 @@ export default function TableSection({ s, locale }: SectionProps) {
           {s.body && <p className="about-row__body">{t(s.body, locale)}</p>}
         </div>
         {table && (
+          // Scrolls sideways on narrow screens rather than squeezing the columns.
+          <div className="about-table-wrap" tabIndex={0} role="region" aria-label={t(s.title, locale)}>
           <table className="about-table">
             <thead>
               <tr>{table.columns.map((c, i) => <th key={i} scope="col">{t(c, locale)}</th>)}</tr>
@@ -41,7 +43,9 @@ export default function TableSection({ s, locale }: SectionProps) {
               ))}
             </tbody>
           </table>
+          </div>
         )}
+        {s.footnote && <p className="about-footnote">{t(s.footnote, locale)}</p>}
         <SectionAddons s={s} locale={locale} />
       </div>
     </section>

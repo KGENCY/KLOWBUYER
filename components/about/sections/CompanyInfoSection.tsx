@@ -52,8 +52,9 @@ export default function CompanyInfoSection({ s, locale, page }: SectionProps) {
     <section id={s.id} className="section about-sec">
       <div className="wrap">
         <SectionHead s={s} locale={locale} />
-        <div className={side ? "about-company" : ""}>
+        <div className={side ? `about-company ${s.imageSide === "start" && !formBeside ? "about-company--media-start" : ""}` : ""}>
           <div className="about-company__main">
+            {s.body && <p className="about-company__body">{t(s.body, locale)}</p>}
             <InfoTable rows={(s.items ?? []).map((it) => ({ key: it.key, label: t(it.title, locale), value: t(it.value, locale) }))} />
             {formBeside && mapView}
           </div>

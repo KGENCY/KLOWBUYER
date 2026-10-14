@@ -1,6 +1,5 @@
 import { t } from "@/content/sections";
 import MediaFrame from "@/components/media/MediaFrame";
-import CountryFinder from "../CountryFinder";
 import { Links, type SectionProps } from "../parts";
 
 /** The page's only H1. Reuses the landing hero's title, lede and CTA styles. */
@@ -25,24 +24,6 @@ export default function HeroSection({ s, locale }: SectionProps) {
           )}
           <p className="hero__lede">{t(s.body, locale)}</p>
           <Links links={s.links} locale={locale} className="hero__cta" />
-          {s.addons?.map((a, i) => a.type === "countryFinder" && (
-            <CountryFinder
-              key={i}
-              label={t(a.label, locale)}
-              placeholder={t(a.placeholder, locale)}
-              quoteLabel={t(a.quoteLabel, locale)}
-              quoteHref={a.quoteHref}
-              ctaPrefix={a.ctaPrefix}
-              destinations={a.destinations.map((d) => ({
-                code: d.code,
-                name: t(d.name, locale),
-                method: t(d.method, locale),
-                days: t(d.days, locale),
-                labels: t(d.labels, locale),
-                registration: t(d.registration, locale),
-              }))}
-            />
-          ))}
         </div>
         {img && (
           <MediaFrame

@@ -15,6 +15,7 @@ export default function QuickInquiryForm({
   submitLabel = "Get a reply within 24h",
   children,
   defaultState = "form",
+  compact,
 }: {
   ctaId: string;
   /** Anchor id so other pages can link straight to this form. */
@@ -26,6 +27,8 @@ export default function QuickInquiryForm({
   children?: React.ReactNode;
   /** "sent" opens on the success view — for design previews. */
   defaultState?: "form" | "sent";
+  /** Email + country only (no business type, no WhatsApp) — for small in-page prompts. */
+  compact?: boolean;
 }) {
   const [email, setEmail] = useState(defaultState === "sent" ? "buyer@company.com" : "");
   const [withWa, setWithWa] = useState(false);
@@ -45,7 +48,7 @@ export default function QuickInquiryForm({
   return (
     <form
       id={id}
-      className="qform"
+      className={`qform ${compact ? "qform--compact" : ""}`}
       data-cta-id={ctaId}
       onSubmit={(e) => { e.preventDefault(); setSent(true); }}
     >
@@ -57,7 +60,7 @@ export default function QuickInquiryForm({
         <span className="eyebrow">Email</span>
         <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@company.com" autoComplete="email" />
       </label>
-      <div className="fields fields--2">
+      <div className={compact ? "fields" : "fields fields--2"}>
         <label className="field">
           <span className="eyebrow">Country</span>
           <select defaultValue="">
@@ -69,16 +72,16 @@ export default function QuickInquiryForm({
             ))}
           </select>
         </label>
-        <label className="field">
+        {!compact && <label className="field">
           <span className="eyebrow">Business type</span>
           <select defaultValue="">
             <option value="" disabled>Select</option>
             {BUSINESS_TYPES.map((b) => <option key={b}>{b}</option>)}
           </select>
-        </label>
+        </label>}
       </div>
       {children}
-      {withWa ? (
+      {compact ? null : withWa ? (
         <label className="field">
           <span className="eyebrow">WhatsApp (optional)</span>
           <input type="tel" placeholder="+52 55 0000 0000" autoComplete="tel" autoFocus />

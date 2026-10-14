@@ -105,7 +105,7 @@ export const FAQS: FaqItem[] = [
     enabled: true,
     question: { en: "How long does delivery take?" },
     answer: {
-      en: "Orders are packed in our Korean warehouse and dispatched within 2–7 days. Then express courier takes [x–x] days, air freight [x–x] days and sea freight [x–x] days, depending on your market.",
+      en: "Orders leave our warehouse within 2–7 days. Express courier then takes [3–10] business days, air freight [5–14] and sea freight [20–45], depending on your country and customs.",
     },
   },
   {
@@ -125,9 +125,9 @@ export const FAQS: FaqItem[] = [
     category: "shipping",
     order: 3,
     enabled: true,
-    question: { en: "Can I use my own forwarder?" },
+    question: { en: "Can I use my own forwarder or courier account?" },
     answer: {
-      en: "Yes. Choose EXW or FCA and your forwarder collects from our warehouse in Korea, or FOB and we deliver to the port of export. We prepare the export documents either way.",
+      en: "Yes. Choose EXW and your forwarder collects from our warehouse, or FCA and we clear export and hand over to your carrier or courier account. We prepare the export documents either way.",
     },
   },
   {
@@ -166,10 +166,10 @@ export const FAQS: FaqItem[] = [
   },
   {
     id: "free-shipping",
-    category: "ordering",
-    order: 1,
+    category: "shipping",
+    order: 6,
     enabled: true,
-    question: { en: "When is shipping free?" },
+    question: { en: "Is shipping free for samples?" },
     answer: {
       en: "Sample orders ship free once your box reaches 5 SKUs, mixed across any brands. Below that, sample shipping is a flat $18.",
     },

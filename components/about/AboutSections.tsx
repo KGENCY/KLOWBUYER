@@ -14,6 +14,8 @@ import PricingSection from "./sections/PricingSection";
 import InquirySection from "./sections/InquirySection";
 import TableSection from "./sections/TableSection";
 import ContactSection from "./sections/ContactSection";
+import ChecklistSection from "./sections/ChecklistSection";
+import CountryFinderSection from "./sections/CountryFinderSection";
 
 /** The shared FAQ, filtered to this section's category (with FAQPage JSON-LD). */
 function FaqFromData({ s, locale, page }: SectionProps) {
@@ -33,6 +35,8 @@ const BY_TYPE: Record<SectionType, (p: SectionProps) => React.ReactNode> = {
   inquiry: InquirySection,
   table: TableSection,
   contact: ContactSection,
+  checklist: ChecklistSection,
+  countryFinder: CountryFinderSection,
   faq: FaqFromData,
   cta: CtaSection,
   related: RelatedSection,

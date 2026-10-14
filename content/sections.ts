@@ -26,6 +26,8 @@ export interface AboutItem {
   value?: Localized;
   /** related: where the card goes. */
   href?: string;
+  /** checklist: the lines of this list, each with an optional muted note. */
+  points?: { text: Localized; note?: Localized }[];
 }
 
 /** A CTA link with how it's drawn: primary = black arrow button, secondary = underlined text link. */
@@ -39,18 +41,6 @@ export interface AboutPerson {
   image: AboutImage;
 }
 
-/** One market in the hero country picker. */
-export interface Destination {
-  code: string;
-  name: Localized;
-  /** Recommended way to ship. */
-  method: Localized;
-  days: Localized;
-  labels: Localized;
-  /** One-line summary of the local registration the importer needs. */
-  registration: Localized;
-}
-
 /** A simple table: header row, then rows; a row can be highlighted with a note under it. */
 export interface AboutTable {
   columns: Localized[];
@@ -60,7 +50,6 @@ export interface AboutTable {
 /** Conversion blocks attached to a section; rendered at the section's end (inquiry forms beside its content). */
 export type AboutAddon =
   | { type: "contextCta"; variant: CtaVariant; text: Localized; ctaId: string; secondary?: CtaVariant | false; href?: string; tone?: "light" | "dark" }
-  | { type: "countryFinder"; label: Localized; placeholder: Localized; quoteLabel: Localized; quoteHref: string; ctaPrefix: string; destinations: Destination[] }
   | { type: "leadMagnets"; ids: string[]; title?: Localized; ctaPrefix: string }
   | {
       type: "inquiryForm";
@@ -78,7 +67,7 @@ export type AboutAddon =
 
 export type SectionType =
   | "hero" | "split" | "grid" | "gallery" | "regions" | "steps"
-  | "companyInfo" | "facts" | "pricing" | "inquiry" | "table" | "contact" | "faq" | "cta" | "related";
+  | "companyInfo" | "facts" | "pricing" | "inquiry" | "table" | "checklist" | "countryFinder" | "contact" | "faq" | "cta" | "related";
 
 export interface AboutSection {
   /** Also the anchor id on the page (e.g. /about#company). */
@@ -108,6 +97,22 @@ export interface AboutSection {
   map?: { query: string; label: Localized };
   /** table: rows and columns. */
   table?: AboutTable;
+  /** Small print under the section's main content, e.g. "Times vary by country and customs." */
+  footnote?: Localized;
+  /** facts/companyInfo: put the image on the start side instead of the end. */
+  imageSide?: "start" | "end";
+  /** countryFinder: picker copy and where the quote button goes (country records: content/shippingCountries.ts). */
+  finder?: {
+    label: Localized;
+    placeholder: Localized;
+    /** "{country}" is replaced with the chosen country's name. */
+    quoteLabel: Localized;
+    quoteHref: string;
+    guideLabel: Localized;
+    emptyText: Localized;
+    otherTitle: Localized;
+    otherLede: Localized;
+  };
   /** Short highlighted tag beside the heading, e.g. "Samples ship free at 5 SKUs". */
   badge?: Localized;
   /** faq: which category of content/faq.ts to show. */
