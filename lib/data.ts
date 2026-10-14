@@ -1,3 +1,6 @@
+import { BRANDS as BRAND_PROFILES } from "@/content/brands";
+import { PRODUCTS as CATALOG_PRODUCTS } from "@/content/products";
+
 export type BuyerType = "distributor" | "online" | "marketplace" | "store" | "salon";
 export type Region = "us" | "ca" | "uk" | "eu" | "gcc" | "sea" | "au" | "latam";
 export type Line =
@@ -49,6 +52,8 @@ export interface Product {
   tone: string;
   cap: string;
   badge?: "Bestseller" | "Hidden gem" | "New";
+  /** No photo yet: draw the generic bottle instead of /img/{id}.jpg. */
+  art?: boolean;
 }
 
 export type Category = "Skincare" | "Sun Care" | "Cleansing" | "Masks" | "Haircare" | "Body" | "Makeup";
@@ -99,11 +104,51 @@ export const PRODUCTS: Product[] = [
   { id: "p24", brandId: "purehan", name: "Ginseng Sun Cream SPF 50", size: "50 ml", category: "Sun Care", lines: ["sun", "antiaging"], wholesale: 7.9, sample: 9.1, msrp: 23, shape: "tube", tone: "#E9DFD0", cap: "#7A5A3A" },
 ];
 
-export const brandById = (id: string) => BRANDS.find((b) => b.id === id)!;
-export const productById = (id: string) => PRODUCTS.find((p) => p.id === id)!;
+/* ───────────── Partner brands from content/brands.ts ─────────────
+   Brands that sample from 1 unit can go in the sample box, so their products are also looked up here.
+   They aren't added to PRODUCTS (the collection grid). Unknown prices are NaN, which money() prints as "$[__]". */
+const price = (n: number | null) => (n == null ? NaN : n);
+const SAMPLED = BRAND_PROFILES.filter((b) => b.enabled && b.flags.sampleFromOne);
+
+const EXTRA_BRANDS: Brand[] = SAMPLED.map((b) => ({
+  id: b.slug,
+  name: b.name,
+  tier: "gem",
+  tagline: b.tagline.en,
+  support: b.buyerInfo.marketingSupport.map((m) => m.en),
+  city: "[CITY]",
+  founded: 0,
+  lines: [],
+  channels: [],
+  docs: [],
+  exclusiveOpen: [],
+  moq: NaN,
+  margin: NaN,
+  leadDays: 5, // [placeholder] until each brand's dispatch time is set
+}));
+
+const EXTRA_PRODUCTS: Product[] = CATALOG_PRODUCTS.filter((p) => SAMPLED.some((b) => b.slug === p.brandSlug)).map((p) => ({
+  id: p.id,
+  brandId: p.brandSlug,
+  name: p.name,
+  size: p.volume,
+  category: (CATEGORIES as string[]).includes(p.category) ? (p.category as Category) : "Skincare",
+  lines: [],
+  wholesale: price(p.moqPrice),
+  sample: price(p.samplePrice),
+  msrp: price(p.msrp),
+  shape: "pump",
+  tone: "#ECE7DF",
+  cap: "#2A2A2A",
+  art: true,
+}));
+
+export const brandById = (id: string) => (BRANDS.find((b) => b.id === id) ?? EXTRA_BRANDS.find((b) => b.id === id))!;
+export const productById = (id: string) => (PRODUCTS.find((p) => p.id === id) ?? EXTRA_PRODUCTS.find((p) => p.id === id))!;
 export const productsOf = (brandId: string) => PRODUCTS.filter((p) => p.brandId === brandId);
 
-export const money = (n: number) => `$${n.toFixed(2)}`;
+/** "$12.40"; an unknown price (NaN, e.g. a placeholder product, or any total that includes one) prints "$[__]". */
+export const money = (n: number) => (Number.isFinite(n) ? `${n.toFixed(2)}` : "$[__]");
 
 /** Supply rate (공급률): wholesale as a share of MSRP. Lower = more margin for the buyer. */
 export const supplyRate = (p: Product) => Math.round((p.wholesale / p.msrp) * 100);

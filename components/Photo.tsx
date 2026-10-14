@@ -1,4 +1,5 @@
 import { Product, brandById } from "@/lib/data";
+import Illustration from "./media/Illustration";
 
 /** Crop focus per product photo (object-position). */
 const POS: Record<string, string> = {
@@ -11,6 +12,7 @@ export function photoPos(p: Product) { return POS[p.id] ?? "50% 50%"; }
 
 export default function Photo({ p, sizes, priority }: { p: Product; sizes?: string; priority?: boolean }) {
   const b = brandById(p.brandId);
+  if (p.art) return <Illustration name="product-bottle" title={`${b.name} ${p.name}`} />;
   return (
     <img
       className="photo"

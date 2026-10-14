@@ -1882,3 +1882,6 @@ body:has(.mnav.is-on) .wa { opacity: 0; pointer-events: none; }
   .faq-popular__grid { grid-template-columns: 1fr; }
   .faq-popular__grid button { padding: 20px; }
 }
+
+/* Products without photos (brand pages) draw a bottle in the same thumbnail slots */
+.drawer__thumb > .illu, .line__thumb > .illu, .thumb > .illu, .card__frame > .illu { width: 100%; height: 100%; display: block; }
