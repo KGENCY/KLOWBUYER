@@ -25,6 +25,7 @@ export default function QuickInquiryForm({
   compact,
   inquiryTypes,
   defaultInquiryType = "",
+  defaultCountry = "",
 }: {
   ctaId: string;
   /** Anchor id so other pages can link straight to this form. */
@@ -41,6 +42,8 @@ export default function QuickInquiryForm({
   /** Adds a "What's it about?" select with these options. */
   inquiryTypes?: string[];
   defaultInquiryType?: string;
+  /** Country code to preselect, e.g. on a country guide. */
+  defaultCountry?: string;
 }) {
   const [email, setEmail] = useState(defaultState === "sent" ? "buyer@company.com" : "");
   const [withWa, setWithWa] = useState(false);
@@ -92,7 +95,7 @@ export default function QuickInquiryForm({
       <div className={compact ? "fields" : "fields fields--2"}>
         <label className="field">
           <span className="eyebrow">Country</span>
-          <select defaultValue="">
+          <select defaultValue={defaultCountry}>
             <option value="" disabled>Select</option>
             {COUNTRY_GROUPS.map((g) => (
               <optgroup key={g.label} label={g.label}>

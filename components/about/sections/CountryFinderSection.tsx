@@ -1,5 +1,6 @@
 import { t } from "@/content/sections";
 import { DIFFICULTY_TEXT, LABEL_SUPPORT_TEXT, shippingCountries } from "@/content/shippingCountries";
+import { importGuide } from "@/content/guides";
 import CountryFinder from "../CountryFinder";
 import { SectionAddons, SectionHead, type SectionProps } from "../parts";
 
@@ -17,7 +18,8 @@ export default function CountryFinderSection({ s, locale, page }: SectionProps) 
       : t(LABEL_SUPPORT_TEXT[c.labelSupport], locale),
     registration: t(c.registrationSummary, locale),
     difficulty: c.difficulty && { key: c.difficulty, label: t(DIFFICULTY_TEXT[c.difficulty], locale) },
-    guideHref: c.guideSlug && `/guides/import/${c.guideSlug}`,
+    // Only link guides that exist (e.g. Colombia has a slug but no guide yet).
+    guideHref: c.guideSlug && importGuide(c.guideSlug) ? `/guides/import/${c.guideSlug}` : undefined,
   }));
   return (
     <section id={s.id} className="section about-sec">

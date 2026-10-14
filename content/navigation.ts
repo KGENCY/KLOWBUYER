@@ -6,6 +6,7 @@
 import type { CtaLink, Locale, LocalizedText, MediaImage } from "@/types/content";
 import { t } from "./i18n";
 import { brandHref, brandsOfType, featuredPartners } from "./brands";
+import { guideHref, importGuides, ingredientGuides, latestTrend, monthLabel } from "./guides";
 
 /* ───────────── Types ───────────── */
 
@@ -161,39 +162,30 @@ export const NAV: NavItem[] = [
     enabled: true,
     order: 2,
     match: ["/guides"],
+    // Guide lists come from content/guides.ts — add guides there, not here.
     columns: [
       {
         id: "import",
         heading: { en: "Import guides" },
-        links: [
-          link("mexico", "Mexico", "/guides/import/mexico", 0),
-          link("kazakhstan", "Kazakhstan", "/guides/import/kazakhstan", 1),
-          link("uae", "UAE", "/guides/import/uae", 2),
-          link("colombia", "Colombia", "/guides/import/colombia", 3),
-        ],
-        more: link("import-all", "All countries", "/guides/import", 99),
+        links: importGuides().slice(0, 6).map((g, i) => link(g.slug, g.country.en, guideHref(g), i)),
+        more: link("import-all", "All countries", "/guides#import", 99),
       },
       {
         id: "trends",
         heading: { en: "Trends" },
         featureFirst: true,
-        links: [
-          link("trend-report", "Korea Trend Report – [Month Year]", "/guides/trends/korea-trend-report", 0, {
-            description: { en: "What’s selling in Korea this month, and why." },
-          }),
-        ],
-        more: link("trends-all", "All reports", "/guides/trends", 99),
+        links: latestTrend()
+          ? [link("trend-report", `Korea Trend Report – ${monthLabel(latestTrend()!.month)}`, guideHref(latestTrend()!), 0, {
+              description: { en: "What’s selling in Korea this month, and why." },
+            })]
+          : [],
+        more: link("trends-all", "All reports", "/guides#trends", 99),
       },
       {
         id: "ingredients",
         heading: { en: "Ingredients & categories" },
-        links: [
-          link("pdrn", "PDRN", "/guides/ingredients/pdrn", 0),
-          link("heartleaf", "Heartleaf", "/guides/ingredients/heartleaf", 1),
-          link("retinal", "Retinal", "/guides/ingredients/retinal", 2),
-          link("korean-sunscreen", "Korean sunscreen", "/guides/ingredients/korean-sunscreen", 3),
-        ],
-        more: link("ingredients-all", "All guides", "/guides/ingredients", 99),
+        links: ingredientGuides().slice(0, 6).map((g, i) => link(g.slug, g.ingredient, guideHref(g), i)),
+        more: link("ingredients-all", "All guides", "/guides#ingredients", 99),
       },
     ],
     aside: { type: "leadMagnet", magnetId: "wholesale-price-list" },
@@ -259,9 +251,9 @@ export const FOOTER = {
       id: "guides",
       heading: { en: "Guides" },
       links: [
-        link("import", "Import guides", "/guides/import", 0),
-        link("trends", "Trend reports", "/guides/trends", 1),
-        link("ingredients", "Ingredients & categories", "/guides/ingredients", 2),
+        link("import", "Import guides", "/guides#import", 0),
+        link("trends", "Trend reports", "/guides#trends", 1),
+        link("ingredients", "Ingredients & categories", "/guides#ingredients", 2),
       ],
     },
     {
