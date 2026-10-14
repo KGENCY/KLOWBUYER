@@ -10,11 +10,8 @@
 
 /* ───────────── Types ───────────── */
 
-export type Locale = "en" | "es" | "ru" | "ar";
-export const RTL_LOCALES: Locale[] = ["ar"];
-
-/** A text field that can be translated. `en` is required and is the fallback for every other locale. */
-export type Localized = { en: string } & Partial<Record<Exclude<Locale, "en">, string>>;
+import type { Localized } from "./i18n";
+export { t, RTL_LOCALES, type Locale, type Localized } from "./i18n";
 
 /** Name of the built-in SVG drawn when an image has no `src` yet. */
 export type Fallback = "warehouse" | "shelves" | "inspection" | "packing" | "worldMap" | "location" | "portrait";
@@ -77,12 +74,6 @@ export interface AboutSection {
 export interface AboutPage {
   seo: { title: Localized; description: Localized };
   sections: AboutSection[];
-}
-
-/** Picks the text for a locale, falling back to English. */
-export function t(text: Localized | undefined, locale: Locale = "en"): string {
-  if (!text) return "";
-  return text[locale] ?? text.en;
 }
 
 /* ───────────── Content ───────────── */
