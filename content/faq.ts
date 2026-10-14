@@ -1,0 +1,168 @@
+import type { Localized } from "./i18n";
+
+/**
+ * Every FAQ on the site lives here, once. Pages pull their category with `faqsFor()`;
+ * /faq shows them all. Values in [BRACKETS] are still to be confirmed.
+ */
+
+export type FaqCategory = "about" | "shipping" | "ordering";
+
+export interface FaqItem {
+  id: string;
+  category: FaqCategory;
+  question: Localized;
+  answer: Localized;
+  order: number;
+  enabled: boolean;
+  /** Optional inline link at the end of the answer. */
+  cta?: { label: Localized; href: string };
+}
+
+export const FAQ_CATEGORIES: Record<FaqCategory, { label: Localized; href: string; more: Localized }> = {
+  about: { label: { en: "About KLOW" }, href: "/about", more: { en: "More about KLOW →" } },
+  shipping: { label: { en: "Shipping" }, href: "/shipping", more: { en: "More about shipping →" } },
+  ordering: { label: { en: "Ordering & payment" }, href: "/ordering-payment", more: { en: "More about ordering & payment →" } },
+};
+
+export const FAQ_CATEGORY_ORDER: FaqCategory[] = ["about", "shipping", "ordering"];
+
+const CONTACT = "/about#contact";
+
+export const FAQS: FaqItem[] = [
+  /* About */
+  {
+    id: "authentic",
+    category: "about",
+    order: 0,
+    enabled: true,
+    question: { en: "Are your products authentic?" },
+    answer: {
+      en: "Yes. Every product is supplied under a direct contract with the brand and inspected in our warehouse in Korea. We can send the brand’s confirmation of authentic supply on request.",
+    },
+    cta: { label: { en: "Ask for proof of supply →" }, href: CONTACT },
+  },
+  {
+    id: "who",
+    category: "about",
+    order: 1,
+    enabled: true,
+    question: { en: "Who is behind KLOW?" },
+    answer: {
+      en: "KLOW is run by Welkit Inc. (주식회사 웰킷), a registered Korean company (business registration No. 634-81-04211) based in Gwanggyo, Suwon. We sign with brands directly and ship from our own warehouse in Korea.",
+    },
+  },
+  {
+    id: "small-buyers",
+    category: "about",
+    order: 2,
+    enabled: true,
+    question: { en: "Do you work with small buyers?" },
+    answer: {
+      en: "Yes. You can start with a single unit of any product at its wholesale price, and move to MOQ quantities once something sells. Many of our buyers are independent shops and new distributors.",
+    },
+    cta: { label: { en: "Browse & sample →" }, href: "/#collection" },
+  },
+  {
+    id: "export-documents",
+    category: "about",
+    order: 3,
+    enabled: true,
+    question: { en: "Can you provide export documents?" },
+    answer: {
+      en: "Yes. Every shipment comes with a commercial invoice, packing list and certificate of origin. Ingredient lists, CoA and MSDS are available per product.",
+    },
+  },
+
+  /* Shipping */
+  {
+    id: "ship-to-country",
+    category: "shipping",
+    order: 0,
+    enabled: true,
+    question: { en: "Do you ship to my country?" },
+    answer: {
+      en: "We ship worldwide from Korea, with labels and documents prepared for Mexico & Latin America, Kazakhstan & Central Asia, and the UAE & GCC. Europe support is [coming soon]. Some categories are restricted in some markets — tell us where you are and we’ll confirm.",
+    },
+    cta: { label: { en: "Ask about your country →" }, href: CONTACT },
+  },
+  {
+    id: "free-shipping",
+    category: "shipping",
+    order: 1,
+    enabled: true,
+    question: { en: "When is shipping free?" },
+    answer: {
+      en: "Sample orders ship free once your box reaches 5 SKUs, mixed across any brands. Below that, sample shipping is a flat $18.",
+    },
+    cta: { label: { en: "Browse & sample →" }, href: "/#collection" },
+  },
+  {
+    id: "delivery-time",
+    category: "shipping",
+    order: 2,
+    enabled: true,
+    question: { en: "How long does delivery take?" },
+    answer: {
+      en: "Orders are packed in our Korean warehouse and dispatched within 2–7 days. Delivery then takes [X–Y] business days, depending on your market and carrier.",
+    },
+  },
+  {
+    id: "customs-duties",
+    category: "shipping",
+    order: 3,
+    enabled: true,
+    question: { en: "Who pays customs and duties?" },
+    answer: {
+      en: "By default the buyer pays import duties and taxes on arrival. DDP — where we pay them up front and include them in your quote — is available on request for [MARKETS].",
+    },
+    cta: { label: { en: "Request a DDP quote →" }, href: "/ordering-payment#quote" },
+  },
+
+  /* Ordering & payment */
+  {
+    id: "minimum-order",
+    category: "ordering",
+    order: 0,
+    enabled: true,
+    question: { en: "Is there a minimum order?" },
+    answer: {
+      en: "Not for samples: order 1 unit of any product at its wholesale price. Wholesale reorders follow each product’s MOQ, from [MOQ] units.",
+    },
+    cta: { label: { en: "Browse & sample →" }, href: "/#collection" },
+  },
+  {
+    id: "bulk-pricing",
+    category: "ordering",
+    order: 1,
+    enabled: true,
+    question: { en: "How do I see bulk prices?" },
+    answer: {
+      en: "Sample prices are public. MOQ and volume prices show once you sign in with a buyer account — it’s free and takes about two minutes.",
+    },
+    cta: { label: { en: "Create a buyer account →" }, href: "/signup" },
+  },
+  {
+    id: "payment-methods",
+    category: "ordering",
+    order: 2,
+    enabled: true,
+    question: { en: "How can I pay?" },
+    answer: {
+      en: "Sample orders are paid by card in USD (Visa, Mastercard, AMEX, JCB, UnionPay, PayPal, Alipay+). Wholesale orders are invoiced in USD and paid by [PAYMENT METHODS].",
+    },
+  },
+  {
+    id: "bulk-quote",
+    category: "ordering",
+    order: 3,
+    enabled: true,
+    question: { en: "Can I get a quote for a large order?" },
+    answer: {
+      en: "Yes. Send us the products and quantities you have in mind and we’ll reply within 24 hours on business days with prices, lead time and shipping to your market.",
+    },
+    cta: { label: { en: "Request bulk quote →" }, href: "/ordering-payment#quote" },
+  },
+];
+
+export const faqsFor = (category: FaqCategory) =>
+  FAQS.filter((f) => f.category === category && f.enabled).sort((a, b) => a.order - b.order);

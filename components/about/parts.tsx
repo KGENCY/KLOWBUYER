@@ -3,8 +3,11 @@ import { t, type AboutLink, type AboutSection, type Locale } from "@/content/abo
 
 export type SectionProps = { s: AboutSection; locale: Locale };
 
+/** The fields a section heading needs, so non-About sections (e.g. the FAQ) can reuse it. */
+export type HeadFields = Pick<AboutSection, "number" | "label" | "title" | "subtitle">;
+
 /** "01  WHO WE ARE" — mono label with the section number in green. */
-export function SectionLabel({ s, locale }: SectionProps) {
+export function SectionLabel({ s, locale }: { s: HeadFields; locale: Locale }) {
   if (!s.label) return null;
   return (
     <span className="eyebrow about-label">
@@ -15,7 +18,7 @@ export function SectionLabel({ s, locale }: SectionProps) {
 }
 
 /** Label + H2, with the subtitle as a grey second line (same pattern as the landing hero). */
-export function SectionHead({ s, locale }: SectionProps) {
+export function SectionHead({ s, locale }: { s: HeadFields; locale: Locale }) {
   return (
     <div className="about-head">
       <SectionLabel s={s} locale={locale} />
