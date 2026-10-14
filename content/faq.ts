@@ -18,15 +18,24 @@ export interface FaqItem {
   enabled: boolean;
   /** Optional inline link at the end of the answer. Its ctaId is the action part; pages prefix it with [page]_faq_. */
   cta?: CtaLink;
+  /** Shown first on /faq as a "popular question" card. */
+  featured?: boolean;
 }
 
-export const FAQ_CATEGORIES: Record<FaqCategory, { label: Localized; href: string; more: Localized }> = {
-  about: { label: { en: "About KLOW" }, href: "/about", more: { en: "More about KLOW →" } },
-  shipping: { label: { en: "Shipping" }, href: "/shipping", more: { en: "More about shipping →" } },
-  ordering: { label: { en: "Ordering & payment" }, href: "/ordering-payment", more: { en: "More about ordering & payment →" } },
-};
+export interface FaqCategoryMeta {
+  id: FaqCategory;
+  label: Localized;
+  description: Localized;
+  /** The FAQ section on the page that owns these questions (and their FAQPage schema). */
+  href: string;
+}
 
-export const FAQ_CATEGORY_ORDER: FaqCategory[] = ["about", "shipping", "ordering"];
+/** Categories in display order (the /faq hub follows this order). */
+export const FAQ_CATEGORIES: FaqCategoryMeta[] = [
+  { id: "about", label: { en: "About KLOW" }, description: { en: "Who we are, authenticity, where we work" }, href: "/about#faq" },
+  { id: "shipping", label: { en: "Shipping" }, description: { en: "Delivery, Incoterms, duties, documents" }, href: "/shipping#faq" },
+  { id: "ordering", label: { en: "Ordering & Payment" }, description: { en: "Samples, MOQ, payment, cancellations" }, href: "/ordering-payment#faq" },
+];
 
 const CONTACT = "/about#contact";
 
@@ -37,6 +46,7 @@ export const FAQS: FaqItem[] = [
     category: "about",
     order: 0,
     enabled: true,
+    featured: true,
     question: { en: "Are your products authentic?" },
     answer: {
       en: "Yes. Every product is supplied under a direct contract with the brand and inspected in our warehouse in Korea. We can send the brand’s confirmation of authentic supply on request.",
@@ -93,6 +103,7 @@ export const FAQS: FaqItem[] = [
     category: "shipping",
     order: 0,
     enabled: true,
+    featured: true,
     question: { en: "Do you ship to my country?" },
     answer: {
       en: "We ship worldwide from Korea, with labels and documents prepared for Mexico & Latin America, Kazakhstan & Central Asia, and the UAE & GCC. Europe support is [coming soon]. Some categories are restricted in some markets — tell us where you are and we’ll confirm.",
@@ -159,6 +170,7 @@ export const FAQS: FaqItem[] = [
     category: "ordering",
     order: 0,
     enabled: true,
+    featured: true,
     question: { en: "Is there a minimum order?" },
     answer: {
       en: `Not for samples: order ${P.sampleMinUnits} unit of any product at its wholesale price. Wholesale orders start at ${P.wholesaleMOA}, and each product has its own MOQ for the lower reorder price.`,
@@ -191,6 +203,7 @@ export const FAQS: FaqItem[] = [
     category: "ordering",
     order: 3,
     enabled: true,
+    featured: true,
     question: { en: "Which payment methods do you accept?" },
     answer: {
       en: `Card and PayPal for samples and small wholesale orders (PayPal up to ${P.paypalLimit}), bank transfer (T/T) for wholesale and bulk, and Letter of Credit (L/C) for large bulk orders by agreement. All prices are in ${P.currency}.`,
@@ -240,6 +253,10 @@ export const FAQS: FaqItem[] = [
     cta: { label: { en: "Request bulk quote →" }, href: "/ordering-payment#quote", ctaId: "bulk_quote_quote" },
   },
 ];
+
+/** Questions marked `featured`, in category order. */
+export const featuredFaqs = () =>
+  FAQ_CATEGORIES.flatMap((c) => faqsFor(c.id)).filter((f) => f.featured);
 
 export const faqsFor = (category: FaqCategory) =>
   FAQS.filter((f) => f.category === category && f.enabled).sort((a, b) => a.order - b.order);

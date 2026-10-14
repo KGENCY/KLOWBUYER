@@ -1,64 +1,51 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { t } from "@/content/i18n";
-import { FAQ_CATEGORIES, FAQ_CATEGORY_ORDER, faqsFor } from "@/content/faq";
-import { SectionHead } from "@/components/about/parts";
-import FaqList from "@/components/faq/FaqList";
+import { faqPage, FAQ_CONTACT } from "@/content/faqPage";
+import FaqHub from "@/components/faq/FaqHub";
 import QuickInquiryForm from "@/components/conversion/QuickInquiryForm";
+import ContextCTA from "@/components/conversion/ContextCTA";
+import SectionHeader from "@/components/section/SectionHeader";
+import InfoTable from "@/components/section/InfoTable";
+import RelatedPageCards from "@/components/section/RelatedPageCards";
 
 export const metadata: Metadata = {
-  title: "FAQ | KLOW Wholesale — K-beauty wholesale questions answered",
-  description: "Answers on authenticity, shipping from Korea, duties, minimum orders, bulk pricing and payment for KLOW’s K-beauty wholesale buyers.",
+  title: t(faqPage.seo.title),
+  description: t(faqPage.seo.description),
   alternates: { canonical: "/faq" },
 };
 
 /**
- * Every FAQ, grouped by category. No FAQPage JSON-LD here: each question already carries it
- * on its own page (/about, /shipping, /ordering-payment), and duplicating it would compete.
+ * FAQ hub: every question from content/faq.ts, grouped by category, searchable.
+ * No FAQPage JSON-LD here — /about, /shipping and /ordering-payment each output their own.
  */
 export default function FaqPage() {
   return (
     <div className="about">
-      <section className="about-hero">
-        <div className="wrap about-hero__grid about-hero__grid--solo">
-          <div>
-            <span className="eyebrow eyebrow--accent about-hero__label">FAQ</span>
-            <h1 className="hero__title">
-              Questions buyers ask.
-              <em>Answered once, here.</em>
-            </h1>
-            <p className="hero__lede">Authenticity, shipping, duties, minimums and payment. Can’t find yours? Ask us at the bottom of the page.</p>
-            <nav className="faq-jump" aria-label="FAQ categories">
-              {FAQ_CATEGORY_ORDER.map((c) => (
-                <a key={c} href={`#${c}`} data-cta-id={`faq_jump_${c}`}>{t(FAQ_CATEGORIES[c].label)}</a>
-              ))}
-            </nav>
-          </div>
-        </div>
-      </section>
-
-      {FAQ_CATEGORY_ORDER.map((c, i) => {
-        const cat = FAQ_CATEGORIES[c];
-        return (
-          <section key={c} id={c} className="section about-sec">
-            <div className="wrap about-split">
-              <div className="faq-cat__head">
-                <SectionHead s={{ number: String(i + 1).padStart(2, "0"), label: { en: `${faqsFor(c).length} questions` }, title: cat.label }} locale="en" />
-                <Link href={cat.href} className="link small" data-cta-id={`faq_more_${c}`}>{t(cat.more)}</Link>
-              </div>
-              <FaqList items={faqsFor(c)} ctaPrefix={`faq_${c}`} openFirst={false} />
-            </div>
-          </section>
-        );
-      })}
+      <FaqHub />
 
       <section id="ask" className="section about-sec about-inquiry">
         <div className="wrap about-split">
           <div>
-            <SectionHead s={{ label: { en: "Still unsure?" }, title: { en: "Didn’t find your answer?" }, subtitle: { en: "Ask us directly." } }} locale="en" />
-            <p className="about-regions__body">A real person on our team replies within 24 hours on business days — in English, Spanish, Russian or Arabic.</p>
+            <SectionHeader title={t(faqPage.still.title)} description={t(faqPage.still.body)} />
+            <InfoTable rows={FAQ_CONTACT.map((r) => ({ key: r.label.en, label: t(r.label), value: t(r.value) }))} />
           </div>
-          <QuickInquiryForm ctaId="faq_inquiry" title="Ask our team" />
+          <QuickInquiryForm ctaId="faq_final_inquiry" title={t(faqPage.still.formTitle)} lede={t(faqPage.still.formLede)} />
+        </div>
+      </section>
+
+      <section className="about-final">
+        <div className="wrap">
+          <ContextCTA id="faq_bottom" variant="sample" text={t(faqPage.bottomCta)} />
+        </div>
+      </section>
+
+      <section className="about-related">
+        <div className="wrap">
+          <span className="eyebrow about-label">Keep reading</span>
+          <RelatedPageCards
+            ctaPrefix="faq_related"
+            cards={faqPage.related.map((r) => ({ key: r.key, href: r.href, title: t(r.title), description: t(r.description) }))}
+          />
         </div>
       </section>
     </div>

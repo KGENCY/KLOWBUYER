@@ -2,12 +2,28 @@ import Link from "next/link";
 import { t, type Locale } from "@/content/i18n";
 import type { FaqItem } from "@/content/faq";
 
+/** DOM id of a question, so cards and links can open it: <details id="q-{id}">. */
+export const faqAnchor = (id: string) => `q-${id}`;
+
 /** Native <details> accordion: toggles without JS and keeps answers in the HTML for search engines. */
-export default function FaqList({ items, ctaPrefix, locale = "en", openFirst = true }: { items: FaqItem[]; ctaPrefix: string; locale?: Locale; openFirst?: boolean }) {
+export default function FaqList({
+  items,
+  ctaPrefix,
+  locale = "en",
+  openFirst = true,
+  openAll = false,
+}: {
+  items: FaqItem[];
+  ctaPrefix: string;
+  locale?: Locale;
+  openFirst?: boolean;
+  /** Open every answer, e.g. while showing search results. */
+  openAll?: boolean;
+}) {
   return (
     <div className="about-faq">
       {items.map((f, i) => (
-        <details key={f.id} open={openFirst && i === 0}>
+        <details key={`${f.id}-${openAll}`} id={faqAnchor(f.id)} open={openAll || (openFirst && i === 0)}>
           <summary>
             <h3>{t(f.question, locale)}</h3>
             <i aria-hidden />
