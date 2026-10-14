@@ -203,7 +203,7 @@ export default function PartnerBrandPage({ brand }: { brand: BrandProfile }) {
         <section className="section about-sec">
           <div className="wrap">
             <SectionHeader label="Fits the same shelf as" title={`Already stocking the big names?`} />
-            <ul className="shelf">
+            <ul className="pshelf">
               {majors.map((m) => (
                 <li key={m.slug}>
                   <p>Stocking {m.name}? <b>{brand.name} fits the same shelf.</b></p>

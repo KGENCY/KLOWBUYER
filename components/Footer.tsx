@@ -1,46 +1,23 @@
-import { t } from "@/content/i18n";
-import { FOOTER, visible } from "@/content/navigation";
-import { NavLinkView } from "./nav/MenuContent";
-import NewsletterForm from "./nav/NewsletterForm";
-import LanguageSelect from "./nav/LanguageSelect";
+import Link from "next/link";
 
-/** Shop / Guides / Company links, the newsletter, then the legal line and language. All text from content/navigation.ts. */
 export default function Footer() {
   return (
     <footer className="footer">
-      <div className="wrap">
-        <div className="footer__top">
-          <div className="wordmark wordmark--light">
+      <div className="wrap footer__in">
+        <div>
+          <div className="wordmark wordmark--left wordmark--light">
             <span className="wordmark__k">KLOW</span>
             <span className="wordmark__w">Wholesale</span>
           </div>
-          <p className="footer__blurb">{t(FOOTER.blurb)}</p>
+          <p className="muted small">Korean beauty, sourced directly from the brands — for distributors, retailers and professionals worldwide.</p>
         </div>
-        <div className="footer__grid">
-          {FOOTER.columns.map((c) => (
-            <nav key={c.id} className="footer__col" aria-label={t(c.heading)}>
-              <span className="eyebrow">{t(c.heading)}</span>
-              <ul>
-                {visible(c.links).map((l) => (
-                  <li key={l.id}><NavLinkView l={l} className="footer__link" /></li>
-                ))}
-              </ul>
-            </nav>
-          ))}
-          <div className="footer__col footer__col--news">
-            <span className="eyebrow">{t(FOOTER.newsletter.heading)}</span>
-            <NewsletterForm ctaId={FOOTER.newsletter.ctaId} title={t(FOOTER.newsletter.title)} note={t(FOOTER.newsletter.note)} />
-          </div>
+        <div className="footer__cols">
+          <div><span className="eyebrow">Source</span><Link href="/#collection">Collection</Link><Link href="/#brands">Brands</Link><Link href="/match">Find my brands</Link></div>
+          <div><span className="eyebrow">Program</span><Link href="/#sampling">Sampling</Link><span>Wholesale tiers</span><span>Documentation</span></div>
+          <div><span className="eyebrow">Company</span><span>About</span><span>Partner with us</span><span>Contact</span></div>
         </div>
       </div>
-      <div className="wrap footer__base">
-        <p className="footer__legal">
-          {FOOTER.legal.map((part, i) => (
-            <span key={i}>{t(part)}</span>
-          ))}
-        </p>
-        <LanguageSelect placement="up" tone="dark" />
-      </div>
+      <div className="wrap footer__base"><span>© 2026 KLOW Wholesale</span><span>Seoul → Worldwide</span></div>
     </footer>
   );
 }
