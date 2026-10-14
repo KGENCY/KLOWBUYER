@@ -7,7 +7,7 @@ import LeadMagnets from "@/components/conversion/LeadMagnets";
 export type SectionProps = { s: AboutSection; locale: Locale; page: string };
 
 /** The fields a section heading needs, so non-About sections (e.g. the FAQ) can reuse it. */
-export type HeadFields = Pick<AboutSection, "number" | "label" | "title" | "subtitle">;
+export type HeadFields = Pick<AboutSection, "number" | "label" | "title" | "subtitle" | "badge">;
 
 /** "01  WHO WE ARE" — mono label with the section number in green. */
 export function SectionLabel({ s, locale }: { s: HeadFields; locale: Locale }) {
@@ -28,9 +28,10 @@ export function SectionHead({ s, locale }: { s: HeadFields; locale: Locale }) {
       {s.title && (
         <h2 className="h2">
           {t(s.title, locale)}
-          {s.subtitle && <em>{t(s.subtitle, locale)}</em>}
+          {s.subtitle && <>{" "}<em>{t(s.subtitle, locale)}</em></>}
         </h2>
       )}
+      {s.badge && <span className="about-badge">{t(s.badge, locale)}</span>}
     </div>
   );
 }
@@ -60,10 +61,10 @@ export function SectionAddons({ s, locale }: { s: AboutSection; locale: Locale }
     <>
       {s.addons?.map((a, i) => {
         if (a.type === "contextCta")
-          return <ContextCTA key={i} id={a.ctaId} variant={a.variant} text={t(a.text, locale)} secondary={a.secondary} />;
+          return <ContextCTA key={i} id={a.ctaId} variant={a.variant} text={t(a.text, locale)} secondary={a.secondary} href={a.href} />;
         if (a.type === "leadMagnets")
           return <LeadMagnets key={i} ids={a.ids} ctaPrefix={a.ctaPrefix} title={a.title && t(a.title, locale)} locale={locale} />;
-        return null; // inquiry forms are placed by the section itself
+        return null; // inquiry forms and country pickers are placed by the section itself
       })}
     </>
   );

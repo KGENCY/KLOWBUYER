@@ -62,17 +62,6 @@ export const FAQS: FaqItem[] = [
     },
     cta: { label: { en: "Browse & sample →" }, href: "/#collection" },
   },
-  {
-    id: "export-documents",
-    category: "about",
-    order: 3,
-    enabled: true,
-    question: { en: "Can you provide export documents?" },
-    answer: {
-      en: "Yes. Every shipment comes with a commercial invoice, packing list and certificate of origin. Ingredient lists, CoA and MSDS are available per product.",
-    },
-  },
-
   /* Shipping */
   {
     id: "ship-to-country",
@@ -83,18 +72,7 @@ export const FAQS: FaqItem[] = [
     answer: {
       en: "We ship worldwide from Korea, with labels and documents prepared for Mexico & Latin America, Kazakhstan & Central Asia, and the UAE & GCC. Europe support is [coming soon]. Some categories are restricted in some markets — tell us where you are and we’ll confirm.",
     },
-    cta: { label: { en: "Ask about your country →" }, href: CONTACT },
-  },
-  {
-    id: "free-shipping",
-    category: "shipping",
-    order: 1,
-    enabled: true,
-    question: { en: "When is shipping free?" },
-    answer: {
-      en: "Sample orders ship free once your box reaches 5 SKUs, mixed across any brands. Below that, sample shipping is a flat $18.",
-    },
-    cta: { label: { en: "Browse & sample →" }, href: "/#collection" },
+    cta: { label: { en: "Ask about your country →" }, href: "/shipping#quote" },
   },
   {
     id: "delivery-time",
@@ -103,19 +81,51 @@ export const FAQS: FaqItem[] = [
     enabled: true,
     question: { en: "How long does delivery take?" },
     answer: {
-      en: "Orders are packed in our Korean warehouse and dispatched within 2–7 days. Delivery then takes [X–Y] business days, depending on your market and carrier.",
+      en: "Orders are packed in our Korean warehouse and dispatched within 2–7 days. Then express courier takes [x–x] days, air freight [x–x] days and sea freight [x–x] days, depending on your market.",
     },
   },
   {
     id: "customs-duties",
     category: "shipping",
-    order: 3,
+    order: 1,
     enabled: true,
     question: { en: "Who pays customs and duties?" },
     answer: {
       en: "By default the buyer pays import duties and taxes on arrival. DDP — where we pay them up front and include them in your quote — is available on request for [MARKETS].",
     },
-    cta: { label: { en: "Request a DDP quote →" }, href: "/ordering-payment#quote" },
+    cta: { label: { en: "Request a DDP quote →" }, href: "/shipping#quote" },
+  },
+
+  {
+    id: "own-forwarder",
+    category: "shipping",
+    order: 3,
+    enabled: true,
+    question: { en: "Can I use my own forwarder?" },
+    answer: {
+      en: "Yes. Choose EXW or FCA and your forwarder collects from our warehouse in Korea, or FOB and we deliver to the port of export. We prepare the export documents either way.",
+    },
+  },
+  {
+    id: "documents",
+    category: "shipping",
+    order: 4,
+    enabled: true,
+    question: { en: "What documents do you provide?" },
+    answer: {
+      en: "Every shipment comes with a commercial invoice, packing list and certificate of origin. On request we add ingredient lists, CoA, MSDS and a brand authenticity letter.",
+    },
+  },
+  {
+    id: "local-labels",
+    category: "shipping",
+    order: 5,
+    enabled: true,
+    question: { en: "Do you provide local-language labels?" },
+    answer: {
+      en: "Yes, in Spanish, Russian and Arabic. We print and apply them in our warehouse before dispatch, so stock arrives ready to sell. Other languages: [on request].",
+    },
+    cta: { label: { en: "Ask about labels for your market →" }, href: "/shipping#quote" },
   },
 
   /* Ordering & payment */
@@ -131,9 +141,20 @@ export const FAQS: FaqItem[] = [
     cta: { label: { en: "Browse & sample →" }, href: "/#collection" },
   },
   {
-    id: "bulk-pricing",
+    id: "free-shipping",
     category: "ordering",
     order: 1,
+    enabled: true,
+    question: { en: "When is shipping free?" },
+    answer: {
+      en: "Sample orders ship free once your box reaches 5 SKUs, mixed across any brands. Below that, sample shipping is a flat $18.",
+    },
+    cta: { label: { en: "Browse & sample →" }, href: "/#collection" },
+  },
+  {
+    id: "bulk-pricing",
+    category: "ordering",
+    order: 2,
     enabled: true,
     question: { en: "How do I see bulk prices?" },
     answer: {
@@ -144,7 +165,7 @@ export const FAQS: FaqItem[] = [
   {
     id: "payment-methods",
     category: "ordering",
-    order: 2,
+    order: 3,
     enabled: true,
     question: { en: "How can I pay?" },
     answer: {
@@ -154,7 +175,7 @@ export const FAQS: FaqItem[] = [
   {
     id: "bulk-quote",
     category: "ordering",
-    order: 3,
+    order: 4,
     enabled: true,
     question: { en: "Can I get a quote for a large order?" },
     answer: {

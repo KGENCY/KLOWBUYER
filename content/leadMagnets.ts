@@ -40,6 +40,14 @@ export const LEAD_MAGNETS: LeadMagnet[] = [
     enabled: true,
   },
   {
+    id: "uae-registration-guide",
+    title: { en: "UAE registration guide" },
+    description: { en: "How cosmetics are registered for sale in the UAE, what the importer files, and the Arabic label rules." },
+    format: "PDF",
+    tag: { en: "UAE" },
+    enabled: true,
+  },
+  {
     id: "brand-catalog",
     title: { en: "KLOW brand catalog" },
     description: { en: "Every brand we supply, with hero products, MSRP and the markets each one is cleared for." },

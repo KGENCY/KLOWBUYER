@@ -19,6 +19,10 @@ export interface AboutImage {
   alt: Localized;
   caption?: Localized;
   fallback: Fallback;
+  /** CSS aspect-ratio for the frame, e.g. "16 / 10". Each section has its own default. */
+  ratio?: string;
+  /** "contain" shows the whole image (e.g. a map); default "cover" fills the frame. */
+  fit?: "cover" | "contain";
 }
 
 export interface AboutItem {
@@ -46,15 +50,34 @@ export interface AboutPerson {
   image: AboutImage;
 }
 
+/** One market in the hero country picker. */
+export interface Destination {
+  code: string;
+  name: Localized;
+  /** Recommended way to ship. */
+  method: Localized;
+  days: Localized;
+  labels: Localized;
+  /** One-line summary of the local registration the importer needs. */
+  registration: Localized;
+}
+
+/** A simple table: header row, then rows; a row can be highlighted with a note under it. */
+export interface AboutTable {
+  columns: Localized[];
+  rows: { key: string; cells: Localized[]; highlight?: Localized }[];
+}
+
 /** Conversion blocks attached to a section; rendered at the section's end (inquiry forms beside its content). */
 export type AboutAddon =
-  | { type: "contextCta"; variant: CtaVariant; text: Localized; ctaId: string; secondary?: CtaVariant | false }
+  | { type: "contextCta"; variant: CtaVariant; text: Localized; ctaId: string; secondary?: CtaVariant | false; href?: string }
+  | { type: "countryFinder"; label: Localized; placeholder: Localized; quoteLabel: Localized; quoteHref: string; ctaPrefix: string; destinations: Destination[] }
   | { type: "leadMagnets"; ids: string[]; title?: Localized; ctaPrefix: string }
   | { type: "inquiryForm"; ctaId: string; anchor?: string; title?: Localized; lede?: Localized; submitLabel?: Localized };
 
 export type SectionType =
   | "hero" | "split" | "grid" | "gallery" | "regions" | "steps"
-  | "companyInfo" | "facts" | "pricing" | "inquiry" | "faq" | "cta" | "related";
+  | "companyInfo" | "facts" | "pricing" | "inquiry" | "table" | "faq" | "cta" | "related";
 
 export interface AboutSection {
   /** Also the anchor id on the page (e.g. /about#company). */
@@ -78,6 +101,10 @@ export interface AboutSection {
   logos?: Localized[];
   /** companyInfo: team placeholders. */
   people?: AboutPerson[];
+  /** table: rows and columns. */
+  table?: AboutTable;
+  /** Short highlighted tag beside the heading, e.g. "Samples ship free at 5 SKUs". */
+  badge?: Localized;
   /** faq: which category of content/faq.ts to show. */
   faqCategory?: FaqCategory;
   addons?: AboutAddon[];

@@ -10,12 +10,15 @@ export default function ContextCTA({
   variant,
   text,
   secondary,
+  href,
 }: {
   id: string;
   variant: CtaVariant;
   text: string;
   /** Override the text link; pass `false` to hide it. */
   secondary?: CtaVariant | false;
+  /** Send the main button somewhere other than the variant's default, e.g. a form on the same page. */
+  href?: string;
 }) {
   const main = CTA_TARGETS[variant];
   const alt = secondary === false ? null : (secondary ?? CTA_FALLBACK[variant]);
@@ -23,7 +26,7 @@ export default function ContextCTA({
     <div className={`ccta ccta--${variant}`}>
       <p className="ccta__text">{text}</p>
       <div className="ccta__act">
-        <Link href={main.href} className="btn btn--solid" data-cta-id={`${id}_${variant}`}>{main.label}</Link>
+        <Link href={href ?? main.href} className="btn btn--solid" data-cta-id={`${id}_${variant}`}>{main.label}</Link>
         {alt && <Link href={CTA_TARGETS[alt].href} className="link small" data-cta-id={`${id}_${alt}`}>{CTA_TARGETS[alt].label}</Link>}
       </div>
     </div>
