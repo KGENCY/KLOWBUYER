@@ -1,5 +1,5 @@
 import { t } from "@/content/sections";
-import Illustration from "../Illustration";
+import Illustration from "@/components/media/Illustration";
 import { SectionAddons, SectionHead, type SectionProps } from "../parts";
 
 /** Target markets as a ruled list, over a faint dot map with routes out of Korea. */

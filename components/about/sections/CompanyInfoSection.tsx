@@ -1,6 +1,6 @@
 import { t } from "@/content/sections";
 import QuickInquiryForm from "@/components/conversion/QuickInquiryForm";
-import MediaFrame from "../MediaFrame";
+import MediaFrame from "@/components/media/MediaFrame";
 import { SectionAddons, SectionHead, type SectionProps } from "../parts";
 
 /**

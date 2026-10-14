@@ -32,7 +32,7 @@ export const shipping: AboutPage = {
         {
           alt: { en: "Map of KLOW shipping routes from Korea to Mexico, Central Asia, the Middle East and Europe" },
           caption: { en: "Seoul → Worldwide" },
-          fallback: "worldMap",
+          fallback: "world-routes",
           ratio: "16 / 10",
           fit: "contain",
         },

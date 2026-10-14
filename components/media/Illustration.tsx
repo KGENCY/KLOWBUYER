@@ -1,4 +1,4 @@
-import type { Fallback } from "@/content/sections";
+import type { IllustrationName } from "@/types/content";
 
 /**
  * Flat placeholder drawings shown until real warehouse photos exist.
@@ -200,6 +200,78 @@ function Portrait() {
   );
 }
 
+/** Generic product slot: a pump bottle, label and cap, on a plinth. */
+function ProductBottle() {
+  return (
+    <>
+      <rect width="300" height="375" fill={C.bg} />
+      <rect x="40" y="300" width="220" height="10" fill={C.box[1]} />
+      <rect x="40" y="310" width="220" height="65" fill={C.wall} />
+      {/* Bottle */}
+      <path d="M112 300 V150 Q112 130 132 130 H168 Q188 130 188 150 V300 Z" fill={C.box[0]} />
+      <rect x="138" y="104" width="24" height="26" fill={C.dark} />
+      <rect x="130" y="92" width="62" height="12" fill={C.dark} />
+      <rect x="180" y="96" width="18" height="5" fill={C.dark} />
+      <rect x="124" y="196" width="52" height="64" fill={C.light} />
+      <rect x="132" y="208" width="36" height="5" fill={C.line} />
+      <rect x="132" y="218" width="24" height="4" fill={C.box[1]} />
+      <rect x="124" y="250" width="52" height="10" fill={C.accent} />
+    </>
+  );
+}
+
+/** A document page with a folded corner, text lines and a format tag. Also used small on resource cards. */
+export function DocumentArt({ format = "PDF", tag }: { format?: string; tag?: string }) {
+  return (
+    <>
+      <path d="M2 2h44l16 16v60H2z" fill={C.light} stroke={C.line} strokeWidth="1.5" />
+      <path d="M46 2v16h16" fill={C.bg} stroke={C.line} strokeWidth="1.5" />
+      {[30, 38, 46, 54].map((y, i) => <rect key={y} x="10" y={y} width={i % 2 ? 30 : 42} height="3" fill={C.box[0]} />)}
+      <rect x="10" y="10" width="26" height="12" fill={C.accent} />
+      <text x="23" y="19" textAnchor="middle" fontSize="7.5" fill="#e9efe9" style={{ fontFamily: "var(--mono)", letterSpacing: ".04em" }}>{format}</text>
+      {tag && <text x="10" y="70" fontSize="7" fill="#62645d" style={{ fontFamily: "var(--mono)", letterSpacing: ".06em", textTransform: "uppercase" }}>{tag}</text>}
+    </>
+  );
+}
+
+function Document() {
+  return (
+    <>
+      <rect width="300" height="375" fill={C.bg} />
+      <g transform="translate(86 96) scale(2)">
+        <DocumentArt />
+      </g>
+    </>
+  );
+}
+
+/** Brand image slot: a lineup of products on a shelf, with a mono "[BRAND]" mark. */
+function BrandPlaceholder() {
+  return (
+    <>
+      <rect width="400" height="300" fill={C.wall} />
+      <rect y="232" width="400" height="68" fill={C.floor} />
+      <rect x="40" y="226" width="320" height="6" fill={C.dark} />
+      {/* Tube */}
+      <path d="M78 226 V120 H118 V226 Z" fill={C.box[2]} />
+      <rect x="86" y="106" width="24" height="14" fill={C.dark} />
+      {/* Tall bottle */}
+      <path d="M140 226 V110 Q140 96 154 96 H178 Q192 96 192 110 V226 Z" fill={C.box[0]} />
+      <rect x="156" y="74" width="20" height="22" fill={C.dark} />
+      <rect x="150" y="150" width="32" height="40" fill={C.light} />
+      {/* Dropper */}
+      <rect x="214" y="150" width="44" height="76" fill={C.box[3]} />
+      <rect x="226" y="128" width="20" height="22" fill={C.accent} />
+      <rect x="231" y="108" width="10" height="20" fill={C.line} />
+      {/* Jar */}
+      <rect x="276" y="188" width="70" height="38" fill={C.box[1]} />
+      <rect x="272" y="176" width="78" height="12" fill={C.dark} />
+      <text x="40" y="48" fontSize="13" fill="#62645d" style={{ fontFamily: "var(--mono)", letterSpacing: ".12em" }}>[BRAND]</text>
+      <rect x="40" y="58" width="56" height="2" fill={C.accent} />
+    </>
+  );
+}
+
 /* ───────────── Dot world map ───────────── */
 
 /**
@@ -272,18 +344,24 @@ function WorldMap() {
   );
 }
 
-const ART: Record<Fallback, { viewBox: string; Draw: () => React.ReactNode }> = {
+const ART: Record<IllustrationName, { viewBox: string; Draw: () => React.ReactNode }> = {
   warehouse: { viewBox: "0 0 400 460", Draw: Warehouse },
-  shelves: { viewBox: "0 0 640 560", Draw: Shelves },
+  "warehouse-shelves": { viewBox: "0 0 640 560", Draw: Shelves },
   inspection: { viewBox: "0 0 400 300", Draw: Inspection },
   packing: { viewBox: "0 0 400 300", Draw: Packing },
+  "world-routes": { viewBox: "0 0 720 260", Draw: WorldMap },
+  "product-bottle": { viewBox: "0 0 300 375", Draw: ProductBottle },
+  document: { viewBox: "0 0 300 375", Draw: Document },
+  "brand-placeholder": { viewBox: "0 0 400 300", Draw: BrandPlaceholder },
   location: { viewBox: "0 0 400 300", Draw: Location },
   portrait: { viewBox: "0 0 300 375", Draw: Portrait },
-  worldMap: { viewBox: "0 0 720 260", Draw: WorldMap },
 };
 
+/** Every drawing name, e.g. for previews. */
+export const ILLUSTRATIONS = Object.keys(ART) as IllustrationName[];
+
 /** Renders a fallback drawing. Pass `title` for a meaningful image, omit it for decoration. */
-export default function Illustration({ name, title, fit = "cover" }: { name: Fallback; title?: string; fit?: "cover" | "contain" }) {
+export default function Illustration({ name, title, fit = "cover" }: { name: IllustrationName; title?: string; fit?: "cover" | "contain" }) {
   const { viewBox, Draw } = ART[name];
   return (
     <svg

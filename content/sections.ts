@@ -4,26 +4,18 @@
  * A page is a list of typed sections. Components only read this shape, so an admin can later
  * CRUD the JSON without touching code: the renderer shows `enabled` sections sorted by `order`.
  */
+import type { CtaLink, IllustrationName, MediaImage } from "@/types/content";
 import type { Localized } from "./i18n";
 import type { CtaVariant } from "./cta";
 import type { FaqCategory } from "./faq";
 
 export { t, RTL_LOCALES, type Locale, type Localized } from "./i18n";
 
-/** Name of the built-in SVG drawn when an image has no `src` yet. */
-export type Fallback = "warehouse" | "shelves" | "inspection" | "packing" | "worldMap" | "location" | "portrait";
+/** Built-in drawing names (see types/content.ts). */
+export type Fallback = IllustrationName;
 
-export interface AboutImage {
-  /** Real photo URL. Leave empty to show the `fallback` illustration. */
-  src?: string;
-  alt: Localized;
-  caption?: Localized;
-  fallback: Fallback;
-  /** CSS aspect-ratio for the frame, e.g. "16 / 10". Each section has its own default. */
-  ratio?: string;
-  /** "contain" shows the whole image (e.g. a map); default "cover" fills the frame. */
-  fit?: "cover" | "contain";
-}
+/** Section images use the shared MediaImage shape. */
+export type AboutImage = MediaImage;
 
 export interface AboutItem {
   /** Stable machine key, used where other code needs to find a specific row (e.g. JSON-LD, data-cta-id). */
@@ -36,12 +28,9 @@ export interface AboutItem {
   href?: string;
 }
 
-export interface AboutLink {
-  label: Localized;
-  href: string;
+/** A CTA link with how it's drawn: primary = black arrow button, secondary = underlined text link. */
+export interface AboutLink extends CtaLink {
   variant: "primary" | "secondary";
-  /** Analytics hook, rendered as data-cta-id. */
-  ctaId: string;
 }
 
 export interface AboutPerson {

@@ -3,17 +3,13 @@
 import { useState } from "react";
 import { t, type Locale } from "@/content/i18n";
 import type { LeadMagnet } from "@/content/leadMagnets";
+import { DocumentArt } from "@/components/media/Illustration";
 
-/** Flat document thumbnail: folded corner, text lines, and a format tag. */
+/** Document thumbnail with the file format and the market it covers. */
 function DocIcon({ format, tag }: { format: string; tag: string }) {
   return (
     <svg className="lead__doc" viewBox="0 0 64 80" aria-hidden>
-      <path d="M2 2h44l16 16v60H2z" fill="#f6f5f1" stroke="#a9a293" strokeWidth="1.5" />
-      <path d="M46 2v16h16" fill="#e3e1da" stroke="#a9a293" strokeWidth="1.5" />
-      {[30, 38, 46, 54].map((y, i) => <rect key={y} x="10" y={y} width={i % 2 ? 30 : 42} height="3" fill="#cfc8ba" />)}
-      <rect x="10" y="10" width="26" height="12" fill="#2c4a3c" />
-      <text x="23" y="19" textAnchor="middle" fontSize="7.5" fill="#e9efe9" style={{ fontFamily: "var(--mono)", letterSpacing: ".04em" }}>{format}</text>
-      <text x="10" y="70" fontSize="7" fill="#6f7169" style={{ fontFamily: "var(--mono)", letterSpacing: ".06em", textTransform: "uppercase" }}>{tag}</text>
+      <DocumentArt format={format} tag={tag} />
     </svg>
   );
 }

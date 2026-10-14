@@ -1,5 +1,5 @@
 import { t } from "@/content/sections";
-import MediaFrame from "../MediaFrame";
+import MediaFrame from "@/components/media/MediaFrame";
 import CountryFinder from "../CountryFinder";
 import { Links, type SectionProps } from "../parts";
 

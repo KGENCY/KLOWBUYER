@@ -1,4 +1,4 @@
-import type { Fallback } from "@/content/sections";
+import type { IllustrationName } from "@/types/content";
 import Illustration from "./Illustration";
 
 /**
@@ -18,7 +18,7 @@ export default function MediaFrame({
   src?: string;
   alt: string;
   caption?: string;
-  fallback: Fallback;
+  fallback: IllustrationName;
   /** CSS aspect-ratio, e.g. "4 / 3". Omit to let the parent decide the height. */
   ratio?: string;
   priority?: boolean;

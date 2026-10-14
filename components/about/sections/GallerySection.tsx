@@ -1,5 +1,5 @@
 import { t } from "@/content/sections";
-import MediaFrame from "../MediaFrame";
+import MediaFrame from "@/components/media/MediaFrame";
 import { SectionAddons, SectionHead, type SectionProps } from "../parts";
 
 /** One large image beside two smaller ones, each with a mono caption. */

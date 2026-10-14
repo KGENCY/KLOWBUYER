@@ -111,7 +111,7 @@ export const about: AboutPage = {
         {
           alt: { en: "KLOW K-beauty wholesale warehouse, Korea — storage shelves of cosmetics stock" },
           caption: { en: "Storage · [CITY], Korea" },
-          fallback: "shelves",
+          fallback: "warehouse-shelves",
         },
         {
           alt: { en: "KLOW K-beauty wholesale warehouse, Korea — inspection bench checking expiry dates and packaging" },
@@ -146,7 +146,7 @@ export const about: AboutPage = {
       images: [
         {
           alt: { en: "Map of KLOW export routes from Korea to Latin America, Central Asia and the Middle East" },
-          fallback: "worldMap",
+          fallback: "world-routes",
         },
       ],
       addons: [
