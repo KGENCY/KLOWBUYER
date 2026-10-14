@@ -59,7 +59,7 @@ export interface AboutTable {
 
 /** Conversion blocks attached to a section; rendered at the section's end (inquiry forms beside its content). */
 export type AboutAddon =
-  | { type: "contextCta"; variant: CtaVariant; text: Localized; ctaId: string; secondary?: CtaVariant | false; href?: string }
+  | { type: "contextCta"; variant: CtaVariant; text: Localized; ctaId: string; secondary?: CtaVariant | false; href?: string; tone?: "light" | "dark" }
   | { type: "countryFinder"; label: Localized; placeholder: Localized; quoteLabel: Localized; quoteHref: string; ctaPrefix: string; destinations: Destination[] }
   | { type: "leadMagnets"; ids: string[]; title?: Localized; ctaPrefix: string }
   | { type: "inquiryForm"; ctaId: string; anchor?: string; title?: Localized; lede?: Localized; submitLabel?: Localized };

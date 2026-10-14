@@ -15,9 +15,20 @@ function DocIcon({ format, tag }: { format: string; tag: string }) {
 }
 
 /** A free resource for an email. Design only: submitting shows the "sent" state. */
-export default function LeadMagnetCard({ magnet, ctaId, locale = "en" }: { magnet: LeadMagnet; ctaId: string; locale?: Locale }) {
-  const [email, setEmail] = useState("");
-  const [sent, setSent] = useState(false);
+export default function LeadMagnetCard({
+  magnet,
+  ctaId,
+  locale = "en",
+  defaultState = "form",
+}: {
+  magnet: LeadMagnet;
+  ctaId: string;
+  locale?: Locale;
+  /** "sent" opens on the success view — for design previews. */
+  defaultState?: "form" | "sent";
+}) {
+  const [email, setEmail] = useState(defaultState === "sent" ? "buyer@company.com" : "");
+  const [sent, setSent] = useState(defaultState === "sent");
   return (
     <article className="lead">
       <div className="lead__top">

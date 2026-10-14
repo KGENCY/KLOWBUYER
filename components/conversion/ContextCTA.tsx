@@ -11,6 +11,7 @@ export default function ContextCTA({
   text,
   secondary,
   href,
+  tone = "light",
 }: {
   id: string;
   variant: CtaVariant;
@@ -19,14 +20,16 @@ export default function ContextCTA({
   secondary?: CtaVariant | false;
   /** Send the main button somewhere other than the variant's default, e.g. a form on the same page. */
   href?: string;
+  /** light: white band with a green edge (default). dark: deep green band, inverted button. */
+  tone?: "light" | "dark";
 }) {
   const main = CTA_TARGETS[variant];
   const alt = secondary === false ? null : (secondary ?? CTA_FALLBACK[variant]);
   return (
-    <div className={`ccta ccta--${variant}`}>
+    <div className={`ccta ccta--${variant} ccta--${tone}`}>
       <p className="ccta__text">{text}</p>
       <div className="ccta__act">
-        <Link href={href ?? main.href} className="btn btn--solid" data-cta-id={`${id}_${variant}`}>{main.label}</Link>
+        <Link href={href ?? main.href} className={`btn ${tone === "dark" ? "btn--invert" : "btn--solid"}`} data-cta-id={`${id}_${variant}`}>{main.label}</Link>
         {alt && <Link href={CTA_TARGETS[alt].href} className="link small" data-cta-id={`${id}_${alt}`}>{CTA_TARGETS[alt].label}</Link>}
       </div>
     </div>

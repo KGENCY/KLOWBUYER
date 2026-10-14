@@ -18,27 +18,27 @@ export default function LockedPrice({
   sample,
   moq,
   moqUnits,
-  signedIn,
+  isLoggedIn,
   ctaId,
   next,
 }: {
   sample: number;
   moq: number;
   moqUnits: number;
-  signedIn: boolean;
+  isLoggedIn: boolean;
   ctaId: string;
   /** Where to come back to after signing in. */
   next?: string;
 }) {
   return (
-    <dl className={`lp ${signedIn ? "" : "lp--locked"}`}>
+    <dl className={`lp ${isLoggedIn ? "" : "lp--locked"}`}>
       <div className="lp__row">
         <dt>Sample <small>1 unit</small></dt>
         <dd>{money(sample)}</dd>
       </div>
       <div className="lp__row">
         <dt>Reorder at MOQ <small>{moqUnits}+ units</small></dt>
-        {signedIn ? (
+        {isLoggedIn ? (
           <dd>{money(moq)} <small className="lp__save">−{Math.round((1 - moq / sample) * 100)}%</small></dd>
         ) : (
           <dd className="lp__hidden">
@@ -48,7 +48,7 @@ export default function LockedPrice({
           </dd>
         )}
       </div>
-      {!signedIn && (
+      {!isLoggedIn && (
         <Link href={`/signin${next ? `?next=${encodeURIComponent(next)}` : ""}`} className="link small lp__cta" data-cta-id={ctaId}>
           Sign in to see bulk pricing
         </Link>

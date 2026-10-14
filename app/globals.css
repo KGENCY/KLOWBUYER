@@ -1642,3 +1642,10 @@ button.video__play:focus-visible { outline: 2px solid var(--accent); outline-off
 .video__play--off i { margin-inline-start: 0; }
 .video__play--off small { font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; }
 [dir="rtl"] .video__play i { transform: scaleX(-1); }
+
+/* ContextCTA dark tone */
+.ccta--dark { background: var(--accent); border-color: var(--accent); border-inline-start-color: var(--ink); color: #fff; }
+.ccta--dark .link { color: #fff; }
+.ccta--dark .link:hover { color: var(--accent-ink); }
+.ccta--dark .btn--invert { height: 52px; }
+.ccta--dark .btn--invert:hover { background: var(--ink); border-color: var(--ink); }

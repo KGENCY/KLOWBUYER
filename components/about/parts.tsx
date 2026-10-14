@@ -61,7 +61,7 @@ export function SectionAddons({ s, locale }: { s: AboutSection; locale: Locale }
     <>
       {s.addons?.map((a, i) => {
         if (a.type === "contextCta")
-          return <ContextCTA key={i} id={a.ctaId} variant={a.variant} text={t(a.text, locale)} secondary={a.secondary} href={a.href} />;
+          return <ContextCTA key={i} id={a.ctaId} variant={a.variant} text={t(a.text, locale)} secondary={a.secondary} href={a.href} tone={a.tone} />;
         if (a.type === "leadMagnets")
           return <LeadMagnets key={i} ids={a.ids} ctaPrefix={a.ctaPrefix} title={a.title && t(a.title, locale)} locale={locale} />;
         return null; // inquiry forms and country pickers are placed by the section itself

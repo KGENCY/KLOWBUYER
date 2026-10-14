@@ -4,6 +4,13 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
 const KEY = "klow.exitIntent";
+const PREVIEW_EVENT = "klow:exit-intent-preview";
+
+/** Opens the modal right away, ignoring device and session rules — for design previews. */
+export function previewExitIntent() {
+  window.dispatchEvent(new Event(PREVIEW_EVENT));
+}
+
 /** Never interrupt someone mid-checkout or mid-sign-up. */
 const QUIET_ROUTES = ["/checkout", "/signup", "/signin"];
 
@@ -32,6 +39,12 @@ export default function ExitIntentModal() {
     document.addEventListener("mouseout", onOut);
     return () => document.removeEventListener("mouseout", onOut);
   }, [path]);
+
+  useEffect(() => {
+    const onPreview = () => { setSent(false); setOpen(true); };
+    window.addEventListener(PREVIEW_EVENT, onPreview);
+    return () => window.removeEventListener(PREVIEW_EVENT, onPreview);
+  }, []);
 
   useEffect(() => {
     if (!open) return;

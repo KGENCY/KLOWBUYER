@@ -13,6 +13,8 @@ export default function QuickInquiryForm({
   title = "Ask our team",
   lede = "Tell us where you sell. A real person replies, usually the same day.",
   submitLabel = "Get a reply within 24h",
+  children,
+  defaultState = "form",
 }: {
   ctaId: string;
   /** Anchor id so other pages can link straight to this form. */
@@ -20,10 +22,14 @@ export default function QuickInquiryForm({
   title?: string;
   lede?: string;
   submitLabel?: string;
+  /** Extra fields (e.g. products and quantities for a quote), placed after business type. */
+  children?: React.ReactNode;
+  /** "sent" opens on the success view — for design previews. */
+  defaultState?: "form" | "sent";
 }) {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(defaultState === "sent" ? "buyer@company.com" : "");
   const [withWa, setWithWa] = useState(false);
-  const [sent, setSent] = useState(false);
+  const [sent, setSent] = useState(defaultState === "sent");
 
   if (sent) {
     return (
@@ -71,6 +77,7 @@ export default function QuickInquiryForm({
           </select>
         </label>
       </div>
+      {children}
       {withWa ? (
         <label className="field">
           <span className="eyebrow">WhatsApp (optional)</span>
