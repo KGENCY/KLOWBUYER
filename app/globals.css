@@ -1416,3 +1416,20 @@ body:has(.samplebar.is-on) .concierge { padding-bottom: 136px; }
   .about-team { grid-template-columns: repeat(3, 1fr); gap: 12px; }
   .about-band { padding: 64px 0; }
 }
+
+/* ───────────── About dropdown + notice link ───────────── */
+.notice__link { text-decoration: underline; text-decoration-color: rgba(233,239,233,.35); text-underline-offset: 4px; transition: text-decoration-color .2s; }
+.notice__link:hover { text-decoration-color: currentColor; }
+.navdrop { position: relative; display: flex; }
+.navdrop__btn { display: inline-flex; align-items: center; gap: 8px; }
+.navdrop__btn i { width: 7px; height: 7px; border-inline-end: 1.5px solid currentColor; border-block-end: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .25s var(--ease); }
+.navdrop__btn[aria-expanded="true"] i { transform: translateY(1px) rotate(-135deg); }
+.header__nav .navdrop__btn.is-on::after { transform: none; }
+.navdrop__menu { position: absolute; top: calc(100% + 20px); inset-inline-start: -18px; z-index: 45; min-width: 220px; display: flex; flex-direction: column; background: var(--card); border: var(--bw) solid var(--ink); opacity: 0; visibility: hidden; transform: translateY(-4px); transition: opacity .2s var(--ease), transform .2s var(--ease), visibility .2s; }
+.navdrop__menu::before { content: ""; position: absolute; inset-inline: 0; bottom: 100%; height: 22px; }
+.navdrop__menu.is-on { opacity: 1; visibility: visible; transform: none; }
+.header__nav .navdrop__menu a { padding: 13px 18px; font-size: 14px; border-block-end: var(--bw) solid var(--line-2); transition: background .2s, color .2s; }
+.header__nav .navdrop__menu a:last-child { border-block-end: 0; }
+.header__nav .navdrop__menu a::after { content: none; }
+.navdrop__menu a:hover { background: var(--surface); color: var(--accent); }
+.navdrop__menu a[aria-current="page"] { color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); }

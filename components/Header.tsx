@@ -1,11 +1,42 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FREE_SHIPPING_SKUS } from "@/lib/data";
 import { initials } from "@/lib/buyer";
+import { ABOUT_LINKS } from "@/content/nav";
 import { useSamples } from "./SampleBox";
 import { useRequest } from "./RequestBrand";
 import { DEMO_EMAIL, useBuyer } from "./Buyer";
+
+/** "About" opens the About group: on hover with a mouse, on click/tap and keyboard otherwise. */
+function AboutMenu() {
+  const path = usePathname();
+  const [open, setOpen] = useState(false);
+  const active = ABOUT_LINKS.some((l) => l.href === path);
+  useEffect(() => setOpen(false), [path]);
+  return (
+    <div
+      className="navdrop"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+      onKeyDown={(e) => e.key === "Escape" && setOpen(false)}
+      onBlur={(e) => !e.currentTarget.contains(e.relatedTarget) && setOpen(false)}
+    >
+      <button className={`navdrop__btn ${active ? "is-on" : ""}`} aria-expanded={open} aria-haspopup="true" onClick={() => setOpen((o) => !o)}>
+        About <i aria-hidden />
+      </button>
+      <div className={`navdrop__menu ${open ? "is-on" : ""}`}>
+        {ABOUT_LINKS.map((l) => (
+          <Link key={l.href} href={l.href} aria-current={l.href === path ? "page" : undefined} onClick={() => setOpen(false)}>
+            {l.label}
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function Header() {
   const { items, setOpen } = useSamples();
@@ -16,7 +47,7 @@ export default function Header() {
       <div className="notice">
         <span>Samples at wholesale price — from 1 unit</span>
         <span className="notice__dot hide-sm" />
-        <span className="hide-sm">Free shipping at {FREE_SHIPPING_SKUS} SKUs</span>
+        <Link href="/shipping" className="hide-sm notice__link">Free shipping at {FREE_SHIPPING_SKUS} SKUs</Link>
         <span className="notice__dot hide-sm" />
         <span className="hide-sm">Verified Korean brands only</span>
       </div>
@@ -31,7 +62,7 @@ export default function Header() {
             <Link href="/#brands">Brands</Link>
             <Link href="/match">Find my brands</Link>
             <button onClick={() => openWith()}>Request a brand</button>
-            <Link href="/about">About</Link>
+            <AboutMenu />
           </nav>
           <div className="header__act">
             {buyer ? (
