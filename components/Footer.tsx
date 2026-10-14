@@ -14,7 +14,7 @@ export default function Footer() {
         <div className="footer__cols">
           <div><span className="eyebrow">Source</span><Link href="/#collection">Collection</Link><Link href="/#brands">Brands</Link><Link href="/match">Find my brands</Link></div>
           <div><span className="eyebrow">Program</span><Link href="/#sampling">Sampling</Link><span>Wholesale tiers</span><span>Documentation</span></div>
-          <div><span className="eyebrow">Company</span><span>About</span><span>Partner with us</span><span>Contact</span></div>
+          <div><span className="eyebrow">Company</span><Link href="/about">About</Link><span>Partner with us</span><span>Contact</span></div>
         </div>
       </div>
       <div className="wrap footer__base"><span>© 2026 KLOW Wholesale</span><span>Seoul → Worldwide</span></div>

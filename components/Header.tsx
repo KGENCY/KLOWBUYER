@@ -31,6 +31,7 @@ export default function Header() {
             <Link href="/#brands">Brands</Link>
             <Link href="/match">Find my brands</Link>
             <button onClick={() => openWith()}>Request a brand</button>
+            <Link href="/about">About</Link>
           </nav>
           <div className="header__act">
             {buyer ? (
