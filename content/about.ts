@@ -93,7 +93,7 @@ export const about: AboutPage = {
   seo: {
     title: { en: "About KLOW | Korean Cosmetics Wholesale Supplier & Export Partner" },
     description: {
-      en: "Authentic K-beauty wholesale direct from Korean brands. Sample from 1 unit, ship from our Korean warehouse with export documents and local labels.",
+      en: "Authentic K-beauty wholesale direct from Korean brands. Sample from 1 unit, ship from our Korean warehouse with export documents and local-language labels.",
     },
   },
 
@@ -235,7 +235,7 @@ export const about: AboutPage = {
         { title: { en: "Local labels" }, description: { en: "Spanish, Russian and Arabic labels, applied before dispatch." } },
         { title: { en: "Customs & duties" }, description: { en: "Duties paid by the buyer on arrival by default. DDP on request." } },
       ],
-      links: [{ label: { en: "See payment & shipping" }, href: "/shipping", variant: "secondary" }],
+      links: [{ label: { en: "See payment & shipping →" }, href: "/shipping", variant: "secondary" }],
     },
 
     {
