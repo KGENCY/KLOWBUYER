@@ -7,8 +7,7 @@ import { SampleProvider } from "@/components/SampleBox";
 import { RequestProvider } from "@/components/RequestBrand";
 import { BuyerProvider } from "@/components/Buyer";
 import Welcome from "@/components/Welcome";
-import WhatsAppButton from "@/components/conversion/WhatsAppButton";
-import ExitIntentModal from "@/components/conversion/ExitIntentModal";
+import GlobalConversion from "@/components/conversion/GlobalConversion";
 import "./globals.css";
 
 const sans = Geist({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-sans" });
@@ -30,8 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <main>{children}</main>
               <Footer />
               <Welcome />
-              <ExitIntentModal />
-              <WhatsAppButton />
+              <GlobalConversion />
             </RequestProvider>
           </BuyerProvider>
         </SampleProvider>
