@@ -1,4 +1,4 @@
-import type { Fallback } from "@/content/about";
+import type { Fallback } from "@/content/sections";
 
 /**
  * Flat placeholder drawings shown until real warehouse photos exist.

@@ -1,4 +1,4 @@
-import { t } from "@/content/about";
+import { t } from "@/content/sections";
 import { Links, type SectionProps } from "../parts";
 
 /** Closing green band. */

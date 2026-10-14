@@ -1,4 +1,4 @@
-import { t } from "@/content/about";
+import { t } from "@/content/sections";
 import MediaFrame from "../MediaFrame";
 import { Links, type SectionProps } from "../parts";
 

@@ -8,79 +8,12 @@
  * Values in [BRACKETS] are placeholders still waiting for real numbers or details.
  */
 
-/* ───────────── Types ───────────── */
-
-import type { Localized } from "./i18n";
-export { t, RTL_LOCALES, type Locale, type Localized } from "./i18n";
-
-/** Name of the built-in SVG drawn when an image has no `src` yet. */
-export type Fallback = "warehouse" | "shelves" | "inspection" | "packing" | "worldMap" | "location" | "portrait";
-
-export interface AboutImage {
-  /** Real photo URL. Leave empty to show the `fallback` illustration. */
-  src?: string;
-  alt: Localized;
-  caption?: Localized;
-  fallback: Fallback;
-}
-
-export interface AboutItem {
-  /** Stable machine key, used where other code needs to find a specific row (e.g. JSON-LD). */
-  key?: string;
-  title: Localized;
-  description?: Localized;
-  /** Big figure (stats) or the value cell (company info). */
-  value?: Localized;
-}
-
-export interface AboutLink {
-  label: Localized;
-  href: string;
-  variant: "primary" | "secondary";
-}
-
-export interface AboutPerson {
-  name: Localized;
-  role: Localized;
-  image: AboutImage;
-}
-
-export type SectionType = "hero" | "split" | "grid" | "gallery" | "regions" | "steps" | "companyInfo" | "faq" | "cta";
-
-export interface AboutSection {
-  /** Also the anchor id on the page (e.g. /about#company). */
-  id: string;
-  type: SectionType;
-  enabled: boolean;
-  order: number;
-  /** Shown before the label, e.g. "01". */
-  number?: string;
-  label?: Localized;
-  title?: Localized;
-  /** Second line of the title, shown in grey. */
-  subtitle?: Localized;
-  body?: Localized;
-  items?: AboutItem[];
-  images?: AboutImage[];
-  links?: AboutLink[];
-  /** grid: column count on desktop. */
-  columns?: 3 | 4;
-  /** grid: partner brand names shown as a row of muted text logos. */
-  logos?: Localized[];
-  /** companyInfo: team placeholders. */
-  people?: AboutPerson[];
-}
-
-export interface AboutPage {
-  seo: { title: Localized; description: Localized };
-  sections: AboutSection[];
-}
+import type { AboutPage } from "./sections";
 
 /* ───────────── Content ───────────── */
 
-const BROWSE: AboutLink = { label: { en: "Browse & sample" }, href: "/#collection", variant: "primary" };
-
 export const about: AboutPage = {
+  ctaPrefix: "about",
   seo: {
     title: { en: "About KLOW | Korean Cosmetics Wholesale Supplier & Export Partner" },
     description: {
@@ -100,7 +33,10 @@ export const about: AboutPage = {
       body: {
         en: "KLOW is a Korea-based export and logistics partner working directly with K-beauty brands. Every order ships from our own warehouse in Korea — 100% authentic, with the export documents your market requires.",
       },
-      links: [BROWSE, { label: { en: "Talk to our team" }, href: "#company", variant: "secondary" }],
+      links: [
+        { label: { en: "Browse & sample" }, href: "/#collection", variant: "primary", ctaId: "about_hero_sample" },
+        { label: { en: "Talk to our team" }, href: "#contact", variant: "secondary", ctaId: "about_hero_inquiry" },
+      ],
       images: [
         {
           alt: { en: "KLOW K-beauty wholesale warehouse in Korea" },
@@ -156,6 +92,9 @@ export const about: AboutPage = {
         { en: "[BRAND 01]" }, { en: "[BRAND 02]" }, { en: "[BRAND 03]" }, { en: "[BRAND 04]" },
         { en: "[BRAND 05]" }, { en: "[BRAND 06]" }, { en: "[BRAND 07]" }, { en: "[BRAND 08]" },
       ],
+      addons: [
+        { type: "contextCta", variant: "signup", text: { en: "See verified brands and bulk pricing." }, ctaId: "about_authentic" },
+      ],
     },
 
     {
@@ -209,6 +148,14 @@ export const about: AboutPage = {
           fallback: "worldMap",
         },
       ],
+      addons: [
+        {
+          type: "leadMagnets",
+          title: { en: "Free checklists for your market" },
+          ids: ["mexico-import-checklist", "eaeu-document-pack", "gcc-labelling-guide"],
+          ctaPrefix: "about_markets_lead",
+        },
+      ],
     },
 
     {
@@ -226,7 +173,7 @@ export const about: AboutPage = {
         { title: { en: "Local labels" }, description: { en: "Spanish, Russian and Arabic labels, applied before dispatch." } },
         { title: { en: "Customs & duties" }, description: { en: "Duties paid by the buyer on arrival by default. DDP on request." } },
       ],
-      links: [{ label: { en: "See payment & shipping →" }, href: "/shipping", variant: "secondary" }],
+      links: [{ label: { en: "See payment & shipping →" }, href: "/shipping", variant: "secondary", ctaId: "about_export_shipping" }],
     },
 
     {
@@ -269,6 +216,15 @@ export const about: AboutPage = {
         role: { en: "[ROLE]" },
         image: { alt: { en: "KLOW team member" }, fallback: "portrait" as const },
       })),
+      addons: [
+        {
+          type: "inquiryForm",
+          anchor: "contact",
+          ctaId: "about_company_inquiry",
+          title: { en: "Talk to our team" },
+          lede: { en: "Tell us where you sell. A real person replies within 24 hours on business days." },
+        },
+      ],
     },
 
     {
@@ -279,38 +235,7 @@ export const about: AboutPage = {
       number: "08",
       label: { en: "FAQ" },
       title: { en: "Questions buyers ask first." },
-      items: [
-        {
-          title: { en: "Are your products authentic?" },
-          description: {
-            en: "Yes. Every product is supplied under a direct contract with the brand and inspected in our warehouse in Korea. We can send the brand’s confirmation of authentic supply on request.",
-          },
-        },
-        {
-          title: { en: "Do you ship to my country?" },
-          description: {
-            en: "We ship worldwide from Korea, with labels and documents prepared for Mexico & Latin America, Kazakhstan & Central Asia, and the UAE & GCC. Europe support is [coming soon]. Some categories are restricted in some markets — tell us where you are and we’ll confirm.",
-          },
-        },
-        {
-          title: { en: "Is there a minimum order?" },
-          description: {
-            en: "Not for samples: order 1 unit of any product at its wholesale price, and shipping is free once your box reaches 5 SKUs. Wholesale reorders follow each product’s MOQ, from [MOQ] units.",
-          },
-        },
-        {
-          title: { en: "Who pays customs and duties?" },
-          description: {
-            en: "By default the buyer pays import duties and taxes on arrival. DDP — where we pay them up front and include them in your quote — is available on request for [MARKETS].",
-          },
-        },
-        {
-          title: { en: "Can you provide export documents?" },
-          description: {
-            en: "Yes. Every shipment comes with a commercial invoice, packing list and certificate of origin. Ingredient lists, CoA and MSDS are available per product.",
-          },
-        },
-      ],
+      faqCategory: "about",
     },
 
     {
@@ -319,7 +244,32 @@ export const about: AboutPage = {
       enabled: true,
       order: 9,
       title: { en: "Start with one unit." },
-      links: [BROWSE],
+      links: [
+        { label: { en: "Browse & sample" }, href: "/#collection", variant: "primary", ctaId: "about_final_sample" },
+        { label: { en: "Request bulk quote" }, href: "/ordering-payment#quote", variant: "secondary", ctaId: "about_final_quote" },
+      ],
+    },
+
+    {
+      id: "more",
+      type: "related",
+      enabled: true,
+      order: 10,
+      label: { en: "Keep reading" },
+      items: [
+        {
+          key: "shipping",
+          href: "/shipping",
+          title: { en: "Shipping" },
+          description: { en: "Free at 5 SKUs, dispatch times, duties and the documents that travel with your order." },
+        },
+        {
+          key: "ordering",
+          href: "/ordering-payment",
+          title: { en: "Ordering & Payment" },
+          description: { en: "From a one-unit sample to MOQ reorders and bulk quotes, and how you pay." },
+        },
+      ],
     },
   ],
 };

@@ -1,6 +1,6 @@
-import { t } from "@/content/about";
+import { t } from "@/content/sections";
 import MediaFrame from "../MediaFrame";
-import { SectionHead, type SectionProps } from "../parts";
+import { SectionAddons, SectionHead, type SectionProps } from "../parts";
 
 /** One large image beside two smaller ones, each with a mono caption. */
 export default function GallerySection({ s, locale }: SectionProps) {
@@ -24,6 +24,7 @@ export default function GallerySection({ s, locale }: SectionProps) {
             />
           ))}
         </div>
+        <SectionAddons s={s} locale={locale} />
       </div>
     </section>
   );

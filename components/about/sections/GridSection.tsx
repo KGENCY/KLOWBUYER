@@ -1,5 +1,5 @@
-import { t } from "@/content/about";
-import { Links, SectionHead, type SectionProps } from "../parts";
+import { t } from "@/content/sections";
+import { Links, SectionAddons, SectionHead, type SectionProps } from "../parts";
 
 /** Numbered boxes in 3 or 4 columns, with an optional row of partner logos and a link below. */
 export default function GridSection({ s, locale }: SectionProps) {
@@ -22,6 +22,7 @@ export default function GridSection({ s, locale }: SectionProps) {
           </ul>
         )}
         <Links links={s.links} locale={locale} />
+        <SectionAddons s={s} locale={locale} />
       </div>
     </section>
   );

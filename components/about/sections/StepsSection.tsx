@@ -1,5 +1,5 @@
-import { t } from "@/content/about";
-import { SectionHead, type SectionProps } from "../parts";
+import { t } from "@/content/sections";
+import { SectionAddons, SectionHead, type SectionProps } from "../parts";
 
 /** Steps joined by a thin rule: across on desktop, down on mobile. */
 export default function StepsSection({ s, locale }: SectionProps) {
@@ -16,6 +16,7 @@ export default function StepsSection({ s, locale }: SectionProps) {
             </li>
           ))}
         </ol>
+        <SectionAddons s={s} locale={locale} />
       </div>
     </section>
   );

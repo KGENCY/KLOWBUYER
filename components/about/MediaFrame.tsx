@@ -1,4 +1,4 @@
-import type { Fallback } from "@/content/about";
+import type { Fallback } from "@/content/sections";
 import Illustration from "./Illustration";
 
 /**

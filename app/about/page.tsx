@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import AboutSections from "@/components/about/AboutSections";
-import { about, t, type AboutSection } from "@/content/about";
+import { about } from "@/content/about";
+import { t, type AboutSection } from "@/content/sections";
 
 export const metadata: Metadata = {
   title: t(about.seo.title),
@@ -9,13 +10,12 @@ export const metadata: Metadata = {
   openGraph: { title: t(about.seo.title), description: t(about.seo.description), type: "website" },
 };
 
-/** Organization + FAQPage structured data, built from the same content the page shows. */
-function jsonLd(sections: AboutSection[]) {
+/** Organization structured data, built from the company facts the page shows. (FAQPage comes from the FAQ section.) */
+function organizationLd(sections: AboutSection[]) {
   const company = sections.find((s) => s.type === "companyInfo" && s.enabled);
-  const faq = sections.find((s) => s.type === "faq" && s.enabled);
   const fact = (key: string) => t(company?.items?.find((i) => i.key === key)?.value);
-
-  const organization = {
+  return {
+    "@context": "https://schema.org",
     "@type": "Organization",
     name: "KLOW Wholesale",
     legalName: "Welkit Inc.",
@@ -35,20 +35,9 @@ function jsonLd(sections: AboutSection[]) {
       contactType: "sales",
       email: fact("email"),
       telephone: fact("whatsapp"),
-      availableLanguage: ["English"],
+      availableLanguage: ["English", "Spanish", "Russian", "Arabic"],
     },
   };
-
-  const faqPage = faq && {
-    "@type": "FAQPage",
-    mainEntity: faq.items?.map((q) => ({
-      "@type": "Question",
-      name: t(q.title),
-      acceptedAnswer: { "@type": "Answer", text: t(q.description) },
-    })),
-  };
-
-  return { "@context": "https://schema.org", "@graph": [organization, faqPage].filter(Boolean) };
 }
 
 export default function AboutPage() {
@@ -56,9 +45,9 @@ export default function AboutPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd(about.sections)).replace(/</g, "\\u003c") }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd(about.sections)).replace(/</g, "\\u003c") }}
       />
-      <AboutSections sections={about.sections} />
+      <AboutSections sections={about.sections} page={about.ctaPrefix} />
     </>
   );
 }
