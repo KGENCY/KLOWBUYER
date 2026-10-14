@@ -113,7 +113,7 @@ export const NAV: NavItem[] = [
       {
         id: "popular",
         heading: { en: "Popular K-beauty" },
-        note: { en: "Similar brands you can sample at wholesale" },
+        note: { en: "Wholesale at MOQ, shipped from Korea" },
         links: [
           link("anua", "Anua", "/brands/anua/wholesale", 0),
           link("cosrx", "COSRX", "/brands/cosrx/wholesale", 1),

@@ -1,26 +1,35 @@
+import type { Metadata } from "next";
 import ComingSoon, { comingSoonMetadata, comingSoonTitle } from "@/components/ComingSoon";
+import MajorBrandPage from "@/components/brand/MajorBrandPage";
+import { brandProfile, brandsOfType } from "@/content/brands";
+import { t } from "@/content/i18n";
 
 type Params = Promise<{ id: string }>;
 
-/**
- * Search landing for a well-known brand (e.g. "anua wholesale"). Framed as alternatives:
- * KLOW doesn't claim to sell that brand, it points to similar partner brands.
- */
-const titleFor = (id: string) => `${comingSoonTitle(`/brands/${id}/wholesale`)} alternatives at wholesale`;
+const majorBrand = (id: string) => {
+  const b = brandProfile(id);
+  return b?.type === "major" ? b : undefined;
+};
 
-export async function generateMetadata({ params }: { params: Params }) {
-  const { id } = await params;
-  return comingSoonMetadata(`/brands/${id}/wholesale`, titleFor(id));
+export function generateStaticParams() {
+  return brandsOfType("major").map((b) => ({ id: b.slug }));
 }
 
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  const { id } = await params;
+  const b = majorBrand(id);
+  if (!b) return comingSoonMetadata(`/brands/${id}/wholesale`, `${comingSoonTitle(`/brands/${id}/wholesale`)} wholesale`);
+  const title = b.seo?.title ? t(b.seo.title) : `${b.name} Wholesale | Bulk Price & MOQ from Korea – KLOW`;
+  const description = b.seo?.description
+    ? t(b.seo.description)
+    : `${b.name} bulk prices and MOQ, shipped from our Korean warehouse to [N]+ countries. Request a wholesale quote and get pricing within 24h.`;
+  return { title, description, alternates: { canonical: `/brands/${b.slug}/wholesale` } };
+}
+
+/** Major-brand wholesale page; brands in the menu without data yet get the placeholder. */
 export default async function Page({ params }: { params: Params }) {
   const { id } = await params;
-  const name = comingSoonTitle(`/brands/${id}/wholesale`);
-  return (
-    <ComingSoon
-      path={`/brands/${id}/wholesale`}
-      title={titleFor(id)}
-      description={`Looking for ${name} wholesale? We’re putting together similar Korean brands you can sample from 1 unit at wholesale price. Tell us what you sell and we’ll suggest a match now.`}
-    />
-  );
+  const b = majorBrand(id);
+  if (b) return <MajorBrandPage brand={b} />;
+  return <ComingSoon path={`/brands/${id}/wholesale`} title={`${comingSoonTitle(`/brands/${id}/wholesale`)} wholesale`} />;
 }
