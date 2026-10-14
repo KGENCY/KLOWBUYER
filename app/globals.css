@@ -1635,13 +1635,13 @@ body:has(.drawer.is-on) .wa, body:has(.wel) .wa { opacity: 0; pointer-events: no
 .video .media__frame video, .video .media__frame img, .video__art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; background: var(--ink); }
 .video__art { background: none; }
 .video__play { position: absolute; inset: 0; margin: auto; width: 64px; height: 64px; display: grid; place-items: center; background: var(--ink); color: #fff; transition: background .25s var(--ease), transform .25s var(--ease); }
-.video__play i { width: 0; height: 0; border-block: 9px solid transparent; border-inline-start: 15px solid currentColor; margin-inline-start: 4px; }
+/* Physical left border on purpose: a play triangle points right in every language. */
+.video__play i { width: 0; height: 0; border-block: 9px solid transparent; border-left: 15px solid currentColor; margin-inline-start: 4px; }
 button.video__play:hover { background: var(--accent); transform: scale(1.04); }
 button.video__play:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.video__play--off { width: auto; height: auto; padding: 14px 16px; display: flex; gap: 12px; align-items: center; background: rgba(20,21,23,.78); }
+.video__play--off { width: max-content; height: max-content; padding: 14px 16px; display: flex; gap: 12px; align-items: center; background: rgba(20,21,23,.78); }
 .video__play--off i { margin-inline-start: 0; }
 .video__play--off small { font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; }
-[dir="rtl"] .video__play i { transform: scaleX(-1); }
 
 /* ContextCTA dark tone */
 .ccta--dark { background: var(--accent); border-color: var(--accent); border-inline-start-color: var(--ink); color: #fff; }
@@ -1654,3 +1654,29 @@ button.video__play:focus-visible { outline: 2px solid var(--accent); outline-off
 .about-head__desc { margin-block-start: 18px; max-width: 560px; font-size: 16px; color: var(--ink-2); }
 .about-related__grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 @media (max-width: 860px) { .about-related__grid--3 { grid-template-columns: 1fr; } }
+
+/* ───────────── /dev/components preview ───────────── */
+.devc__stack { display: flex; flex-direction: column; gap: 48px; }
+.devc__stack > .about-head + * { margin-block-start: 0; }
+.devc__demo { display: flex; flex-direction: column; gap: 16px; }
+.devc__name { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; padding-block-end: 10px; border-block-end: var(--bw) dashed var(--line); }
+.devc__name code { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--accent); }
+.devc__name span { font-size: 13px; color: var(--muted); }
+.devc__grid { display: grid; gap: 20px; align-items: start; }
+.devc__grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.devc__grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.devc__grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.devc__videos { display: grid; grid-template-columns: 2fr .7fr 1fr; gap: 20px; align-items: start; }
+.devc__ctas { display: flex; flex-direction: column; }
+.devc__ctas .ccta { margin-block-start: 16px; }
+.devc__ctas .ccta:first-child { margin-block-start: 0; }
+.devc__wa { position: relative; height: 72px; }
+.devc__wa .wa { position: absolute; inset-inline-start: 0; inset-inline-end: auto; bottom: 8px; }
+.devc__swatches { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-block-start: 40px; }
+.devc__swatches li { display: grid; grid-template-columns: 40px 1fr; column-gap: 12px; align-items: center; padding: 12px; border: var(--bw) solid var(--line); background: var(--card); }
+.devc__swatches i { grid-row: span 2; width: 40px; height: 40px; border: var(--bw) solid var(--line); }
+.devc__swatches code { font-family: var(--mono); font-size: 12.5px; }
+.devc__swatches span { font-size: 12.5px; color: var(--muted); }
+@media (max-width: 1120px) { .devc__grid--4, .devc__swatches { grid-template-columns: repeat(2, minmax(0, 1fr)); } .devc__grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 860px) { .devc__grid--2, .devc__grid--3, .devc__videos { grid-template-columns: 1fr; } }
+.devc__demo > .btn { align-self: flex-start; }
