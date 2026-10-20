@@ -158,7 +158,7 @@ export const SAMPLE_PRODUCTS = EXTRA_PRODUCTS;
 export const productsOf = (brandId: string) => PRODUCTS.filter((p) => p.brandId === brandId);
 
 /** "$12.40"; an unknown price (NaN, e.g. a placeholder product, or any total that includes one) prints "$[__]". */
-export const money = (n: number) => (Number.isFinite(n) ? `${n.toFixed(2)}` : "$[__]");
+export const money = (n: number) => (Number.isFinite(n) ? `$${n.toFixed(2)}` : "$[__]");
 
 /** Supply rate (공급률): wholesale as a share of MSRP. Lower = more margin for the buyer. */
 export const supplyRate = (p: Product) => Math.round((p.wholesale / p.msrp) * 100);
