@@ -207,7 +207,7 @@ export const ABOUT_LINKS = (NAV.find((n) => n.id === "about") as Extract<NavItem
 
 /** Bottom of the mobile menu. */
 export const MOBILE_ACTIONS: { primary: CtaLink; whatsapp: CtaLink } = {
-  primary: { label: { en: "Browse & sample" }, href: "/#collection", ctaId: "mnav_sample" },
+  primary: { label: { en: "Pick your samples" }, href: "/samples", ctaId: "mnav_sample" },
   whatsapp: { label: { en: "WhatsApp" }, href: whatsappHref(), ctaId: "mnav_whatsapp" },
 };
 

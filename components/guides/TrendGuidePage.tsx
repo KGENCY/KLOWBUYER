@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { t } from "@/content/i18n";
 import { ingredientGuides, monthLabel, trendGuides, type TrendGuide } from "@/content/guides";
-import { catalogProduct } from "@/content/products";
+import { PARTNER_SAMPLE_PRICE, catalogProduct } from "@/content/products";
 import { brandHref, brandProfile } from "@/content/brands";
 import MediaFrame from "@/components/media/MediaFrame";
 import SampleToggle from "./SampleToggle";
@@ -42,7 +42,7 @@ export default function TrendGuidePage({ guide }: { guide: TrendGuide }) {
         summary={t(guide.summary)}
         meta={`Updated ${dateLabel(guide.updatedAt)} · ${readMinutes(guide)} min read`}
         toc={toc}
-        cta={{ title: "Seen something you want?", text: "Partner-brand products from this report sample from 1 unit at wholesale price.", label: "Sample this month’s trends", href: "#available", ctaId: `${p}_sidebar_sample` }}
+        cta={{ title: "Seen something you want?", text: `Partner-brand products from this report: 1 unit at $${PARTNER_SAMPLE_PRICE}, no MOQ.`, label: "Sample this month’s trends", href: "#available", ctaId: `${p}_sidebar_sample` }}
         related={relatedGuides(guide)}
         ctaPrefix={p}
         newsletterCtaId={`${p}_newsletter`}

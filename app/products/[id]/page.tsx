@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import ProductDetail from "@/components/ProductDetail";
 import KbProductDetail from "@/components/kb/KbProductDetail";
 import { PRODUCTS, brandById } from "@/lib/data";
-import { PRODUCTS as CATALOG, catalogProduct, productsOfBrand } from "@/content/products";
+import { PARTNER_SAMPLE_PRICE, PRODUCTS as CATALOG, catalogProduct, productsOfBrand } from "@/content/products";
 import { brandProfile } from "@/content/brands";
 
 type Params = Promise<{ id: string }>;
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     const { p, brand } = partner;
     return {
       title: `${p.name} — ${brand.name} wholesale · KLOW Wholesale`,
-      description: `${brand.name} ${p.name} wholesale from Korea. Sample 1 unit at wholesale price, then order from ${p.moq ?? "[__]"} units, with export documents.`,
+      description: `${brand.name} ${p.name} wholesale from Korea. Sample 1 unit at $${PARTNER_SAMPLE_PRICE}, then order from ${p.moq ?? "[__]"} units, with export documents.`,
     };
   }
   const p = PRODUCTS.find((x) => x.id === id);

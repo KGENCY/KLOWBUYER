@@ -38,7 +38,7 @@ export default function ComingSoon({ path, title, description }: { path: string;
               {description ?? "We’re still putting this page together. Tell us what you were looking for and we’ll send it to you directly — usually within a day."}
             </p>
             <div className="about-links">
-              <Link href="/#collection" className="btn btn--solid" data-cta-id={`soon_${slug}_sample`}>Browse &amp; sample</Link>
+              <Link href="/samples" className="btn btn--solid" data-cta-id={`soon_${slug}_sample`}>Pick your samples</Link>
               <Link href="/about" className="link small" data-cta-id={`soon_${slug}_about`}>About KLOW</Link>
             </div>
           </div>

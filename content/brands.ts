@@ -1,14 +1,14 @@
 /**
  * Brands with their own pages.
  *   major   → /brands/[slug]/wholesale — well-known brands sold at MOQ (no single-unit samples).
- *   partner → /brands/[slug]         — KLOW partner brands, sampled from 1 unit at wholesale price.
+ *   partner → /brands/[slug]         — KLOW partner brands, sampled 1 unit at a flat price (PARTNER_SAMPLE_PRICE).
  *
  * Every section on a brand page reads from these fields; a section with no data is hidden,
  * so pages differ by brand rather than being one template with the name swapped.
  * [BRACKETS] = not confirmed yet. Partner brands are the real ones listed on klow.kr (content/klowCatalog.ts).
  */
 import type { LocalizedText, MediaImage, MediaVideoItem } from "@/types/content";
-import { PRODUCTS } from "./products";
+import { PARTNER_SAMPLE_PRICE, PRODUCTS } from "./products";
 import { KLOW_BRANDS } from "./klowCatalog";
 
 export type BrandType = "major" | "partner";
@@ -77,7 +77,7 @@ const majorFaq = (name: string) => [
   },
   {
     question: { en: `Can I sample ${name} before ordering in bulk?` },
-    answer: { en: `${name} isn’t available as single-unit samples — it’s sold at MOQ. If you want to test first, the similar Korean brands on this page can be sampled from 1 unit at wholesale price.` },
+    answer: { en: `${name} isn’t available as single-unit samples — it’s sold at MOQ. If you want to test first, the similar Korean brands on this page can be sampled from 1 unit at $${PARTNER_SAMPLE_PRICE}, no MOQ.` },
   },
   {
     question: { en: `Do you ship ${name} to Mexico, Kazakhstan or the UAE?` },
@@ -114,7 +114,7 @@ function partner(k: (typeof KLOW_BRANDS)[number], order: number): BrandProfile {
     faq: [
       {
         question: { en: `What is the minimum order for ${k.name}?` },
-        answer: { en: `The opening order is ${k.openingOrder ?? "[__]"} units per SKU. Before that, you can sample any ${k.name} product from 1 unit at wholesale price — from ${from}.` },
+        answer: { en: `The opening order is ${k.openingOrder ?? "[__]"} units per SKU. Before that, you can sample any ${k.name} product once, 1 unit at $${PARTNER_SAMPLE_PRICE}.` },
       },
       {
         question: { en: `How much margin is there on ${k.name}?` },

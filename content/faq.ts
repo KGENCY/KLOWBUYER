@@ -173,7 +173,7 @@ export const FAQS: FaqItem[] = [
     answer: {
       en: `Sample orders ship free once your box reaches ${P.freeShippingSkus} SKUs, mixed across any brands. Below that, sample shipping is a flat $18.`,
     },
-    cta: { label: { en: "Browse & sample →" }, href: "/#collection", ctaId: "free_shipping_sample" },
+    cta: { label: { en: "Pick your samples →" }, href: "/samples", ctaId: "free_shipping_sample" },
   },
 
   /* Ordering & payment — wording built from content/orderPolicy.ts */
@@ -185,18 +185,18 @@ export const FAQS: FaqItem[] = [
     featured: true,
     question: { en: "Is there a minimum order?" },
     answer: {
-      en: `Not for samples: order ${P.sampleMinUnits} unit of any product at its wholesale price. Wholesale orders start at ${P.wholesaleMOA}, and each product has its own MOQ for the lower reorder price.`,
+      en: `Not for samples: once you're a verified buyer, order ${P.sampleMinUnits} unit of any partner-brand product at $${P.samplePrice} — once per product, up to ${P.maxSampleSkus} per order. Wholesale orders start at ${P.wholesaleMOA}, and each product has its own MOQ.`,
     },
-    cta: { label: { en: "Browse & sample →" }, href: "/#collection", ctaId: "minimum_order_sample" },
+    cta: { label: { en: "Pick your samples →" }, href: "/samples", ctaId: "minimum_order_sample" },
   },
   {
     id: "sample-vs-wholesale",
     category: "ordering",
     order: 1,
     enabled: true,
-    question: { en: "Is the sample price the same as wholesale?" },
+    question: { en: "How much does a sample cost?" },
     answer: {
-      en: "Yes — samples are priced at wholesale level, the same as an opening order, never retail. When you reorder at a product’s MOQ, the unit price drops further.",
+      en: `$${P.samplePrice} a unit, for every partner-brand product, whatever its retail price. Each product can be sampled once; after that, it’s ordered at its MOQ.`,
     },
   },
   {

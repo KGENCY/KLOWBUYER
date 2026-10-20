@@ -4,7 +4,7 @@ import BrandDetail from "@/components/BrandDetail";
 import PartnerBrandPage from "@/components/brand/PartnerBrandPage";
 import { brandProfile, brandsOfType } from "@/content/brands";
 import { t } from "@/content/i18n";
-import { BRANDS, productsOf } from "@/lib/data";
+import { BRANDS, SAMPLE_PRICE, productsOf } from "@/lib/data";
 
 type Params = Promise<{ id: string }>;
 
@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       title: p.seo?.title ? t(p.seo.title) : `${p.name} – Korean ${category} Brand | Wholesale Samples from 1 Unit – KLOW`,
       description: p.seo?.description
         ? t(p.seo.description)
-        : `${p.name}: ${t(p.tagline)} Sample from 1 unit at wholesale price, ships from Korea with export documents.`,
+        : `${p.name}: ${t(p.tagline)} Every sample $${SAMPLE_PRICE} for 1 unit, no MOQ, shipped from Korea with export documents.`,
       alternates: { canonical: `/brands/${p.slug}` },
     };
   }

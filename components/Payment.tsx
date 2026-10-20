@@ -130,7 +130,7 @@ export default function Payment() {
         <aside className="summary">
           <span className="eyebrow">Total due</span>
           <div className="summary__rows">
-            <div className="row"><span>Samples at wholesale</span><span>{money(t.subtotal)}</span></div>
+            <div className="row"><span>Samples</span><span>{money(t.subtotal)}</span></div>
             <div className="row"><span>Shipping from Seoul</span><span>{t.free ? "Complimentary" : money(t.shipping)}</span></div>
             <div className="row row--total"><span>Total</span><span>{money(t.total)} <small>USD</small></span></div>
           </div>

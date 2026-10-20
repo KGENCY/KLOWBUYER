@@ -203,7 +203,7 @@ function SampleDrawer() {
         </ul>
 
         <footer className="drawer__foot">
-          <div className="row"><span>Samples at wholesale</span><span>{money(subtotal)}</span></div>
+          <div className="row"><span>Samples</span><span>{money(subtotal)}</span></div>
           <div className="row"><span>Shipping from Seoul</span><span>{free ? "Complimentary" : money(SAMPLE_SHIPPING_FEE)}</span></div>
           <div className="row row--total"><span>Total</span><span>{money(subtotal + (free || !n ? 0 : SAMPLE_SHIPPING_FEE))}</span></div>
           <button

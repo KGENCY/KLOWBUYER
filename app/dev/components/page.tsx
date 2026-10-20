@@ -31,7 +31,7 @@ const TOKENS = [
 
 const VARIANTS: { variant: CtaVariant; text: string }[] = [
   { variant: "quote", text: "Shipping a full order? Get the landed cost before you commit." },
-  { variant: "sample", text: "Try any product from one unit, at its wholesale price." },
+  { variant: "sample", text: "Try any product from one unit, $7, no MOQ." },
   { variant: "signup", text: "See verified brands and bulk pricing." },
   { variant: "inquiry", text: "Not sure where to start? Ask our team." },
 ];
@@ -93,7 +93,7 @@ export default function ComponentsPreview() {
           </Demo>
           <Demo name="StepFlow" note="vertical below 860px">
             <StepFlow steps={[
-              { title: "Sample from 1 unit", description: "Any product, one unit, at its wholesale price." },
+              { title: "Sample from 1 unit", description: "Any product, one unit, $7." },
               { title: "Free shipping at 5 SKUs", description: "Mix any five products across brands." },
               { title: "Reorder at MOQ", description: "A lower unit price once something sells." },
               { title: "Bulk quote", description: "Prices, lead time and landed cost in one reply." },

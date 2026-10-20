@@ -6,6 +6,7 @@
  * Values in [BRACKETS] are placeholders still waiting for real numbers or details.
  */
 import type { AboutPage } from "./sections";
+import { PARTNER_SAMPLE_PRICE as SAMPLE } from "./products";
 
 export const about: AboutPage = {
   ctaPrefix: "about",
@@ -30,7 +31,7 @@ export const about: AboutPage = {
         en: "KLOW is a Korea-based export and logistics partner working directly with K-beauty brands. Every order ships from our own warehouse in Korea — 100% authentic, with the export documents your market requires.",
       },
       links: [
-        { label: { en: "Browse & sample" }, href: "/#collection", variant: "primary", ctaId: "about_hero_sample" },
+        { label: { en: "Pick your samples" }, href: "/samples", variant: "primary", ctaId: "about_hero_sample" },
         { label: { en: "Talk to our team" }, href: "#contact", variant: "secondary", ctaId: "about_hero_inquiry" },
       ],
       images: [
@@ -187,9 +188,9 @@ export const about: AboutPage = {
       label: { en: "How it works" },
       title: { en: "From one unit to a full order." },
       items: [
-        { title: { en: "Sample from 1 unit" }, description: { en: "Order a single unit of any product at its wholesale price." } },
-        { title: { en: "Free shipping at 5 SKUs" }, description: { en: "Mix any five products across brands and shipping is on us." } },
-        { title: { en: "Reorder at MOQ for less" }, description: { en: "Move what sells into MOQ quantities, at a lower unit price." } },
+        { title: { en: `Every sample $${SAMPLE}` }, description: { en: `Order a single unit of any product at $${SAMPLE}, once per product. No MOQ.` } },
+        { title: { en: "Free shipping at 5 products" }, description: { en: "Mix any five products across brands and shipping is on us — up to ten per order." } },
+        { title: { en: "Reorder what sells at MOQ" }, description: { en: "Move your best sellers into MOQ quantities, with volume tiers as you grow." } },
         { title: { en: "We handle export & documents" }, description: { en: "Documents and labels for your market, prepared before it ships." } },
       ],
     },

@@ -8,6 +8,7 @@
  */
 import type { LocalizedText, MediaImage } from "@/types/content";
 import type { Difficulty } from "./shippingCountries";
+import { PARTNER_SAMPLE_PRICE as SAMPLE } from "./products";
 
 const L = (en: string): LocalizedText => ({ en });
 
@@ -300,7 +301,7 @@ const pdrn: IngredientGuide = {
   ingredient: "PDRN",
   aliases: ["Polydeoxyribonucleotide", "Salmon DNA"],
   title: L("PDRN skincare from Korea, for buyers."),
-  summary: L("What PDRN is, why Korean clinics made it famous, and which brands you can sample at wholesale."),
+  summary: L(`What PDRN is, why Korean clinics made it famous, and which brands you can sample at $${SAMPLE}.`),
   heroImage: hero("PDRN skincare products from Korea, available wholesale", "product-bottle"),
   publishedAt: "2026-09-20",
   updatedAt: "2026-10-01",
@@ -313,7 +314,7 @@ const pdrn: IngredientGuide = {
   leadMagnetId: "brand-catalog",
   faq: [
     { question: L("Is PDRN the same as salmon DNA?"), answer: L("PDRN is usually derived from salmon DNA, purified for use in skincare.") },
-    { question: L("Can I sample PDRN products from 1 unit?"), answer: L("Yes — partner brands on KLOW, like [PARTNER 03], can be sampled from 1 unit at wholesale price.") },
+    { question: L("Can I sample PDRN products from 1 unit?"), answer: L(`Yes — partner brands on KLOW, like [PARTNER 03], can be sampled from 1 unit at $${SAMPLE}.`) },
   ],
   seo: { description: L("PDRN skincare wholesale from Korea: what it is, why buyers stock it, popular products and new Korean brands you can sample from 1 unit.") },
   enabled: true,

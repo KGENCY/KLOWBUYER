@@ -3,14 +3,14 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { FREE_SHIPPING_SKUS, PRODUCTS, SAMPLE_SHIPPING_FEE, brandById, money, productById } from "@/lib/data";
+import { FREE_SHIPPING_SKUS, PRODUCTS, SAMPLE_PRICE, SAMPLE_SHIPPING_FEE, brandById, money, productById } from "@/lib/data";
 import { COUNTRIES, countryName, loadCheckout, saveCheckout } from "@/lib/buyer";
 import { photoPos, photoSrc } from "./Photo";
 import { DEMO_EMAIL, useBuyer } from "./Buyer";
 
 /* ────────────────────────────────────────────────────────────────
    First visit: ask where the buyer ships to, then sell the opening
-   offer: any product from 1 unit at wholesale, and free shipping
+   offer: any product from 1 unit at a flat sample price, and free shipping
    once five SKUs are in the box. /?welcome=1 reopens it.
    Design only: every market reads in English for now.
    ──────────────────────────────────────────────────────────────── */
@@ -214,7 +214,7 @@ function Offer({ country, onChange, onStart, onMatch, onSignIn }: { country: str
         <ol className="wel__perks">
           <li>
             <span className="mono">01</span>
-            <p><b>Any product from just 1 unit, at wholesale price.</b> No MOQ, no case packs, no retail markup.</p>
+            <p><b>Any product, 1 unit, ${SAMPLE_PRICE}.</b> No MOQ, no case packs, whatever its retail price.</p>
           </li>
           <li>
             <span className="mono">05</span>

@@ -11,7 +11,7 @@ export const ordering: AboutPage = {
   seo: {
     title: { en: "How to Order K-Beauty Wholesale: MOQ, Samples & Payment | KLOW" },
     description: {
-      en: "Sample any K-beauty product from 1 unit at wholesale price, then reorder at MOQ for less. Pay by card, PayPal or bank transfer. Clear terms from Korea.",
+      en: `Sample any partner-brand K-beauty product from 1 unit at $${P.samplePrice}, then reorder what sells at MOQ. Pay by card, PayPal or bank transfer. Clear terms from Korea.`,
     },
   },
   sections: [
@@ -24,9 +24,9 @@ export const ordering: AboutPage = {
       label: { en: "Ordering & payment" },
       title: { en: "Start with one unit." },
       subtitle: { en: "Scale when it sells." },
-      body: { en: "Sample at wholesale price, then reorder at MOQ for less. Clear terms, no surprises." },
+      body: { en: `Every sample $${P.samplePrice}, then reorder what sells at MOQ. Clear terms, no surprises.` },
       links: [
-        { label: { en: "Browse & sample" }, href: "/#collection", variant: "primary", ctaId: "ordering_hero_sample" },
+        { label: { en: "Pick your samples" }, href: "/samples", variant: "primary", ctaId: "ordering_hero_sample" },
         { label: { en: "Request bulk quote" }, href: "#quote", variant: "secondary", ctaId: "ordering_hero_quote" },
       ],
     },
@@ -53,7 +53,7 @@ export const ordering: AboutPage = {
             { label: { en: "Shipping" }, value: { en: `Free at ${P.freeShippingSkus}+ SKUs` } },
           ],
           price: { sample: "$[__]", moq: "$[__]", moqUnits: "[__]" },
-          cta: { label: { en: "Start a sample box" }, href: "/#collection", ctaId: "ordering_ways_sample" },
+          cta: { label: { en: "Start a sample box" }, href: "/samples", ctaId: "ordering_ways_sample" },
         },
         {
           key: "wholesale",

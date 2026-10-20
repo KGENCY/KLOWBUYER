@@ -5,6 +5,7 @@ import { importGuides, ingredientGuides, latestTrend, monthLabel, trendGuides } 
 import { DIFFICULTY_TEXT } from "@/content/shippingCountries";
 import SectionHeader from "@/components/section/SectionHeader";
 import ContextCTA from "@/components/conversion/ContextCTA";
+import { PARTNER_SAMPLE_PRICE } from "@/content/products";
 import NewsletterBlock from "@/components/guides/NewsletterBlock";
 import { brandsForCountry, brandsForIngredient } from "@/components/guides/match";
 
@@ -109,7 +110,7 @@ export default function GuidesHub() {
 
       <section className="about-final brands-bottom">
         <div className="wrap">
-          <ContextCTA id="guides_hub_bottom" variant="sample" text="Read enough? Sample partner brands from 1 unit at wholesale price." />
+          <ContextCTA id="guides_hub_bottom" variant="sample" text={`Read enough? Sample partner brands at $${PARTNER_SAMPLE_PRICE} a unit, no MOQ.`} />
         </div>
       </section>
     </div>

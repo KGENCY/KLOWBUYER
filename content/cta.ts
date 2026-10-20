@@ -8,7 +8,7 @@ export type CtaVariant = "quote" | "sample" | "signup" | "inquiry";
 
 export const CTA_TARGETS: Record<CtaVariant, { label: string; href: string }> = {
   quote: { label: "Request bulk quote", href: "/ordering-payment#quote" },
-  sample: { label: "Browse & sample", href: "/#collection" },
+  sample: { label: "Pick your samples", href: "/samples" },
   signup: { label: "Create a buyer account", href: "/signup" },
   inquiry: { label: "Ask our team", href: CONTACT_HREF },
 };

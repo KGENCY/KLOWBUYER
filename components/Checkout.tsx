@@ -62,7 +62,7 @@ export default function Checkout() {
           <div className="block">
             <div className="block__head">
               <h2 className="serif">Products <sup className="mono">{n}</sup></h2>
-              <Link href="/#collection" className="link small">Add more</Link>
+              <Link href="/samples" className="link small">Add more</Link>
             </div>
             <ul className="lines">
               {items.map((id) => {
@@ -121,7 +121,7 @@ export default function Checkout() {
             <p>{shippingNote(n)}</p>
           </div>
           <div className="summary__rows">
-            <div className="row"><span>{n} {n === 1 ? "sample" : "samples"} at wholesale</span><span>{money(t.subtotal)}</span></div>
+            <div className="row"><span>{n} {n === 1 ? "sample" : "samples"}</span><span>{money(t.subtotal)}</span></div>
             <div className="row"><span>Shipping from Seoul</span><span>{t.free ? "Complimentary" : money(t.shipping)}</span></div>
             <div className="row row--total"><span>Total</span><span>{money(t.total)} <small>USD</small></span></div>
           </div>

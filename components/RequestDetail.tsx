@@ -107,7 +107,7 @@ export default function RequestDetail({ id }: { id: string }) {
           </dl>
           <span className="eyebrow">Payment</span>
           <div className="summary__rows">
-            <div className="row"><span>Samples at wholesale</span><span>{money(order.subtotal)}</span></div>
+            <div className="row"><span>Samples</span><span>{money(order.subtotal)}</span></div>
             <div className="row"><span>Shipping</span><span>{order.shipping ? money(order.shipping) : "Complimentary"}</span></div>
             <div className="row row--total"><span>Paid</span><span>{money(order.total)} <small>USD</small></span></div>
           </div>
