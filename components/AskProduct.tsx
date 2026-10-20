@@ -47,7 +47,9 @@ const QUICK: Quick[] = [
     answer: (p, b) => {
       const certs = certsOf(p).map((c) => `${c.code} (${c.note})`).join(", ");
       const docs = b.docs.map((r) => REGION[r]).join(", ");
-      return `On file for ${p.name}: ${certs}. ${b.name} has export paperwork ready for ${docs}. MSDS, COA and the full INCI are sent with the proforma invoice; for any other market, ask below and we check with the brand.`;
+      const onFile = certs ? `On file for ${p.name}: ${certs}. ` : "";
+      const ready = docs ? `${b.name} has export paperwork ready for ${docs}. ` : `${b.name} prepares export paperwork per market. `;
+      return `${onFile}${ready}MSDS, COA and the full INCI are sent with the proforma invoice; for any other market, ask below and we check with the brand.`;
     },
   },
   { label: "Is private label or custom packaging possible?" },

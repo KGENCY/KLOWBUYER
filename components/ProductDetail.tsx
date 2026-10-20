@@ -214,7 +214,7 @@ export default function ProductDetail({ p }: { p: Product }) {
 const SLIDE_MS = 3000;
 
 /** Main photo with the brand's other shots beneath it. Advances every 3 s; pauses while hovered. */
-function Gallery({ shots }: { shots: Shot[] }) {
+export function Gallery({ shots }: { shots: Shot[] }) {
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
   const [tick, setTick] = useState(0); // restarts the timer when the buyer picks a shot
@@ -252,7 +252,7 @@ function Gallery({ shots }: { shots: Shot[] }) {
   );
 }
 
-function Lock() {
+export function Lock() {
   return (
     <svg className="lock" width="11" height="13" viewBox="0 0 11 13" aria-hidden="true">
       <rect x="0.75" y="5.75" width="9.5" height="6.5" fill="none" stroke="currentColor" strokeWidth="1.5" />

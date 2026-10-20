@@ -5,10 +5,11 @@
  *
  * Every section on a brand page reads from these fields; a section with no data is hidden,
  * so pages differ by brand rather than being one template with the name swapped.
- * [BRACKETS] = not confirmed yet. Partner brand details are sample data.
+ * [BRACKETS] = not confirmed yet. Partner brands are the real ones listed on klow.kr (content/klowCatalog.ts).
  */
 import type { LocalizedText, MediaImage, MediaVideoItem } from "@/types/content";
 import { PRODUCTS } from "./products";
+import { KLOW_BRANDS } from "./klowCatalog";
 
 export type BrandType = "major" | "partner";
 export type ExclusivityStatus = "open" | "taken" | "ask";
@@ -55,20 +56,19 @@ export interface BrandProfile {
   /** Position in menus and lists (lower first); brands without it follow, A–Z. */
   order?: number;
   enabled: boolean;
+  /** Brand logo (image URL). */
+  logo?: string;
+  /** Tier label over the brand name, e.g. "Hidden gem". */
+  tierLabel?: string;
+  /** Country of origin, e.g. "Korea". */
+  origin?: string;
+  /** Units per SKU for the first wholesale order. */
+  openingOrder?: number;
+  /** Average MSRP ÷ wholesale price, e.g. 2.1. */
+  retailMultiple?: number;
+  /** The brand's own YouTube videos and Shorts ("Brand in action"). */
+  youtube?: { id: string; title: string; vertical: boolean }[];
 }
-
-const placeholderImages = (name: string, n: number): MediaImage[] =>
-  Array.from({ length: n }, (_, i) => ({
-    alt: { en: `${name} K-beauty products${i ? ` — photo ${i + 1}` : ""}, wholesale from Korea` },
-    fallback: i % 3 === 1 ? "product-bottle" : "brand-placeholder",
-  }));
-
-const placeholderVideos = (name: string): MediaVideoItem[] => [
-  { ratio: "16:9", title: { en: `${name} brand film` } },
-  { ratio: "9:16", title: { en: `${name} — texture` } },
-  { ratio: "9:16", title: { en: `${name} — how to use` } },
-  { ratio: "9:16", title: { en: `${name} — behind the scenes` } },
-];
 
 const majorFaq = (name: string) => [
   {
@@ -88,6 +88,53 @@ const majorFaq = (name: string) => [
     answer: { en: `Yes. Every unit is genuine stock, checked for expiry and packaging in our Korean warehouse before export. Proof of supply on request.` },
   },
 ];
+
+/** A klow.kr partner brand as a BrandProfile. Only facts klow.kr lists are filled; the rest stays empty, so those sections hide. */
+function partner(k: (typeof KLOW_BRANDS)[number], order: number): BrandProfile {
+  const products = PRODUCTS.filter((p) => k.productIds.includes(p.id));
+  const samples = products.map((p) => p.samplePrice).filter((n): n is number => n != null);
+  const from = samples.length ? `$${Math.min(...samples).toFixed(2)}` : "$[__]";
+  const actives = [...new Set(products.flatMap((p) => (p.keyActives ?? []).filter((a) => !/^SPF/i.test(a))).map((a) => a.replace(/\s*\d+%$/, "")))];
+  return {
+    slug: k.slug,
+    type: "partner",
+    name: k.name,
+    tagline: { en: k.intro.replace(/\s*\n\s*/g, " ") },
+    story: { en: "" },
+    category: [...new Set(products.map((p) => p.category).filter((c) => c !== "Sets" && c !== "Accessories"))],
+    heroIngredients: actives.slice(0, 3),
+    priceTier: "mid",
+    tags: [],
+    images: products[0]?.images[0]?.src ? [{ src: products[0].images[0].src, alt: { en: `${k.name} K-beauty products, wholesale from Korea` }, fallback: "brand-placeholder" }] : [],
+    videos: [],
+    productIds: k.productIds,
+    buyerInfo: { certifications: [], readyMarkets: [], exclusivity: [], marketingSupport: [], proof: [] },
+    flags: { onlyOnKlow: false, exclusiveOpen: false, official: false, featured: order < 2, sampleFromOne: true },
+    similarBrands: [],
+    faq: [
+      {
+        question: { en: `What is the minimum order for ${k.name}?` },
+        answer: { en: `The opening order is ${k.openingOrder ?? "[__]"} units per SKU. Before that, you can sample any ${k.name} product from 1 unit at wholesale price — from ${from}.` },
+      },
+      {
+        question: { en: `How much margin is there on ${k.name}?` },
+        answer: { en: `On average ${k.name} retails at ${k.retailMultiple ?? "[__]"}× its wholesale price. Sign in to see the unit price at every order quantity.` },
+      },
+      {
+        question: { en: `Can I get the full ingredients and documents for ${k.name}?` },
+        answer: { en: "Yes — ask the brand team on any product page. Full INCI, specifications and export documents are sent on request, usually within one business day." },
+      },
+    ],
+    order,
+    enabled: true,
+    logo: k.logo ?? undefined,
+    tierLabel: k.tier,
+    origin: k.origin,
+    openingOrder: k.openingOrder ?? undefined,
+    retailMultiple: k.retailMultiple ?? undefined,
+    youtube: k.youtube,
+  };
+}
 
 export const BRANDS: BrandProfile[] = [
   /* ───── Major brands ───── */
@@ -139,108 +186,14 @@ export const BRANDS: BrandProfile[] = [
     },
     flags: { onlyOnKlow: false, exclusiveOpen: false, official: false, featured: true, sampleFromOne: false },
     dispatchDays: "[2–5]",
-    similarBrands: ["inyoe", "partner-03"],
+    similarBrands: ["inyoe", "simplete"],
     faq: majorFaq("COSRX"),
     enabled: true,
   },
 
-  /* ───── Partner brands ───── */
-  {
-    slug: "airmood",
-    type: "partner",
-    name: "AIRMOOD",
-    tagline: { en: "Heartleaf and cica for calm, breathable skin." },
-    story: {
-      en: "AIRMOOD started in a small lab in [CITY] with one goal: soothing care that feels like nothing on the skin. Its heartleaf line is fragrance-free and built for sensitive skin, with textures that sell on first try. Every formula is made in Korea and shipped to KLOW buyers directly.",
-    },
-    category: ["Skincare"],
-    heroIngredients: ["Heartleaf", "Centella"],
-    priceTier: "value",
-    tags: ["soothing", "sensitive", "pores", "fragrance-free"],
-    images: placeholderImages("AIRMOOD", 8),
-    videos: placeholderVideos("AIRMOOD"),
-    productIds: ["airmood-heartleaf-toner", "airmood-cica-cream", "airmood-cleansing-oil", "airmood-sun-fluid"],
-    buyerInfo: {
-      marginNote: { en: "Based on the hero toner" },
-      certifications: [],
-      readyMarkets: ["MX", "KZ", "AE"],
-      exclusivity: [
-        { country: "MX", status: "open" },
-        { country: "KZ", status: "open" },
-        { country: "AE", status: "ask" },
-      ],
-      marketingSupport: [{ en: "Image assets" }, { en: "Influencer seeding [scope]" }, { en: "Short-form videos" }],
-      proof: [],
-    },
-    flags: { onlyOnKlow: true, exclusiveOpen: true, official: false, featured: true, sampleFromOne: true },
-    similarBrands: [],
-    faq: [
-      { question: { en: "Is AIRMOOD only available through KLOW?" }, answer: { en: "Yes — AIRMOOD’s export wholesale runs through KLOW, so you won’t compete with grey-market stock." } },
-      { question: { en: "Can I get exclusivity for my country?" }, answer: { en: "Exclusive territories are open in Mexico and Kazakhstan; ask us about the UAE. Exclusivity usually comes with a yearly volume commitment of [__]." } },
-      { question: { en: "Do the products come with local-language labels?" }, answer: { en: "Spanish, Russian and Arabic labels can be applied in our warehouse before dispatch." } },
-    ],
-    enabled: true,
-  },
-  {
-    slug: "inyoe",
-    type: "partner",
-    name: "INYOE",
-    tagline: { en: "Snail and niacinamide for skin that bounces back." },
-    story: {
-      en: "INYOE makes repair-first skincare from [CITY], Korea. Its snail essence is the line’s bestseller in [CHANNEL], and the low-pH cleanser keeps buyers coming back. Small batches, consistent quality, and a team that answers distributors directly.",
-    },
-    category: ["Skincare"],
-    heroIngredients: ["Snail mucin", "Niacinamide", "BHA"],
-    priceTier: "mid",
-    tags: ["repair", "barrier", "glow", "acne"],
-    images: placeholderImages("INYOE", 7),
-    videos: placeholderVideos("INYOE"),
-    productIds: ["inyoe-snail-essence", "inyoe-niacinamide-serum", "inyoe-gel-cleanser"],
-    buyerInfo: {
-      marginNote: { en: "Based on the hero essence" },
-      certifications: ["[CPNP]"],
-      readyMarkets: ["MX", "AE", "SA"],
-      exclusivity: [
-        { country: "MX", status: "taken" },
-        { country: "AE", status: "open" },
-        { country: "KZ", status: "ask" },
-      ],
-      marketingSupport: [{ en: "Image assets" }, { en: "Retail display kit [scope]" }],
-      proof: [{ en: "[Olive Young ranking]" }, { en: "[Review count]" }],
-    },
-    flags: { onlyOnKlow: true, exclusiveOpen: true, official: false, featured: true, sampleFromOne: true },
-    similarBrands: [],
-    faq: [
-      { question: { en: "Which INYOE products sell best abroad?" }, answer: { en: "The Snail Repair Essence and the Low pH Gel Cleanser — start your sample box with those two." } },
-      { question: { en: "Is exclusivity available?" }, answer: { en: "Open in the UAE; taken in Mexico; ask us about Kazakhstan." } },
-    ],
-    enabled: true,
-  },
-  {
-    slug: "partner-03",
-    type: "partner",
-    name: "[PARTNER 03]",
-    tagline: { en: "[Retinal and peptides for visible renewal.]" },
-    story: { en: "[Brand story — 3–4 sentences on who makes it, what it’s known for, and why buyers reorder.]" },
-    category: ["Skincare"],
-    heroIngredients: ["Retinal", "Peptides", "PDRN"],
-    priceTier: "premium",
-    tags: ["anti-aging", "night", "renewal"],
-    images: placeholderImages("[PARTNER 03]", 6),
-    videos: [],
-    productIds: ["partner-03-retinal-serum", "partner-03-peptide-cream", "partner-03-pdrn-ampoule"],
-    buyerInfo: {
-      certifications: [],
-      readyMarkets: ["AE"],
-      exclusivity: [{ country: "MX", status: "open" }, { country: "AE", status: "open" }],
-      marketingSupport: [{ en: "Image assets" }],
-      proof: [],
-    },
-    flags: { onlyOnKlow: true, exclusiveOpen: true, official: false, featured: false, sampleFromOne: true },
-    similarBrands: [],
-    faq: [],
-    enabled: true,
-  },
+
+  /* ───── Partner brands (klow.kr) ───── */
+  ...KLOW_BRANDS.map((k, i): BrandProfile => partner(k, i)),
 ];
 
 const byOrder = (a: BrandProfile, b: BrandProfile) =>

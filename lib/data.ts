@@ -54,6 +54,8 @@ export interface Product {
   badge?: "Bestseller" | "Hidden gem" | "New";
   /** No photo yet: draw the generic bottle instead of /img/{id}.jpg. */
   art?: boolean;
+  /** Photo URL when it isn't /img/{id}.jpg (partner products photographed on klow.kr). */
+  image?: string;
 }
 
 export type Category = "Skincare" | "Sun Care" | "Cleansing" | "Masks" | "Haircare" | "Body" | "Makeup";
@@ -115,15 +117,16 @@ const EXTRA_BRANDS: Brand[] = SAMPLED.map((b) => ({
   name: b.name,
   tier: "gem",
   tagline: b.tagline.en,
+  logo: b.logo,
   support: b.buyerInfo.marketingSupport.map((m) => m.en),
-  city: "[CITY]",
+  city: b.origin ?? "[CITY]",
   founded: 0,
   lines: [],
   channels: [],
   docs: [],
   exclusiveOpen: [],
-  moq: NaN,
-  margin: NaN,
+  moq: b.openingOrder ?? NaN,
+  margin: b.retailMultiple ?? NaN,
   leadDays: 5, // [placeholder] until each brand's dispatch time is set
 }));
 
@@ -140,7 +143,8 @@ const EXTRA_PRODUCTS: Product[] = CATALOG_PRODUCTS.filter((p) => SAMPLED.some((b
   shape: "pump",
   tone: "#ECE7DF",
   cap: "#2A2A2A",
-  art: true,
+  art: !p.images[0]?.src,
+  image: p.images[0]?.src,
 }));
 
 export const brandById = (id: string) => (BRANDS.find((b) => b.id === id) ?? EXTRA_BRANDS.find((b) => b.id === id))!;

@@ -271,9 +271,9 @@ const trend202609: TrendGuide = {
   highlights: [L("[Highlight 1 — the biggest mover this month]"), L("[Highlight 2 — an ingredient gaining ground]"), L("[Highlight 3 — a category to watch]")],
   rankings: [
     { rank: 1, name: L("Heartleaf 77% Soothing Toner — Anua"), productId: "anua-heartleaf-toner", note: L("[Why it’s rising — ranking source to confirm]") },
-    { rank: 2, name: L("Heartleaf Calming Toner — AIRMOOD"), productId: "airmood-heartleaf-toner", note: L("[Why it’s rising — ranking source to confirm]") },
+    { rank: 2, name: L("Hyaluronic Snow Toner — AIRmood"), productId: "airmood-hyaluronic-snow-toner", note: L("[Why it’s rising — ranking source to confirm]") },
     { rank: 3, name: L("[Rising product 3]"), note: L("[Why it’s rising]") },
-    { rank: 4, name: L("PDRN Recovery Ampoule — [PARTNER 03]"), productId: "partner-03-pdrn-ampoule", note: L("[Why it’s rising — ranking source to confirm]") },
+    { rank: 4, name: L("PDRN Tensi Cream — inyoe"), productId: "inyoe-pdrn-tensi-cream", note: L("[Why it’s rising — ranking source to confirm]") },
     { rank: 5, name: L("[Rising product 5]"), note: L("[Why it’s rising]") },
   ],
   ingredientsToWatch: [
@@ -338,7 +338,7 @@ const heartleaf: IngredientGuide = {
   leadMagnetId: "brand-catalog",
   faq: [
     { question: L("Which heartleaf products sell best wholesale?"), answer: L("Toners and cleansing oils are the usual starting point. [Sales data to confirm]") },
-    { question: L("Are there alternatives to the big heartleaf brands?"), answer: L("Yes — partner brands like AIRMOOD make heartleaf toners you can sample from 1 unit, often with better margins.") },
+    { question: L("Are there alternatives to the big heartleaf brands?"), answer: L("Yes — partner brands with calming, hydrating toners — like AIRmood — can be sampled from 1 unit, often with better margins.") },
   ],
   seo: { description: L("Heartleaf skincare wholesale from Korea: bestsellers, new Korean brands with heartleaf lines, sample prices and margins.") },
   enabled: true,

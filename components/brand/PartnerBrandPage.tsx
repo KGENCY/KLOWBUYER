@@ -10,30 +10,41 @@ import InfoTable from "@/components/section/InfoTable";
 import LeadMagnetCard from "@/components/conversion/LeadMagnetCard";
 import QuickInquiryForm from "@/components/conversion/QuickInquiryForm";
 import BrandGallery from "./BrandGallery";
-import PartnerProducts from "./PartnerProducts";
-import SampleBlock from "./SampleBlock";
 import InquiryTypeLink from "./InquiryTypeLink";
 import BrandFaq from "./BrandFaq";
 import BrandJsonLd from "./BrandJsonLd";
-import { brandCta, brandPrefix, countryLabel, lowestSample, priceText, productsFor } from "./format";
+import { brandCta, brandPrefix, countryLabel, priceText, productsFor } from "./format";
+import VideoStrip from "@/components/kb/VideoStrip";
+import { KbBrandProducts, SampleRangeButton } from "@/components/kb/KbBrandProducts";
+import { usd } from "@/components/kb/format";
 
 const EXCLUSIVITY_TEXT = { open: "Open", taken: "Taken", ask: "Ask us" } as const;
 const INQUIRY_TYPES = ["Sample", "Bulk order", "Exclusivity", "Other"];
 
 /**
- * /brands/[slug] for a partner brand: image- and video-led, sampled from 1 unit.
+ * /brands/[slug] for a partner brand, laid out as on klow.kr: name and terms, the brand's videos,
+ * then every product (sampled from 1 unit). Buyer info, story, assets and FAQ follow below.
  * Every section reads this brand's own data and disappears when that data is empty.
  */
 export default function PartnerBrandPage({ brand }: { brand: BrandProfile }) {
   const products = productsFor(brand);
   const hero = products[0];
   const info = brand.buyerInfo;
-  const film = brand.videos.find((v) => v.ratio === "16:9" && (v.src || v.poster));
   const shorts = brand.videos.filter((v) => v.ratio === "9:16");
-  const [cover, storyImg, ...rest] = brand.images;
+  const [, storyImg, ...rest] = brand.images;
   const galleryImages = rest.slice(0, 9);
   const majors = majorsListing(brand);
   const margin = hero ? marginPct(hero) : null;
+  const samples = products.filter((p) => p.category !== "Accessories").map((p) => p.samplePrice).filter((n): n is number => n != null);
+  const sampleIds = products.filter((p) => p.samplePrice != null).map((p) => p.id);
+  const lo = Math.min(...samples);
+  const hi = Math.max(...samples);
+  const facts = [
+    brand.origin && { k: "From", v: brand.origin },
+    brand.openingOrder && { k: "Opening order", v: `${brand.openingOrder} units per SKU` },
+    brand.retailMultiple && { k: "Avg. retail multiple", v: `${brand.retailMultiple}× wholesale` },
+    !!samples.length && { k: "Sample price", v: lo === hi ? `${usd(lo)} · 1 unit` : `${usd(lo)} – ${usd(hi)} · 1 unit` },
+  ].filter((r): r is { k: string; v: string } => !!r);
 
   const rows = [
     hero && {
@@ -44,8 +55,9 @@ export default function PartnerBrandPage({ brand }: { brand: BrandProfile }) {
     {
       key: "certs",
       label: "Certifications",
-      value: info.certifications.length ? info.certifications.join(" · ") : "None yet — KLOW registration support available",
+      value: info.certifications.length ? info.certifications.join(" · ") : "On request — ask the brand team for the documents your market needs",
     },
+    !!brand.heroIngredients.length && { key: "actives", label: "Key ingredients", value: brand.heroIngredients.join(" · ") },
     !!info.readyMarkets.length && { key: "ready", label: "Ready markets", value: info.readyMarkets.map(countryLabel).join(" · ") },
     !!info.exclusivity.length && {
       key: "exclusivity",
@@ -66,42 +78,46 @@ export default function PartnerBrandPage({ brand }: { brand: BrandProfile }) {
   };
 
   return (
-    <div className="about brand-page">
+    <div className="kb brand-page">
       <BrandJsonLd brand={brand} />
 
-      {/* Hero: full-width visual, name and badges over its bottom edge */}
-      <section className="phero">
-        <div className="phero__media">
-          {film ? (
-            <MediaVideo src={film.src} poster={film.poster} ratio="16:9" title={t(film.title) || `${brand.name} brand film`} />
-          ) : (
-            <MediaFrame src={cover?.src} alt={cover ? t(cover.alt) : `${brand.name} K-beauty products`} fallback={cover?.fallback ?? "brand-placeholder"} ratio="21 / 9" priority />
-          )}
-          <div className="phero__over">
-            <h1 className="phero__title">
-              {brand.name} <em>{t(brand.tagline)}</em>
-            </h1>
-            <ul className="phero__badges">
-              {brand.flags.onlyOnKlow && <li>Only on KLOW</li>}
-              {brand.flags.exclusiveOpen && <li>Exclusive territories open</li>}
-              {brand.flags.sampleFromOne && <li>Sample from 1 unit</li>}
-            </ul>
+      <article className="brand">
+        <div className="wrap">
+          <div className="pdp__bar">
+            <Link href="/brands" className="pdp__back">← All brands</Link>
+            {brand.tierLabel && <span className="eyebrow tier tier--gem">{brand.tierLabel}</span>}
           </div>
-        </div>
-        <div className="wrap phero__cta">
-          {!!products.length && (
-            <a href="#products" className="btn btn--solid" data-cta-id={brandCta(brand.slug, "hero", "sample")}>
-              Sample from {lowestSample(brand)}
-            </a>
-          )}
-          {brand.flags.exclusiveOpen && (
-            <InquiryTypeLink type="Exclusivity" href="#ask" className="link small" ctaId={brandCta(brand.slug, "hero", "exclusivity")}>
-              Ask about exclusivity
-            </InquiryTypeLink>
-          )}
-        </div>
-      </section>
 
+          {/* Name and promise on the left; terms and the two actions on the right */}
+          <header className="brand__head">
+            <div className="brand__id">
+              <h1 className="brand__name">{brand.name}</h1>
+              <p className="brand__intro">{t(brand.tagline)}</p>
+              {!!brand.heroIngredients.length && (
+                <ul className="brand__chips" aria-label="Key ingredients">
+                  {brand.heroIngredients.map((i) => <li key={i}>{i}</li>)}
+                </ul>
+              )}
+            </div>
+            <dl className="brand__facts">
+              {facts.map((f) => (
+                <div key={f.k}><dt>{f.k}</dt><dd>{f.v}</dd></div>
+              ))}
+            </dl>
+            <div className="brand__cta">
+              {!!sampleIds.length && <SampleRangeButton ids={sampleIds} />}
+              <a href="#ask" className="btn btn--ghost btn--plain" data-cta-id={brandCta(brand.slug, "hero", "ask")}>Ask the brand team</a>
+            </div>
+          </header>
+
+          {!!brand.youtube?.length && <VideoStrip videos={brand.youtube} brandName={brand.name} />}
+
+          {!!products.length && <KbBrandProducts products={products} brandName={brand.name} />}
+        </div>
+      </article>
+
+      {/* Below the klow.kr layout: the rest of the brand page, in the About styles */}
+      <div className="about">
       {/* Story */}
       {!!t(brand.story) && (
         <section className="section about-sec">
@@ -137,27 +153,6 @@ export default function PartnerBrandPage({ brand }: { brand: BrandProfile }) {
         </section>
       )}
 
-      {/* Hero products */}
-      {!!products.length && (
-        <section id="products" className="section about-sec">
-          <div className="wrap">
-            <SectionHeader label="Hero products" title="Sample from 1 unit, at wholesale price." description="Mix any 5 products across brands and shipping is on us." />
-            <PartnerProducts
-              ctaPrefix={brandPrefix(brand.slug, "products")}
-              products={products.slice(0, 6).map((p) => ({
-                id: p.id,
-                name: p.name,
-                volume: p.volume,
-                heroIngredient: p.heroIngredient,
-                image: { src: p.images[0]?.src, alt: p.images[0] ? t(p.images[0].alt) : p.name, fallback: p.images[0]?.fallback ?? "product-bottle" },
-                sample: priceText(p.samplePrice),
-                msrp: priceText(p.msrp),
-                margin: marginPct(p),
-              }))}
-            />
-          </div>
-        </section>
-      )}
 
       {/* Buyer info */}
       <section className="section about-sec">
@@ -184,19 +179,6 @@ export default function PartnerBrandPage({ brand }: { brand: BrandProfile }) {
         </section>
       )}
 
-      {/* Sample block */}
-      {brand.flags.sampleFromOne && !!products.length && (
-        <section className="section about-sec">
-          <div className="wrap">
-            <SampleBlock
-              slug={brand.slug}
-              brandName={brand.name}
-              products={products.slice(0, 4).map((p) => ({ id: p.id, name: p.name, sample: priceText(p.samplePrice) }))}
-              ctaPrefix={brandPrefix(brand.slug, "sampleblock")}
-            />
-          </div>
-        </section>
-      )}
 
       {/* Fits the same shelf as */}
       {!!majors.length && (
@@ -235,6 +217,7 @@ export default function PartnerBrandPage({ brand }: { brand: BrandProfile }) {
           />
         </div>
       </section>
+      </div>
     </div>
   );
 }

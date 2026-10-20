@@ -14,7 +14,7 @@ export const brandsPage = {
     subtitle: L("From bestsellers to brands nobody else carries."),
     facts: { brands: L("Brands"), onlyOnKlow: L("Only on KLOW"), sampleFrom: L("Sample from"), sampleValue: L("1 unit · partner brands") },
   },
-  tabs: { all: L("All"), popular: L("Popular K-beauty"), new: L("Discover new brands") },
+  tabs: { all: L("All"), popular: L("Popular brands"), new: L("Indie brands") },
   filters: {
     category: L("Category"),
     ingredient: L("Key ingredient"),

@@ -125,7 +125,8 @@ export function photosOf(p: Product, name: string, pos?: string): Shot[] {
     ...extra.map((k) => ({ src: `/img/${k}.jpg`, alt: `${name} — ${SHOT_ALT[k]}` })),
   ];
 }
-export const certsOf = (p: Product): Cert[] => COPY[p.id].certs.map((c) => CERTS[c]);
+/** Partner products (content/products.ts) have no landing copy yet, so no certs on file. */
+export const certsOf = (p: Product): Cert[] => (COPY[p.id]?.certs ?? []).map((c) => CERTS[c]);
 
 /* ───────────── Volume pricing ───────────── */
 

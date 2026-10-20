@@ -19,7 +19,7 @@ export const productsFor = (b: BrandProfile): CatalogProduct[] =>
 
 /** Lowest known sample price of a brand, for "Sample from $X". */
 export const lowestSample = (b: BrandProfile) => {
-  const known = productsFor(b).map((p) => p.samplePrice).filter((n): n is number => n != null);
+  const known = productsFor(b).filter((p) => p.category !== "Accessories").map((p) => p.samplePrice).filter((n): n is number => n != null);
   return known.length ? money(Math.min(...known)) : "$[__]";
 };
 

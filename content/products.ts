@@ -3,9 +3,10 @@
  * Prices are `null` until confirmed — pages show "$[__]" and skip the margin %.
  * Margin % is never stored: pages compute it as (msrp − samplePrice) / msrp.
  *
- * Product names for partner brands are sample data until the real line-ups are in.
+ * Partner brand line-ups, photos and prices are the real ones from klow.kr (content/klowCatalog.ts).
  */
 import type { MediaImage } from "@/types/content";
+import { KLOW_BRANDS, KLOW_PRODUCTS } from "./klowCatalog";
 
 export interface CatalogProduct {
   id: string;
@@ -22,6 +23,15 @@ export interface CatalogProduct {
   moq: number | null;
   inStock: boolean;
   images: MediaImage[];
+  /** Wholesale unit price by minimum quantity; the first row is the 1-unit sample. */
+  tiers?: { min: number; unit: number | null }[];
+  about?: string | null;
+  keyActives?: string[];
+  /** Skin type / use, e.g. "Dehydrated skin, all skin types". */
+  forText?: string | null;
+  madeIn?: string | null;
+  /** Full INCI list. */
+  ingredients?: string | null;
 }
 
 const bottle = (alt: string): MediaImage[] => [{ alt: { en: alt }, fallback: "product-bottle" }];
@@ -54,21 +64,33 @@ export const PRODUCTS: CatalogProduct[] = [
   item("cosrx-retinol-cream", "cosrx", "COSRX", "The Retinol 0.1 Cream", "20 ml", "Retinol"),
   item("cosrx-snail-cream", "cosrx", "COSRX", "Advanced Snail 92 All in One Cream", "100 g", "Snail mucin"),
 
-  /* Partner: AIRMOOD */
-  item("airmood-heartleaf-toner", "airmood", "AIRMOOD", "Heartleaf Calming Toner", "200 ml", "Heartleaf"),
-  item("airmood-cica-cream", "airmood", "AIRMOOD", "Cica Barrier Cream", "50 ml", "Centella"),
-  item("airmood-cleansing-oil", "airmood", "AIRMOOD", "Heartleaf Mild Cleansing Oil", "200 ml", "Heartleaf", "Cleansing"),
-  item("airmood-sun-fluid", "airmood", "AIRMOOD", "Soothing Sun Fluid SPF50+", "50 ml", "Centella", "Sun Care"),
 
-  /* Partner: INYOE */
-  item("inyoe-snail-essence", "inyoe", "INYOE", "Snail Repair Essence", "120 ml", "Snail mucin"),
-  item("inyoe-niacinamide-serum", "inyoe", "INYOE", "Niacinamide Glow Serum", "30 ml", "Niacinamide"),
-  item("inyoe-gel-cleanser", "inyoe", "INYOE", "Low pH Gel Cleanser", "150 ml", "BHA", "Cleansing"),
-
-  /* Partner: [PARTNER 03] */
-  item("partner-03-retinal-serum", "partner-03", "[PARTNER 03]", "Retinal Night Serum", "30 ml", "Retinal"),
-  item("partner-03-peptide-cream", "partner-03", "[PARTNER 03]", "Peptide Firming Cream", "50 ml", "Peptides"),
-  item("partner-03-pdrn-ampoule", "partner-03", "[PARTNER 03]", "PDRN Recovery Ampoule", "30 ml", "PDRN"),
+  /* Partner brands — real line-ups from klow.kr */
+  ...KLOW_PRODUCTS.map((k): CatalogProduct => {
+    const brandName = KLOW_BRANDS.find((b) => b.slug === k.brandSlug)?.name ?? k.brandSlug;
+    return {
+      id: k.id,
+      brandSlug: k.brandSlug,
+      name: k.name,
+      volume: k.volume,
+      heroIngredient: k.heroIngredient,
+      category: k.category,
+      samplePrice: k.samplePrice,
+      msrp: k.msrp,
+      moqPrice: k.moqPrice,
+      moq: k.moq,
+      inStock: true,
+      images: k.images.length
+        ? k.images.map((src, i) => ({ src, alt: { en: `${brandName} ${k.name}${i ? ` — photo ${i + 1}` : ""}, K-beauty wholesale from Korea` }, fallback: "product-bottle" as const }))
+        : bottle(`${brandName} ${k.name}, K-beauty wholesale from Korea`),
+      tiers: k.tiers,
+      about: k.about,
+      keyActives: k.keyActives,
+      forText: k.forText,
+      madeIn: k.madeIn,
+      ingredients: k.ingredients,
+    };
+  }),
 ];
 
 export const catalogProduct = (id: string) => PRODUCTS.find((p) => p.id === id);

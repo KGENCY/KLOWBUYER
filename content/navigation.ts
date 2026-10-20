@@ -234,8 +234,8 @@ export const FOOTER = {
       heading: { en: "Shop" },
       links: [
         link("collection", "Collection", "/#collection", 0),
-        link("popular", "Popular K-beauty", "/brands?filter=popular", 1),
-        link("new", "Discover new brands", "/brands?filter=new", 2),
+        link("popular", "Popular brands", "/brands?filter=popular", 1),
+        link("new", "Indie brands", "/brands?filter=new", 2),
         { id: "request", label: { en: "Request a brand" }, action: "requestBrand", enabled: true, order: 3 } as NavLink,
       ],
     },

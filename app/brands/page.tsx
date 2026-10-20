@@ -36,7 +36,7 @@ export default async function BrandsPage({ searchParams }: { searchParams: Searc
             { key: "brands", label: t(P.hero.facts.brands), value: String(brands.length) },
             { key: "only", label: t(P.hero.facts.onlyOnKlow), value: String(brands.filter((b) => b.flags.onlyOnKlow).length) },
             { key: "sample", label: t(P.hero.facts.sampleFrom), value: t(P.hero.facts.sampleValue) },
-          ]} />
+          ].filter((r) => r.key !== "only" || r.value !== "0")} />
         </div>
       </section>
 

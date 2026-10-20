@@ -7,7 +7,7 @@ const POS: Record<string, string> = {
   p16: "50% 50%", p17: "50% 60%", p20: "50% 50%", p21: "50% 50%", p22: "50% 50%", p23: "50% 50%",
 };
 
-export function photoSrc(p: Product) { return `/img/${p.id}.jpg`; }
+export function photoSrc(p: Product) { return p.image ?? `/img/${p.id}.jpg`; }
 export function photoPos(p: Product) { return POS[p.id] ?? "50% 50%"; }
 
 export default function Photo({ p, sizes, priority }: { p: Product; sizes?: string; priority?: boolean }) {
