@@ -1648,7 +1648,7 @@ button.video__play:focus-visible { outline: 2px solid var(--accent); outline-off
 /* ═══════════════════════════════════════════════════════════════
    Navigation — desktop menus, language, mobile menu, footer
    ═══════════════════════════════════════════════════════════════ */
-/* Dropdown triggers in the header (About, Brands, Guides) (the panel's links sit outside .header__nav > a, so they keep their own styles) */
+/* Dropdown triggers in the header (About, Brands) (the panel's links sit outside .header__nav > a, so they keep their own styles) */
 .nav__item { position: relative; padding: 4px 0; display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
 .nav__item::after { content: ""; position: absolute; inset-inline: 0; bottom: 0; height: 2px; background: var(--ink); transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease); }
 .nav__item:hover::after, .nav__item.is-on::after, .nav__trigger[aria-expanded="true"]::after { transform: none; }

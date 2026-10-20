@@ -31,7 +31,6 @@ export default function Header() {
             <NavMenu id="about" />
             <Link href="/#collection">Collection</Link>
             <NavMenu id="brands" />
-            <NavMenu id="guides" />
             <Link href="/match">Find my brands</Link>
             <button onClick={() => openWith()}>Request a brand</button>
           </nav>
