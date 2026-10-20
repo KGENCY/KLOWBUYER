@@ -251,6 +251,7 @@ img { display: block; max-width: 100%; }
 .samplebar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: var(--ink); color: #fff; transform: translateY(100%); transition: transform .45s var(--ease), background .5s var(--ease); border-top: var(--bw) solid rgba(255,255,255,.18); }
 /* 5+ products: the bar turns brand green — free shipping is on. */
 .samplebar.is-free { background: var(--accent); }
+.samplebar .btn:disabled { opacity: .35; cursor: default; }
 .samplebar.is-free .btn--invert:hover { background: var(--ink); border-color: var(--ink); }
 .samplebar__stage { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.55); white-space: nowrap; }
 .samplebar.is-free .samplebar__stage { color: #fff; animation: stagePop .5s var(--ease) both; }

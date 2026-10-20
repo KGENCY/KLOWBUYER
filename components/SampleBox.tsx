@@ -118,13 +118,15 @@ export function shippingNote(count: number) {
   return `Free shipping unlocked · add up to ${left} more to this order`;
 }
 
+/** Always on screen (except checkout and sign-in), so the offer is visible before anything is added. */
 function SampleBar() {
-  const { items, notice, setOpen } = useSamples();
+  const { items, setOpen, notice } = useSamples();
+  const router = useRouter();
   const pathname = usePathname();
   const quiet = QUIET_ROUTES.some((r) => pathname.startsWith(r));
   const n = items.length;
   const subtotal = items.reduce((s, id) => s + productById(id).sample, 0);
-  const on = (n || notice) && !quiet;
+  const on = !quiet;
   const { free, goal, left, full } = boxStage(n);
   return (
     <div className={`samplebar ${on ? "is-on" : ""} ${free ? "is-free" : ""}`} aria-hidden={!on}>
@@ -139,7 +141,9 @@ function SampleBar() {
           <span className="samplebar__msg" aria-live="polite">
             <b>{n} / {goal}</b>
             <span>
-              {!free
+              {!n
+                ? <>Any product <em>${SAMPLE_PRICE}</em> · pick {FREE_SHIPPING_SKUS} and shipping is free</>
+                : !free
                 ? <>Add <em>{left} more</em> for free shipping</>
                 : full
                   ? <>Box full — check out, then start your next box</>
@@ -148,8 +152,10 @@ function SampleBar() {
           </span>
         </div>
         <div className="samplebar__r">
-          <span className="samplebar__sum">{money(subtotal)} <small>{free ? "+ free shipping" : `+ ${money(SAMPLE_SHIPPING_FEE)} shipping`}</small></span>
-          <button className="btn btn--invert" onClick={() => setOpen(true)}>Review box</button>
+          {n > 0 && <span className="samplebar__sum">{money(subtotal)} <small>{free ? "+ free shipping" : `+ ${money(SAMPLE_SHIPPING_FEE)} shipping`}</small></span>}
+          {n > 0 || pathname.startsWith("/samples")
+            ? <button className="btn btn--invert" onClick={() => setOpen(true)} disabled={!n}>Review box</button>
+            : <button className="btn btn--invert" onClick={() => router.push("/samples")}>Pick your samples</button>}
         </div>
       </div>
     </div>
