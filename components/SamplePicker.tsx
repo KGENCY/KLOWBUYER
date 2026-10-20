@@ -4,7 +4,6 @@ import { useState } from "react";
 import { FREE_SHIPPING_SKUS, MAX_SAMPLE_SKUS, SAMPLE_PRODUCTS, brandById } from "@/lib/data";
 import { PARTNER_SAMPLE_PRICE } from "@/content/products";
 import ProductCard from "./ProductCard";
-import { Progress, shippingNote, useSamples } from "./SampleBox";
 
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s]/g, " ");
 
@@ -17,7 +16,6 @@ export default function SamplePicker() {
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
   const [q, setQ] = useState("");
-  const { items } = useSamples();
 
   const tokens = norm(q).split(/\s+/).filter(Boolean);
   const list = SAMPLE_PRODUCTS.filter((p) => {
@@ -36,10 +34,8 @@ export default function SamplePicker() {
             <h1 className="h2">No MOQ.<br />Every sample ${PARTNER_SAMPLE_PRICE}.</h1>
           </div>
           <div className="rule-note">
-            <Progress count={items.length} />
             <p>
-              <b>Rising Korean brands that work directly with KLOW.</b> Once you&rsquo;re a verified buyer, try every product once — 1 unit at ${PARTNER_SAMPLE_PRICE}, whatever its retail price. Up to {MAX_SAMPLE_SKUS} products per order; {FREE_SHIPPING_SKUS} or more ship free.
-              <span className="muted"> {items.length ? shippingNote(items.length) + "." : ""}</span>
+              <b>Find the next Korean bestseller before anyone else stocks it.</b> Rising brands we work with directly &mdash; try any product for ${PARTNER_SAMPLE_PRICE}, whatever it retails for. Mix up to {MAX_SAMPLE_SKUS} per order; {FREE_SHIPPING_SKUS} or more ship free.
             </p>
           </div>
         </div>
