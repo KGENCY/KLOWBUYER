@@ -4,7 +4,7 @@ import Link from "next/link";
 import { FREE_SHIPPING_SKUS, SAMPLE_PRICE } from "@/lib/data";
 import { initials } from "@/lib/buyer";
 import NavMenu from "./nav/NavMenu";
-import { useSamples } from "./SampleBox";
+import { boxStage, useSamples } from "./SampleBox";
 import { useRequest } from "./RequestBrand";
 import { DEMO_EMAIL, useBuyer } from "./Buyer";
 
@@ -17,7 +17,7 @@ export default function Header() {
       <div className="notice">
         <span>Every sample ${SAMPLE_PRICE} — no MOQ, from 1 unit</span>
         <span className="notice__dot hide-sm" />
-        <span className="hide-sm">Free shipping at {FREE_SHIPPING_SKUS} SKUs</span>
+        <span className="hide-sm">Free shipping at {FREE_SHIPPING_SKUS} products</span>
         <span className="notice__dot hide-sm" />
         <span className="hide-sm">Verified Korean brands only</span>
       </div>
@@ -49,7 +49,7 @@ export default function Header() {
               <button className="header__signin" onClick={() => signIn(DEMO_EMAIL)}>Sign in</button>
             )}
             <button className="header__box" onClick={() => setOpen(true)}>
-              Sample box <span className="header__count">{items.length}/{FREE_SHIPPING_SKUS}</span>
+              Sample box <span className="header__count">{items.length}/{boxStage(items.length).goal}</span>
             </button>
           </div>
         </div>
