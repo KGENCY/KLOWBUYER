@@ -149,6 +149,8 @@ const EXTRA_PRODUCTS: Product[] = CATALOG_PRODUCTS.filter((p) => SAMPLED.some((b
 
 export const brandById = (id: string) => (BRANDS.find((b) => b.id === id) ?? EXTRA_BRANDS.find((b) => b.id === id))!;
 export const productById = (id: string) => (PRODUCTS.find((p) => p.id === id) ?? EXTRA_PRODUCTS.find((p) => p.id === id))!;
+/** Everything that can go in the sample box from a partner brand, for /samples. */
+export const SAMPLE_PRODUCTS = EXTRA_PRODUCTS;
 export const productsOf = (brandId: string) => PRODUCTS.filter((p) => p.brandId === brandId);
 
 /** "$12.40"; an unknown price (NaN, e.g. a placeholder product, or any total that includes one) prints "$[__]". */

@@ -6,6 +6,7 @@
 import type { CtaLink, Locale, LocalizedText, MediaImage } from "@/types/content";
 import { t } from "./i18n";
 import { brandHref, brandsOfType } from "./brands";
+import { PARTNER_SAMPLE_PRICE } from "./products";
 import { guideHref, importGuides, ingredientGuides, latestTrend, monthLabel } from "./guides";
 
 /* ───────────── Types ───────────── */
@@ -35,6 +36,8 @@ export interface NavColumn {
   more?: NavLink;
   /** Show the first link as a highlighted card (e.g. the latest report). */
   featureFirst?: boolean;
+  /** Offer column: the heading is set large as a headline, with a button in place of a link list. */
+  cta?: NavLink & { ctaId: string };
 }
 
 export type NavAside =
@@ -115,22 +118,19 @@ export const NAV: NavItem[] = [
     columns: [
       {
         id: "popular",
-        heading: { en: "Popular brands" },
-        note: { en: "Best-known K-beauty, wholesale at MOQ" },
+        heading: { en: "Best-selling K-beauty" },
+        note: { en: "Top-selling brands, wholesale at MOQ" },
         links: brandsOfType("major").slice(0, 8).map((b, i) =>
           link(b.slug, b.name, brandHref(b), i, { description: { en: b.heroIngredients.slice(0, 2).join(" · ") } })),
         more: link("popular-all", "All popular brands", "/brands?filter=popular", 99),
       },
       {
         id: "new",
-        heading: { en: "Discover new brands" },
-        note: { en: "Partner brands, sample from 1 unit" },
-        links: brandsOfType("partner").slice(0, 8).map((b, i) =>
-          link(b.slug, b.name, brandHref(b), i, {
-            description: { en: b.heroIngredients.slice(0, 2).join(" · ") },
-            ...(b.flags.onlyOnKlow ? { badge: ONLY_ON_KLOW } : {}),
-          })),
-        more: link("new-all", "All indie brands", "/brands?filter=new", 99),
+        // Partner brands aren't listed by name: the offer is the hook, and the list would need picking rules.
+        heading: { en: `No MOQ. Every sample $${PARTNER_SAMPLE_PRICE}.` },
+        note: { en: "Rising Korean brands that work directly with KLOW. 1 unit per product, free shipping from 5." },
+        links: [],
+        cta: { ...link("samples", "Pick your samples", "/samples", 0), ctaId: "nav_brands_pick_samples" },
       },
       {
         id: "browse",

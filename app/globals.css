@@ -409,6 +409,11 @@ body:has(.samplebar.is-on) .concierge { padding-bottom: 136px; }
 /* ───────────── Search + tabs row ───────────── */
 .tabsrow { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; border-bottom: var(--bw) solid var(--line); margin-bottom: 36px; }
 .tabsrow .tabs { border-bottom: 0; margin-bottom: 0; flex: 1; min-width: 0; }
+/* /samples: brand chips sit under the category tabs */
+.samples .tabsrow { margin-bottom: 16px; }
+.samples__brands { border-bottom: 0; gap: 8px; }
+.samples__brands button { padding: 7px 14px; border: var(--bw) solid var(--line); border-radius: 999px; margin: 0; }
+.samples__brands button.is-on { border-color: var(--ink); background: var(--ink); color: var(--surface); }
 .search {
   display: flex; align-items: center; gap: 10px; flex: none;
   width: 300px; height: 40px; margin-bottom: 8px; padding: 0 8px 0 14px;
@@ -1675,6 +1680,10 @@ button.video__play:focus-visible { outline: 2px solid var(--accent); outline-off
 .menu__desc { font-size: 13px; color: var(--muted); }
 .menu__badge { font-style: normal; font-family: var(--mono); font-size: 9.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); padding: 2px 5px; line-height: 1.2; }
 .menu__more { margin-block-start: 6px; }
+/* Offer column: one headline, one line, one button (no link list). */
+.menu__offer { font-size: clamp(24px, 2.4vw, 34px); line-height: 1.1; color: var(--ink); max-width: 14ch; }
+.menu__col--offer .menu__note { font-size: 14px; color: var(--ink-2); margin-block-start: 2px; max-width: 34ch; }
+.menu__cta { margin-block-start: 10px; }
 .menu__feature { display: flex; flex-direction: column; gap: 6px; width: 100%; padding: 16px; background: var(--card); border: var(--bw) solid var(--line); border-block-start: var(--bw-2) solid var(--accent); text-align: start; transition: border-color .2s; }
 .menu__feature .menu__label { font-size: 17px; font-weight: 500; letter-spacing: -.01em; }
 .menu__feature:hover { border-color: var(--ink); border-block-start-color: var(--accent); }

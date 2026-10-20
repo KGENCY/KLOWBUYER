@@ -37,16 +37,21 @@ export function MenuColumns({ menu, onNavigate }: { menu: Menu; onNavigate?: () 
         const links = visible(c.links);
         const [first, ...rest] = links;
         return (
-          <div key={c.id} className="menu__col">
+          <div key={c.id} className={`menu__col ${c.cta ? "menu__col--offer" : ""}`}>
             {/* Compact menus have one column whose heading repeats the trigger, so it's only for screen readers. */}
-            <span className={menu.size === "compact" ? "sr-only" : "eyebrow menu__head"}>{t(c.heading)}</span>
+            <span className={menu.size === "compact" ? "sr-only" : c.cta ? "menu__offer serif" : "eyebrow menu__head"}>{t(c.heading)}</span>
             {c.note && <span className="menu__note">{t(c.note)}</span>}
             {c.featureFirst && first && <NavLinkView l={first} className="menu__feature" onNavigate={onNavigate} />}
-            <ul className="menu__links">
-              {(c.featureFirst ? rest : links).map((l) => (
-                <li key={l.id}><NavLinkView l={l} className="menu__link" onNavigate={onNavigate} /></li>
-              ))}
-            </ul>
+            {links.length > 0 && (
+              <ul className="menu__links">
+                {(c.featureFirst ? rest : links).map((l) => (
+                  <li key={l.id}><NavLinkView l={l} className="menu__link" onNavigate={onNavigate} /></li>
+                ))}
+              </ul>
+            )}
+            {c.cta && c.cta.enabled && (
+              <Link href={c.cta.href ?? "#"} className="btn btn--solid btn--sm menu__cta" onClick={onNavigate} data-cta-id={c.cta.ctaId}>{t(c.cta.label)} →</Link>
+            )}
             {c.more && c.more.enabled && (
               <Link href={c.more.href ?? "#"} className="link small menu__more" onClick={onNavigate}>{t(c.more.label)} →</Link>
             )}

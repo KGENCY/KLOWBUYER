@@ -40,10 +40,12 @@ export default function ProductCard({ p, index = 0, tag }: { p: Product; index?:
           <span className="card__msrp">MSRP {money(p.msrp)}</span>
         </div>
         {tag && <span className="card__tag">{tag}</span>}
-        <div className="card__support" title={`Marketing support from ${b.name}: ${b.support.join(", ")}`}>
-          <span className="card__support-k"><i />Marketing support</span>
-          <span className="card__support-v">{b.support.join(" · ")}</span>
-        </div>
+        {b.support.length > 0 && (
+          <div className="card__support" title={`Marketing support from ${b.name}: ${b.support.join(", ")}`}>
+            <span className="card__support-k"><i />Marketing support</span>
+            <span className="card__support-v">{b.support.join(" · ")}</span>
+          </div>
+        )}
       </div>
     </article>
   );
