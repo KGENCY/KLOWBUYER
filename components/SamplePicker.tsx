@@ -4,6 +4,7 @@ import { useState } from "react";
 import { FREE_SHIPPING_SKUS, MAX_SAMPLE_SKUS, SAMPLE_PRODUCTS, brandById } from "@/lib/data";
 import { BENEFITS, PARTNER_SAMPLE_PRICE, type Benefit } from "@/content/products";
 import ProductCard from "./ProductCard";
+import Photo from "./Photo";
 
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s]/g, " ");
 
@@ -12,6 +13,12 @@ const BRAND_IDS = [...new Set(SAMPLE_PRODUCTS.map((p) => p.brandId))];
 const BENEFIT_TABS = BENEFITS
   .map((b) => ({ b, n: SAMPLE_PRODUCTS.filter((p) => p.benefits?.includes(b)).length }))
   .filter((x) => x.n);
+
+/** One photographed product from each of the first four brands, for the offer card. */
+const SHOWCASE = BRAND_IDS
+  .map((id) => SAMPLE_PRODUCTS.find((p) => p.brandId === id && !p.art && p.benefits?.length))
+  .filter((p) => !!p)
+  .slice(0, 4);
 
 /** Every partner-brand product, filterable by key benefit and brand, each one addable to the sample box. */
 export default function SamplePicker() {
@@ -31,17 +38,29 @@ export default function SamplePicker() {
     <section className="section samples">
       <div className="wrap">
         <header className="samples__head">
-          <span className="eyebrow eyebrow--accent">No MOQ · Every sample ${PARTNER_SAMPLE_PRICE}</span>
-          <h1 className="samples__title">Find the next Korean bestseller <em>before anyone else stocks it.</em></h1>
-          <p className="samples__lede">
-            Rising Korean brands we work with directly.<br />
-            Try any product for ${PARTNER_SAMPLE_PRICE} &mdash; whatever it retails for.
-          </p>
-          <ul className="samples__facts">
-            <li><b>${PARTNER_SAMPLE_PRICE}</b><span>Any product, 1 unit</span></li>
-            <li><b>{MAX_SAMPLE_SKUS}</b><span>Products per order</span></li>
-            <li><b>{FREE_SHIPPING_SKUS}+</b><span>Ships free</span></li>
-          </ul>
+          <div className="samples__intro">
+            <span className="eyebrow eyebrow--accent">Sample box · {BRAND_IDS.length} rising Korean brands</span>
+            <h1 className="samples__title">Find the next Korean bestseller <em>before anyone else stocks it.</em></h1>
+            <p className="samples__lede">
+              Brands we work with directly, not through distributors.<br />
+              Try any product for ${PARTNER_SAMPLE_PRICE} &mdash; whatever it retails for.
+            </p>
+          </div>
+
+          <aside className="samples__offer" aria-label="Sample offer">
+            <ul className="samples__shots" aria-hidden="true">
+              {SHOWCASE.map((p) => <li key={p.id}><Photo p={p} sizes="120px" /></li>)}
+            </ul>
+            <div className="samples__price">
+              <b>${PARTNER_SAMPLE_PRICE}</b>
+              <span>per sample<br />any product, 1 unit</span>
+            </div>
+            <ul className="samples__rules">
+              <li><span>No MOQ</span><b>1 unit of each</b></li>
+              <li><span>Per order</span><b>Up to {MAX_SAMPLE_SKUS} products</b></li>
+              <li><span>Shipping</span><b>Free from {FREE_SHIPPING_SKUS} products</b></li>
+            </ul>
+          </aside>
         </header>
 
         <div className="tabsrow">
