@@ -60,7 +60,7 @@ export default function NavMenu({ id }: { id: string }) {
         {t(menu.label)} <i aria-hidden />
       </button>
       {/* Full-width panel under the header. Kept in the DOM (hidden) so its links stay crawlable. */}
-      <div id={panelId} className={`menu menu--${menu.size} ${open ? "is-on" : ""}`} aria-hidden={!open} inert={!open}>
+      <div id={panelId} className={`menu menu--${menu.size} menu--${menu.id} ${open ? "is-on" : ""}`} aria-hidden={!open} inert={!open}>
         <div className="wrap menu__in">
           <div className={`menu__cols menu__cols--${menu.columns.length}`}>
             <MenuColumns menu={menu} onNavigate={close} />

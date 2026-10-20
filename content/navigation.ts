@@ -5,7 +5,7 @@
  */
 import type { CtaLink, Locale, LocalizedText, MediaImage } from "@/types/content";
 import { t } from "./i18n";
-import { brandHref, brandsOfType, featuredPartners } from "./brands";
+import { brandHref, brandsOfType } from "./brands";
 import { guideHref, importGuides, ingredientGuides, latestTrend, monthLabel } from "./guides";
 
 /* ───────────── Types ───────────── */
@@ -115,18 +115,22 @@ export const NAV: NavItem[] = [
     columns: [
       {
         id: "popular",
-        heading: { en: "Popular K-beauty" },
-        note: { en: "Wholesale at MOQ, shipped from Korea" },
-        links: brandsOfType("major").slice(0, 8).map((b, i) => link(b.slug, b.name, brandHref(b), i)),
+        heading: { en: "Popular brands" },
+        note: { en: "Best-known K-beauty, wholesale at MOQ" },
+        links: brandsOfType("major").slice(0, 8).map((b, i) =>
+          link(b.slug, b.name, brandHref(b), i, { description: { en: b.heroIngredients.slice(0, 2).join(" · ") } })),
         more: link("popular-all", "All popular brands", "/brands?filter=popular", 99),
       },
       {
         id: "new",
-        heading: { en: "Discover new brands" },
-        note: { en: "Partner brands, sample from 1 unit" },
+        heading: { en: "Indie brands" },
+        note: { en: "Rising Korean labels, sample from 1 unit" },
         links: brandsOfType("partner").slice(0, 8).map((b, i) =>
-          link(b.slug, b.name, brandHref(b), i, b.flags.onlyOnKlow ? { badge: ONLY_ON_KLOW } : {})),
-        more: link("new-all", "All new brands", "/brands?filter=new", 99),
+          link(b.slug, b.name, brandHref(b), i, {
+            description: { en: b.heroIngredients.slice(0, 2).join(" · ") },
+            ...(b.flags.onlyOnKlow ? { badge: ONLY_ON_KLOW } : {}),
+          })),
+        more: link("new-all", "All indie brands", "/brands?filter=new", 99),
       },
       {
         id: "browse",
@@ -140,18 +144,6 @@ export const NAV: NavItem[] = [
         ],
       },
     ],
-    aside: {
-      type: "brandCards",
-      cards: featuredPartners(2).map((b) => ({
-        id: b.slug,
-        name: { en: b.name },
-        tagline: { en: "No MOQ. Sample from 1 unit." },
-        href: brandHref(b),
-        cta: { en: "View brand" },
-        badge: b.flags.onlyOnKlow ? ONLY_ON_KLOW : undefined,
-        image: b.images[0] ?? { alt: { en: `${b.name} K-beauty products, available wholesale on KLOW` }, fallback: "brand-placeholder" },
-      })),
-    },
     footer: { text: { en: "Can’t find a brand?" }, label: { en: "Request a brand" }, ctaId: "nav_brands_request" },
   },
   {
