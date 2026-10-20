@@ -6,7 +6,9 @@
  * Partner brand line-ups, photos and prices are the real ones from klow.kr (content/klowCatalog.ts).
  */
 import type { MediaImage } from "@/types/content";
-import { KLOW_BRANDS, KLOW_PRODUCTS } from "./klowCatalog";
+import { KLOW_BRANDS, KLOW_PRODUCTS, type Benefit } from "./klowCatalog";
+
+export { BENEFITS, type Benefit } from "./klowCatalog";
 
 export interface CatalogProduct {
   id: string;
@@ -15,6 +17,8 @@ export interface CatalogProduct {
   volume: string;
   heroIngredient: string;
   category: string;
+  /** Key benefits (partner products); empty until set. */
+  benefits: Benefit[];
   /** 1-unit sample price (partner brands only; major brands aren't sampled). */
   samplePrice: number | null;
   msrp: number | null;
@@ -48,7 +52,7 @@ const item = (
   heroIngredient: string,
   category = "Skincare",
 ): CatalogProduct => ({
-  id, brandSlug, name, volume, heroIngredient, category,
+  id, brandSlug, name, volume, heroIngredient, category, benefits: [],
   samplePrice: null, msrp: null, moqPrice: null, moq: null,
   inStock: true,
   images: bottle(`${brandName} ${name} ${volume}, K-beauty wholesale from Korea`),
@@ -90,6 +94,7 @@ export const PRODUCTS: CatalogProduct[] = [
       volume: k.volume,
       heroIngredient: k.heroIngredient,
       category: k.category,
+      benefits: k.benefits,
       samplePrice: PARTNER_SAMPLE_PRICE,
       msrp: k.msrp,
       moqPrice: k.moqPrice,

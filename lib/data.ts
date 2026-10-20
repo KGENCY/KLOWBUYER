@@ -1,5 +1,5 @@
 import { BRANDS as BRAND_PROFILES } from "@/content/brands";
-import { PARTNER_SAMPLE_PRICE, PRODUCTS as CATALOG_PRODUCTS } from "@/content/products";
+import { PARTNER_SAMPLE_PRICE, PRODUCTS as CATALOG_PRODUCTS, type Benefit } from "@/content/products";
 
 export type BuyerType = "distributor" | "online" | "marketplace" | "store" | "salon";
 export type Region = "us" | "ca" | "uk" | "eu" | "gcc" | "sea" | "au" | "latam";
@@ -45,6 +45,8 @@ export interface Product {
   size: string;
   category: Category;
   lines: Line[];
+  /** Key benefits for the /samples filter (partner products). */
+  benefits?: Benefit[];
   wholesale: number; // MOQ unit price
   sample: number; // 1-unit sample price, a little above MOQ; entered per product at listing
   msrp: number;
@@ -141,6 +143,7 @@ const EXTRA_PRODUCTS: Product[] = CATALOG_PRODUCTS.filter((p) => SAMPLED.some((b
   size: p.volume,
   category: (CATEGORIES as string[]).includes(p.category) ? (p.category as Category) : "Skincare",
   lines: [],
+  benefits: p.benefits,
   wholesale: price(p.moqPrice),
   sample: price(p.samplePrice),
   msrp: price(p.msrp),
