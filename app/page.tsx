@@ -2,7 +2,7 @@ import Link from "next/link";
 import Collection from "@/components/Collection";
 import Brands from "@/components/Brands";
 import HeroSlides from "@/components/HeroSlides";
-import { FREE_SHIPPING_SKUS } from "@/lib/data";
+import { FREE_SHIPPING_SKUS, MAX_SAMPLE_SKUS, SAMPLE_PRICE } from "@/lib/data";
 
 export default function Home() {
   return (
@@ -11,16 +11,16 @@ export default function Home() {
         <div className="wrap hero__grid">
           <div>
             <h1 className="hero__title">
-              Samples at wholesale price.
-              <em>Even just one unit.</em>
+              Every sample ${SAMPLE_PRICE}.
+              <em>No MOQ, just one unit.</em>
             </h1>
             <p className="hero__lede">
-              Not free testers, not retail markups. Order a single unit of any K-beauty product at a wholesale-level
-              price &mdash; then reorder what sells at MOQ, for less again.
+              Not free testers, not retail markups. Try any product from rising Korean brands &mdash; one unit at ${SAMPLE_PRICE},
+              whatever its retail price. Up to {MAX_SAMPLE_SKUS} per order, then reorder what sells at MOQ.
             </p>
 
             <div className="hero__cta">
-              <Link href="/#collection" className="btn btn--solid">Browse &amp; sample</Link>
+              <Link href="/samples" className="btn btn--solid">Pick your samples</Link>
               <Link href="/match" className="link small">Not sure what to pick? Get matched</Link>
             </div>
           </div>
@@ -31,9 +31,9 @@ export default function Home() {
         <div className="wrap">
           <ul className="pillars" data-reveal>
             <li>
-              <span className="pillars__k">Wholesale price on every sample</span>
+              <span className="pillars__k">${SAMPLE_PRICE} on every sample</span>
               <span className="pillars__n">1 unit</span>
-              <p><b>No MOQ, no case packs.</b> Sample any product on its own; once it sells, the MOQ price is lower still.</p>
+              <p><b>No MOQ, no case packs.</b> Try each product once, on its own &mdash; then reorder what sells at MOQ.</p>
             </li>
             <li>
               <span className="pillars__k">Free shipping at {FREE_SHIPPING_SKUS} SKUs</span>

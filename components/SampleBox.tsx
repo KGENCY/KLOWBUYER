@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { FREE_SHIPPING_SKUS, MAX_SAMPLE_SKUS, SAMPLE_SHIPPING_FEE, brandById, money, productById } from "@/lib/data";
+import { FREE_SHIPPING_SKUS, MAX_SAMPLE_SKUS, SAMPLE_PRICE, SAMPLE_SHIPPING_FEE, brandById, money, productById } from "@/lib/data";
 import Photo from "./Photo";
 import { useBuyer } from "./Buyer";
 
@@ -158,7 +158,7 @@ function SampleDrawer() {
         </div>
 
         <ul className="drawer__list">
-          {items.length === 0 && <li className="muted drawer__empty">Pick any product — a single unit, at wholesale price.</li>}
+          {items.length === 0 && <li className="muted drawer__empty">Pick any product — a single unit at ${SAMPLE_PRICE}.</li>}
           {items.map((id) => {
             const p = productById(id);
             const b = brandById(p.brandId);

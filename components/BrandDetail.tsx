@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Brand, Region, productsOf } from "@/lib/data";
+import { Brand, Region, SAMPLE_PRICE, productsOf } from "@/lib/data";
 import ProductCard from "./ProductCard";
 import { useSamples } from "./SampleBox";
 import { useRequest } from "./RequestBrand";
@@ -53,7 +53,7 @@ export default function BrandDetail({ b }: { b: Brand }) {
         <section className="brand__products">
           <div className="pdp__sechead">
             <span className="eyebrow">{products.length} {products.length === 1 ? "product" : "products"} from {b.name}</span>
-            <p className="muted">Every product samples from 1 unit at the wholesale price.</p>
+            <p className="muted">Every product samples from 1 unit at ${SAMPLE_PRICE}.</p>
           </div>
           <div className="grid">
             {products.map((p, i) => <ProductCard key={p.id} p={p} index={i} />)}

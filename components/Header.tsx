@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { FREE_SHIPPING_SKUS } from "@/lib/data";
+import { FREE_SHIPPING_SKUS, SAMPLE_PRICE } from "@/lib/data";
 import { initials } from "@/lib/buyer";
 import NavMenu from "./nav/NavMenu";
 import { useSamples } from "./SampleBox";
@@ -15,7 +15,7 @@ export default function Header() {
   return (
     <>
       <div className="notice">
-        <span>Samples at wholesale price — from 1 unit</span>
+        <span>Every sample ${SAMPLE_PRICE} — no MOQ, from 1 unit</span>
         <span className="notice__dot hide-sm" />
         <span className="hide-sm">Free shipping at {FREE_SHIPPING_SKUS} SKUs</span>
         <span className="notice__dot hide-sm" />

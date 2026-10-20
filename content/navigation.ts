@@ -102,8 +102,6 @@ const link = (id: string, en: string, href: string, order: number, extra: Partia
   id, label: { en }, href, enabled: true, order, ...extra,
 });
 
-const ONLY_ON_KLOW: LocalizedText = { en: "Only on KLOW" };
-
 export const NAV: NavItem[] = [
   { id: "collection", type: "link", label: { en: "Collection" }, href: "/#collection", enabled: true, order: 0 },
   {
@@ -131,17 +129,6 @@ export const NAV: NavItem[] = [
         note: { en: "Rising Korean brands that work directly with KLOW. Try every product once, up to 10 per order. Free shipping from 5." },
         links: [],
         cta: { ...link("samples", "Pick your samples", "/samples", 0), ctaId: "nav_brands_pick_samples" },
-      },
-      {
-        id: "browse",
-        heading: { en: "Browse by" },
-        links: [
-          link("skincare", "Skincare", "/brands?category=skincare", 0),
-          link("sun-care", "Sun care", "/brands?category=sun-care", 1),
-          link("makeup", "Makeup", "/brands?category=makeup", 2),
-          link("ingredient", "By ingredient", "/brands#ingredients", 3),
-          link("a-z", "All brands A–Z", "/brands", 4),
-        ],
       },
     ],
     footer: { text: { en: "Can’t find a brand?" }, label: { en: "Request a brand" }, ctaId: "nav_brands_request" },

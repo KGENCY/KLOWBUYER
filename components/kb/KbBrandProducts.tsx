@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { CatalogProduct } from "@/content/products";
 import { useSamples } from "@/components/SampleBox";
+import { SAMPLE_PRICE } from "@/lib/data";
 import KbProductCard from "./KbProductCard";
 
 /** A brand's products in the klow.kr grid, with category tabs once the line-up spans more than one. */
@@ -14,7 +15,7 @@ export function KbBrandProducts({ products, brandName }: { products: CatalogProd
     <section id="products" className="brand__products">
       <div className="pdp__sechead">
         <span className="eyebrow">{products.length} products from {brandName}</span>
-        <p className="muted">Every product: wholesale price even for 1 unit · free shipping at any 5 products.</p>
+        <p className="muted">Every product: ${SAMPLE_PRICE} for 1 unit · free shipping at any 5 products.</p>
       </div>
       {cats.length > 1 && (
         <div className="kbtabs" role="tablist" aria-label="Filter by category">

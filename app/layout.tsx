@@ -14,8 +14,8 @@ const sans = Geist({ subsets: ["latin"], weight: ["400", "500", "600"], variable
 const mono = Geist_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
-  title: "KLOW Wholesale — K-beauty samples at wholesale price, from 1 unit",
-  description: "Sample any Korean beauty product from one unit at wholesale price. Five SKUs ship free. Brands matched to your business.",
+  title: "KLOW Wholesale — every K-beauty sample $7, no MOQ",
+  description: "Sample any product from rising Korean beauty brands, one unit at $7. Five products ship free. Brands matched to your business.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

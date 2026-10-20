@@ -1706,17 +1706,14 @@ button.video__play:focus-visible { outline: 2px solid var(--accent); outline-off
 .menu__contact-title { font-size: 20px; font-weight: 500; letter-spacing: -.02em; }
 .menu__wa { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--accent); }
 .menu__wa:hover { text-decoration: underline; text-underline-offset: 4px; }
-/* Brands: popular and indie brands split the panel in half; "Browse by" sits small at the far right. */
+/* Brands: best-selling brands and the $7 sample offer split the panel in half. */
 .menu--brands .menu__in { grid-template-columns: 1fr; }
-.menu--brands .menu__cols--3 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 176px; gap: 0; }
-.menu--brands .menu__col { padding-inline: 40px; border-inline-start: var(--bw) solid var(--line-2); }
-.menu--brands .menu__col:first-child { padding-inline-start: 0; border-inline-start: 0; }
-.menu--brands .menu__col:last-child { padding-inline-end: 0; padding-inline-start: 28px; }
-.menu--brands .menu__col:not(:last-child) .menu__links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px; }
-.menu--brands .menu__col:not(:last-child) .menu__link { padding-block: 12px; border-block-end: var(--bw) solid var(--line-2); }
-.menu--brands .menu__col:not(:last-child) .menu__label { font-size: 16px; font-weight: 500; letter-spacing: -.01em; }
-.menu--brands .menu__col:last-child .menu__head { color: var(--muted); }
-.menu--brands .menu__col:last-child .menu__link { padding-block: 4px; font-size: 13.5px; color: var(--ink-2); }
+.menu--brands .menu__cols--2 { gap: 0; }
+.menu--brands .menu__col { padding-inline: 48px 0; border-inline-start: var(--bw) solid var(--line-2); }
+.menu--brands .menu__col:first-child { padding-inline: 0 48px; border-inline-start: 0; }
+.menu--brands .menu__links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px; }
+.menu--brands .menu__link { padding-block: 12px; border-block-end: var(--bw) solid var(--line-2); }
+.menu--brands .menu__label { font-size: 16px; font-weight: 500; letter-spacing: -.01em; }
 .menu__band { border-block-start: var(--bw) solid var(--line); background: var(--bg); }
 .menu__footer { display: flex; align-items: center; gap: 12px; padding-block: 14px; font-size: 14px; color: var(--ink-2); }
 

@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useBuyer } from "@/components/Buyer";
 import { useSamples } from "@/components/SampleBox";
+import { SAMPLE_PRICE } from "@/lib/data";
 
 /**
  * Deep-green sample block. Signed out: sign in / create an account. Signed in: add the hero products.
@@ -30,8 +31,8 @@ export default function SampleBlock({
     <div className="sblock">
       <div className="sblock__text">
         <span className="eyebrow">No MOQ</span>
-        <h2>Sample {brandName} at wholesale price.</h2>
-        <p>From 1 unit per product. Mix any 5 products across brands and shipping is on us.</p>
+        <h2>Sample {brandName} at ${SAMPLE_PRICE} a unit.</h2>
+        <p>1 unit of each product, once. Mix any 5 products across brands and shipping is on us.</p>
       </div>
       <div className="sblock__act">
         {signedIn ? (

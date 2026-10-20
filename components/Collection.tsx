@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { CATEGORIES, Category, FREE_SHIPPING_SKUS, PRODUCTS, SHELVES, Shelf, brandById, shelfProducts } from "@/lib/data";
+import { CATEGORIES, Category, FREE_SHIPPING_SKUS, MAX_SAMPLE_SKUS, PRODUCTS, SAMPLE_PRICE, SHELVES, Shelf, brandById, shelfProducts } from "@/lib/data";
 import ProductCard from "./ProductCard";
 import { Progress, shippingNote, useSamples } from "./SampleBox";
 import { useRequest } from "./RequestBrand";
@@ -103,12 +103,12 @@ export default function Collection() {
         <div className="section__head">
           <div>
             <span className="eyebrow">The collection</span>
-            <h2 className="h2">Every sample at wholesale price.<br />Reorder what sells.</h2>
+            <h2 className="h2">Every sample ${SAMPLE_PRICE}.<br />Reorder what sells.</h2>
           </div>
           <div className="rule-note">
             <Progress count={items.length} />
             <p>
-              <b>One unit, wholesale price.</b> No minimum to sample, and the unit price drops further once you reorder at MOQ. Reach {FREE_SHIPPING_SKUS} SKUs and shipping is on us.
+              <b>One unit, ${SAMPLE_PRICE}.</b> No minimum to sample — try each product once, up to {MAX_SAMPLE_SKUS} per order. Reach {FREE_SHIPPING_SKUS} and shipping is on us.
               <span className="muted"> {items.length ? shippingNote(items.length) + "." : ""}</span>
             </p>
           </div>
