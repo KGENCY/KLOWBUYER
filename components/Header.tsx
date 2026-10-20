@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { FREE_SHIPPING_SKUS } from "@/lib/data";
 import { initials } from "@/lib/buyer";
-import AboutMenu from "./nav/AboutMenu";
+import NavMenu from "./nav/NavMenu";
 import { useSamples } from "./SampleBox";
 import { useRequest } from "./RequestBrand";
 import { DEMO_EMAIL, useBuyer } from "./Buyer";
@@ -28,9 +28,10 @@ export default function Header() {
             <span className="wordmark__w">Wholesale</span>
           </Link>
           <nav className="header__nav">
-            <AboutMenu />
+            <NavMenu id="about" />
             <Link href="/#collection">Collection</Link>
-            <Link href="/#brands">Brands</Link>
+            <NavMenu id="brands" />
+            <NavMenu id="guides" />
             <Link href="/match">Find my brands</Link>
             <button onClick={() => openWith()}>Request a brand</button>
           </nav>

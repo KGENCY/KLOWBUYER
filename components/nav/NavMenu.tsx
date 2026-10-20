@@ -8,22 +8,21 @@ import { MenuAside, MenuColumns, MenuFooter } from "./MenuContent";
 
 type Menu = Extract<NavItem, { type: "menu" }>;
 
-const ABOUT = NAV.find((n) => n.id === "about") as Menu;
-
 /** How long the pointer may be outside the menu (e.g. crossing the gap to the panel) before it closes. */
 const HOVER_CLOSE_MS = 160;
 
 /**
- * About dropdown for the header nav. Opens on hover (mouse) and on click (touch, keyboard);
+ * Dropdown for one header menu from content/navigation.ts (About, Brands, Guides). Opens on hover (mouse) and on click (touch, keyboard);
  * Esc, a click outside, or moving focus out closes it.
  */
-export default function AboutMenu() {
+export default function NavMenu({ id }: { id: string }) {
+  const menu = NAV.find((n) => n.id === id) as Menu;
   const path = usePathname();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  const active = isActive(ABOUT, path);
-  const panelId = `nav-panel-${ABOUT.id}`;
+  const active = isActive(menu, path);
+  const panelId = `nav-panel-${menu.id}`;
 
   useEffect(() => setOpen(false), [path]);
 
@@ -32,7 +31,7 @@ export default function AboutMenu() {
     const onDown = (e: PointerEvent) => { if (!ref.current?.contains(e.target as Node)) setOpen(false); };
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
-      document.getElementById(`nav-btn-${ABOUT.id}`)?.focus();
+      document.getElementById(`nav-btn-${menu.id}`)?.focus();
       setOpen(false);
     };
     document.addEventListener("pointerdown", onDown);
@@ -51,26 +50,26 @@ export default function AboutMenu() {
       onBlur={(e) => !e.currentTarget.contains(e.relatedTarget) && close()}
     >
       <button
-        id={`nav-btn-${ABOUT.id}`}
+        id={`nav-btn-${menu.id}`}
         type="button"
         className={`nav__item nav__trigger ${active ? "is-on" : ""}`}
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => setOpen(!open)}
       >
-        {t(ABOUT.label)} <i aria-hidden />
+        {t(menu.label)} <i aria-hidden />
       </button>
       {/* Full-width panel under the header. Kept in the DOM (hidden) so its links stay crawlable. */}
-      <div id={panelId} className={`menu menu--${ABOUT.size} ${open ? "is-on" : ""}`} aria-hidden={!open} inert={!open}>
+      <div id={panelId} className={`menu menu--${menu.size} ${open ? "is-on" : ""}`} aria-hidden={!open} inert={!open}>
         <div className="wrap menu__in">
-          <div className={`menu__cols menu__cols--${ABOUT.columns.length}`}>
-            <MenuColumns menu={ABOUT} onNavigate={close} />
+          <div className={`menu__cols menu__cols--${menu.columns.length}`}>
+            <MenuColumns menu={menu} onNavigate={close} />
           </div>
-          {ABOUT.aside && <MenuAside aside={ABOUT.aside} menuId={ABOUT.id} onNavigate={close} />}
+          {menu.aside && <MenuAside aside={menu.aside} menuId={menu.id} onNavigate={close} />}
         </div>
-        {ABOUT.footer && (
+        {menu.footer && (
           <div className="menu__band">
-            <div className="wrap"><MenuFooter footer={ABOUT.footer} onNavigate={close} /></div>
+            <div className="wrap"><MenuFooter footer={menu.footer} onNavigate={close} /></div>
           </div>
         )}
       </div>

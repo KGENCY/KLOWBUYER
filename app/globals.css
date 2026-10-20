@@ -1648,12 +1648,13 @@ button.video__play:focus-visible { outline: 2px solid var(--accent); outline-off
 /* ═══════════════════════════════════════════════════════════════
    Navigation — desktop menus, language, mobile menu, footer
    ═══════════════════════════════════════════════════════════════ */
-/* About dropdown trigger in the header (the panel's links sit outside .header__nav > a, so they keep their own styles) */
+/* Dropdown triggers in the header (About, Brands, Guides) (the panel's links sit outside .header__nav > a, so they keep their own styles) */
 .nav__item { position: relative; padding: 4px 0; display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
 .nav__item::after { content: ""; position: absolute; inset-inline: 0; bottom: 0; height: 2px; background: var(--ink); transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease); }
 .nav__item:hover::after, .nav__item.is-on::after, .nav__trigger[aria-expanded="true"]::after { transform: none; }
 .nav__trigger i { width: 7px; height: 7px; border-inline-end: 1.5px solid currentColor; border-block-end: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .2s var(--ease); }
 .nav__trigger[aria-expanded="true"] i { transform: translateY(1px) rotate(-135deg); }
+@media (max-width: 1200px) { .header__nav { gap: 20px; } .header__act { gap: 16px; } }
 
 /* Full-width panel, positioned against the sticky header */
 .menu { position: absolute; inset-inline: 0; top: 100%; z-index: 45; background: var(--surface); border-block: var(--bw) solid var(--line); font-weight: 400; opacity: 0; visibility: hidden; transition: opacity .15s ease, visibility .15s; }
