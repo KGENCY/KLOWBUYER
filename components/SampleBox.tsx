@@ -89,10 +89,22 @@ export function SampleProvider({ children }: { children: ReactNode }) {
   );
 }
 
+/**
+ * Where a box stands. Until FREE_SHIPPING_SKUS the goal is free shipping;
+ * from there the goal becomes the order limit (MAX_SAMPLE_SKUS).
+ */
+export function boxStage(count: number) {
+  const free = count >= FREE_SHIPPING_SKUS;
+  const goal = free ? MAX_SAMPLE_SKUS : FREE_SHIPPING_SKUS;
+  return { free, goal, left: Math.max(goal - count, 0), full: count >= MAX_SAMPLE_SKUS };
+}
+
+/** One segment per product toward the current goal: 5 segments, then 10 once shipping is free. */
 export function Progress({ count, light }: { count: number; light?: boolean }) {
+  const { free, goal } = boxStage(count);
   return (
-    <span className={`progress ${light ? "progress--light" : ""}`} aria-label={`${Math.min(count, FREE_SHIPPING_SKUS)} of ${FREE_SHIPPING_SKUS} SKUs`}>
-      {Array.from({ length: FREE_SHIPPING_SKUS }).map((_, i) => (
+    <span className={`progress ${light ? "progress--light" : ""} ${free ? "progress--free" : ""}`} role="img" aria-label={`${Math.min(count, goal)} of ${goal} products`}>
+      {Array.from({ length: goal }).map((_, i) => (
         <i key={i} className={i < count ? "on" : ""} />
       ))}
     </span>
@@ -100,9 +112,10 @@ export function Progress({ count, light }: { count: number; light?: boolean }) {
 }
 
 export function shippingNote(count: number) {
-  const left = FREE_SHIPPING_SKUS - count;
-  if (left > 0) return `Add ${left} more product${left > 1 ? "s" : ""} for free shipping`;
-  return count >= MAX_SAMPLE_SKUS ? `Free shipping · box full (${MAX_SAMPLE_SKUS} per order)` : "Free shipping unlocked";
+  const { free, left, full } = boxStage(count);
+  if (!free) return `Add ${left} more for free shipping`;
+  if (full) return "Box full — check out, then start your next box";
+  return `Free shipping unlocked · add up to ${left} more to this order`;
 }
 
 function SampleBar() {
@@ -112,20 +125,30 @@ function SampleBar() {
   const n = items.length;
   const subtotal = items.reduce((s, id) => s + productById(id).sample, 0);
   const on = (n || notice) && !quiet;
+  const { free, goal, left, full } = boxStage(n);
   return (
-    <div className={`samplebar ${on ? "is-on" : ""}`} aria-hidden={!on}>
+    <div className={`samplebar ${on ? "is-on" : ""} ${free ? "is-free" : ""}`} aria-hidden={!on}>
       {notice && <p className="samplebar__notice" role="status">{notice}</p>}
       <div className="samplebar__in">
         <div className="samplebar__l">
-          <span className="eyebrow eyebrow--light">Sample box</span>
+          {/* Keyed on the stage so the label pops when free shipping kicks in. */}
+          <span key={free ? "free" : "box"} className="samplebar__stage">
+            {free ? <><i aria-hidden>✓</i> Free shipping</> : "Sample box"}
+          </span>
           <Progress count={n} light />
-          <span className="samplebar__msg">
-            <b>{n} / {MAX_SAMPLE_SKUS} products</b>
-            <span>{shippingNote(n)}</span>
+          <span className="samplebar__msg" aria-live="polite">
+            <b>{n} / {goal}</b>
+            <span>
+              {!free
+                ? <>Add <em>{left} more</em> for free shipping</>
+                : full
+                  ? <>Box full — check out, then start your next box</>
+                  : <>Applied! Add up to <em>{left} more</em> to this order</>}
+            </span>
           </span>
         </div>
         <div className="samplebar__r">
-          <span className="samplebar__sum">{money(subtotal)} <small>at wholesale</small></span>
+          <span className="samplebar__sum">{money(subtotal)} <small>{free ? "+ free shipping" : `+ ${money(SAMPLE_SHIPPING_FEE)} shipping`}</small></span>
           <button className="btn btn--invert" onClick={() => setOpen(true)}>Review box</button>
         </div>
       </div>
