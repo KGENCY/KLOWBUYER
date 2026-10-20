@@ -34,6 +34,9 @@ export interface CatalogProduct {
   ingredients?: string | null;
 }
 
+/** Every partner-brand sample is one unit at this flat price, whatever the product (no MOQ). */
+export const PARTNER_SAMPLE_PRICE = 7;
+
 const bottle = (alt: string): MediaImage[] => [{ alt: { en: alt }, fallback: "product-bottle" }];
 
 const item = (
@@ -87,7 +90,7 @@ export const PRODUCTS: CatalogProduct[] = [
       volume: k.volume,
       heroIngredient: k.heroIngredient,
       category: k.category,
-      samplePrice: k.samplePrice,
+      samplePrice: PARTNER_SAMPLE_PRICE,
       msrp: k.msrp,
       moqPrice: k.moqPrice,
       moq: k.moq,
@@ -95,7 +98,7 @@ export const PRODUCTS: CatalogProduct[] = [
       images: k.images.length
         ? k.images.map((src, i) => ({ src, alt: { en: `${brandName} ${k.name}${i ? ` — photo ${i + 1}` : ""}, K-beauty wholesale from Korea` }, fallback: "product-bottle" as const }))
         : bottle(`${brandName} ${k.name}, K-beauty wholesale from Korea`),
-      tiers: k.tiers,
+      tiers: k.tiers.map((t) => (t.min === 1 ? { ...t, unit: PARTNER_SAMPLE_PRICE } : t)),
       about: k.about,
       keyActives: k.keyActives,
       forText: k.forText,
