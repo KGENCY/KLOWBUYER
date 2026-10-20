@@ -123,8 +123,8 @@ export const NAV: NavItem[] = [
       },
       {
         id: "new",
-        heading: { en: "Indie brands" },
-        note: { en: "Rising Korean labels, sample from 1 unit" },
+        heading: { en: "Discover new brands" },
+        note: { en: "Partner brands, sample from 1 unit" },
         links: brandsOfType("partner").slice(0, 8).map((b, i) =>
           link(b.slug, b.name, brandHref(b), i, {
             description: { en: b.heroIngredients.slice(0, 2).join(" · ") },
