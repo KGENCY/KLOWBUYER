@@ -2,12 +2,19 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { FREE_SHIPPING_SKUS, SAMPLE_SHIPPING_FEE, brandById, money, productById } from "@/lib/data";
+import { FREE_SHIPPING_SKUS, MAX_SAMPLE_SKUS, SAMPLE_SHIPPING_FEE, brandById, money, productById } from "@/lib/data";
 import Photo from "./Photo";
+import { useBuyer } from "./Buyer";
 
 interface Ctx {
   items: string[];
   has: (id: string) => boolean;
+  /** Already ordered as a sample by this buyer — each product can be sampled once. */
+  sampled: (id: string) => boolean;
+  /** The box holds MAX_SAMPLE_SKUS products, the most one order can take. */
+  full: boolean;
+  /** Why the last add was refused, shown briefly in the bottom bar. */
+  notice: string;
   toggle: (id: string) => void;
   addMany: (ids: string[]) => void;
   clear: () => void;
@@ -24,10 +31,20 @@ export const useSamples = () => useContext(SampleCtx)!;
 const KEY = "klow.samples";
 
 export function SampleProvider({ children }: { children: ReactNode }) {
+  const { buyer, orders } = useBuyer();
   const [saved, setItems] = useState<string[]>([]);
-  // A box saved before the catalog changed can hold ids that no longer resolve; drop them.
-  const items = saved.filter((id) => !!productById(id));
   const [open, setOpen] = useState(false);
+  const [notice, setNotice] = useState("");
+  const done = new Set(buyer ? orders.flatMap((o) => o.items) : []);
+  // Drop ids that no longer resolve (a box saved before the catalog changed) or that this buyer has already sampled.
+  const items = saved.filter((id) => !!productById(id) && !done.has(id)).slice(0, MAX_SAMPLE_SKUS);
+  const full = items.length >= MAX_SAMPLE_SKUS;
+
+  useEffect(() => {
+    if (!notice) return;
+    const t = setTimeout(() => setNotice(""), 4500);
+    return () => clearTimeout(t);
+  }, [notice]);
 
   useEffect(() => {
     try {
@@ -43,8 +60,21 @@ export function SampleProvider({ children }: { children: ReactNode }) {
   const value: Ctx = {
     items,
     has: (id) => items.includes(id),
-    toggle: (id) => setItems((xs) => (xs.includes(id) ? xs.filter((x) => x !== id) : [...xs, id])),
-    addMany: (ids) => setItems((xs) => [...xs, ...ids.filter((i) => !xs.includes(i))]),
+    sampled: (id) => done.has(id),
+    full,
+    notice,
+    toggle: (id) => {
+      if (items.includes(id)) return setItems(items.filter((x) => x !== id));
+      if (done.has(id)) return setNotice("You've already sampled this product. Reorder it at MOQ.");
+      if (full) return setNotice(`One order holds up to ${MAX_SAMPLE_SKUS} products. Check out this box, then start the next one.`);
+      setItems([...items, id]);
+    },
+    addMany: (ids) => {
+      const fresh = ids.filter((i) => !items.includes(i) && !done.has(i));
+      const room = MAX_SAMPLE_SKUS - items.length;
+      if (fresh.length > room) setNotice(`Added ${Math.max(room, 0)} — one order holds up to ${MAX_SAMPLE_SKUS} products.`);
+      setItems([...items, ...fresh.slice(0, Math.max(room, 0))]);
+    },
     clear: () => setItems([]),
     open,
     setOpen,
@@ -71,23 +101,26 @@ export function Progress({ count, light }: { count: number; light?: boolean }) {
 
 export function shippingNote(count: number) {
   const left = FREE_SHIPPING_SKUS - count;
-  return left > 0 ? `Add ${left} more SKU${left > 1 ? "s" : ""} for free shipping` : "Complimentary shipping unlocked";
+  if (left > 0) return `Add ${left} more product${left > 1 ? "s" : ""} for free shipping`;
+  return count >= MAX_SAMPLE_SKUS ? `Free shipping · box full (${MAX_SAMPLE_SKUS} per order)` : "Free shipping unlocked";
 }
 
 function SampleBar() {
-  const { items, setOpen } = useSamples();
+  const { items, notice, setOpen } = useSamples();
   const pathname = usePathname();
   const quiet = QUIET_ROUTES.some((r) => pathname.startsWith(r));
   const n = items.length;
   const subtotal = items.reduce((s, id) => s + productById(id).sample, 0);
+  const on = (n || notice) && !quiet;
   return (
-    <div className={`samplebar ${n && !quiet ? "is-on" : ""}`} aria-hidden={!n || quiet}>
+    <div className={`samplebar ${on ? "is-on" : ""}`} aria-hidden={!on}>
+      {notice && <p className="samplebar__notice" role="status">{notice}</p>}
       <div className="samplebar__in">
         <div className="samplebar__l">
           <span className="eyebrow eyebrow--light">Sample box</span>
           <Progress count={n} light />
           <span className="samplebar__msg">
-            <b>{n} / {FREE_SHIPPING_SKUS} SKUs</b>
+            <b>{n} / {MAX_SAMPLE_SKUS} products</b>
             <span>{shippingNote(n)}</span>
           </span>
         </div>
@@ -157,7 +190,7 @@ function SampleDrawer() {
           >
             Request samples
           </button>
-          <p className="muted small center">Every sample is billed at the wholesale price — never retail.</p>
+          <p className="muted small center">One unit per product, once per buyer. Up to {MAX_SAMPLE_SKUS} products per order — {FREE_SHIPPING_SKUS} or more ship free.</p>
         </footer>
       </aside>
     </>

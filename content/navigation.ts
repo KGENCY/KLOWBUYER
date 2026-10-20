@@ -128,7 +128,7 @@ export const NAV: NavItem[] = [
         id: "new",
         // Partner brands aren't listed by name: the offer is the hook, and the list would need picking rules.
         heading: { en: `No MOQ. Every sample $${PARTNER_SAMPLE_PRICE}.` },
-        note: { en: "Rising Korean brands that work directly with KLOW. 1 unit per product, free shipping from 5." },
+        note: { en: "Rising Korean brands that work directly with KLOW. Try every product once, up to 10 per order. Free shipping from 5." },
         links: [],
         cta: { ...link("samples", "Pick your samples", "/samples", 0), ctaId: "nav_brands_pick_samples" },
       },

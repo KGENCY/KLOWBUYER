@@ -7,10 +7,11 @@ import { useSamples } from "./SampleBox";
 import { useBuyer } from "./Buyer";
 
 export default function ProductCard({ p, index = 0, tag }: { p: Product; index?: number; tag?: string }) {
-  const { has, toggle } = useSamples();
+  const { has, sampled, full, toggle } = useSamples();
   const b = brandById(p.brandId);
   const signedIn = !!useBuyer().buyer;
   const added = has(p.id);
+  const done = sampled(p.id);
   const href = `/products/${p.id}`;
 
   return (
@@ -21,13 +22,21 @@ export default function ProductCard({ p, index = 0, tag }: { p: Product; index?:
         <Link href={href} className="card__link" aria-label={`${b.name} ${p.name} — pricing, terms and reviews`}>
           <Photo p={p} sizes="(max-width: 860px) 50vw, 25vw" />
         </Link>
-        <button className="card__sample" onClick={() => toggle(p.id)} aria-pressed={added}>
-          {added ? (
-            <><span>In your sample box</span><span>Remove</span></>
-          ) : (
-            <><span>Sample 1 unit</span><span>{money(p.sample)}</span></>
-          )}
-        </button>
+        {done ? (
+          <Link href={href} className="card__sample card__sample--done">
+            <span>Already sampled</span><span>Reorder at MOQ</span>
+          </Link>
+        ) : (
+          <button className={`card__sample ${full && !added ? "card__sample--full" : ""}`} onClick={() => toggle(p.id)} aria-pressed={added}>
+            {added ? (
+              <><span>In your sample box</span><span>Remove</span></>
+            ) : full ? (
+              <><span>Box full</span><span>Check out first</span></>
+            ) : (
+              <><span>Sample 1 unit</span><span>{money(p.sample)}</span></>
+            )}
+          </button>
+        )}
       </div>
       <div className="card__body">
         <span className="eyebrow">{b.name} · {p.size}</span>

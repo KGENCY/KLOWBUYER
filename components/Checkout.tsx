@@ -42,8 +42,8 @@ export default function Checkout() {
         <div className="empty">
           <span className="eyebrow">Sample box</span>
           <h3 className="serif">Your sample box is empty.</h3>
-          <p className="muted">Pick any product from the collection — a single unit, billed at wholesale price. Five SKUs ship free.</p>
-          <Link href="/#collection" className="btn btn--solid">Browse the collection</Link>
+          <p className="muted">Try any partner-brand product once — a single unit. Up to ten per order, five or more ship free.</p>
+          <Link href="/samples" className="btn btn--solid">Pick your samples</Link>
         </div>
       </div>
     );
@@ -54,7 +54,7 @@ export default function Checkout() {
       <header className="page__head">
         <span className="eyebrow">Sample box · Step 1 of 2</span>
         <h1 className="h2">Review your samples</h1>
-        <p className="muted">One unit of each, at the wholesale price. We pack everything together in Seoul and ship it as one parcel.</p>
+        <p className="muted">One unit of each, up to ten products per order. We pack everything together in Seoul and ship it as one parcel.</p>
       </header>
 
       <div className="split">

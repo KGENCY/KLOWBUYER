@@ -247,6 +247,8 @@ img { display: block; max-width: 100%; }
 /* ───────────── Sample bar + drawer ───────────── */
 .samplebar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: var(--ink); color: #fff; transform: translateY(100%); transition: transform .45s var(--ease); border-top: var(--bw) solid rgba(255,255,255,.18); }
 .samplebar.is-on { transform: none; }
+.samplebar__notice { max-width: var(--wrap); margin: 0 auto; padding: 10px var(--gutter) 0; font-size: 13px; color: #fff; }
+.card__sample--done, .card__sample--full { color: var(--muted); }
 .samplebar__in { max-width: var(--wrap); margin: 0 auto; padding: 14px var(--gutter); display: flex; justify-content: space-between; align-items: center; gap: 24px; }
 .samplebar__l, .samplebar__r { display: flex; align-items: center; gap: 24px; }
 .samplebar__msg { display: flex; gap: 14px; font-size: 13.5px; }

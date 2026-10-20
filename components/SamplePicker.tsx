@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FREE_SHIPPING_SKUS, SAMPLE_PRODUCTS, brandById } from "@/lib/data";
+import { FREE_SHIPPING_SKUS, MAX_SAMPLE_SKUS, SAMPLE_PRODUCTS, brandById } from "@/lib/data";
 import { PARTNER_SAMPLE_PRICE } from "@/content/products";
 import ProductCard from "./ProductCard";
 import { Progress, shippingNote, useSamples } from "./SampleBox";
@@ -38,7 +38,7 @@ export default function SamplePicker() {
           <div className="rule-note">
             <Progress count={items.length} />
             <p>
-              <b>Rising Korean brands that work directly with KLOW.</b> Order 1 unit of any product at ${PARTNER_SAMPLE_PRICE}, whatever its retail price. Reach {FREE_SHIPPING_SKUS} products and shipping is on us.
+              <b>Rising Korean brands that work directly with KLOW.</b> Once you&rsquo;re a verified buyer, try every product once — 1 unit at ${PARTNER_SAMPLE_PRICE}, whatever its retail price. Up to {MAX_SAMPLE_SKUS} products per order; {FREE_SHIPPING_SKUS} or more ship free.
               <span className="muted"> {items.length ? shippingNote(items.length) + "." : ""}</span>
             </p>
           </div>

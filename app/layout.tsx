@@ -22,8 +22,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${sans.variable} ${mono.variable}`}>
       <body>
-        <SampleProvider>
-          <BuyerProvider>
+        {/* The sample box reads the buyer's past orders (each product can be sampled once), so it sits inside. */}
+        <BuyerProvider>
+          <SampleProvider>
             <RequestProvider>
               <Header />
               <main>{children}</main>
@@ -31,8 +32,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Welcome />
               <GlobalConversion />
             </RequestProvider>
-          </BuyerProvider>
-        </SampleProvider>
+          </SampleProvider>
+        </BuyerProvider>
         <Reveal />
       </body>
     </html>

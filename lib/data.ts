@@ -62,6 +62,8 @@ export type Category = "Skincare" | "Sun Care" | "Cleansing" | "Masks" | "Hairca
 export const CATEGORIES: Category[] = ["Skincare", "Sun Care", "Cleansing", "Masks", "Haircare", "Body", "Makeup"];
 
 export const FREE_SHIPPING_SKUS = 5;
+/** Most products one sample order can hold; a buyer with more to try places another order. */
+export const MAX_SAMPLE_SKUS = 10;
 export const SAMPLE_SHIPPING_FEE = 18;
 
 export const BRANDS: Brand[] = [

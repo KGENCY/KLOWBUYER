@@ -10,7 +10,7 @@ import { useBuyer } from "./Buyer";
 import Photo from "./Photo";
 
 const CONSENTS = [
-  { k: "terms", label: "I agree to the Terms of Service and the sample programme conditions.", note: "One unit per SKU, billed at wholesale. Samples are for business evaluation, not resale." },
+  { k: "terms", label: "I agree to the Terms of Service and the sample programme conditions.", note: "One unit per product, once per buyer, up to ten products per order. Samples are for business evaluation, not resale." },
   { k: "privacy", label: "I agree to the collection and use of my personal information.", note: "Name, company, contact and delivery details — used to fulfil this request." },
   { k: "transfer", label: "I consent to the cross-border transfer of my data to Korea.", note: "Shared with the brands and the Seoul fulfilment centre to ship your parcel." },
   { k: "refund", label: "I understand the refund and customs policy.", note: "Refund in full if a brand cannot supply. Import duties in your country, if any, are yours." },
