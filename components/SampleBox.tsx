@@ -24,7 +24,9 @@ export const useSamples = () => useContext(SampleCtx)!;
 const KEY = "klow.samples";
 
 export function SampleProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<string[]>([]);
+  const [saved, setItems] = useState<string[]>([]);
+  // A box saved before the catalog changed can hold ids that no longer resolve; drop them.
+  const items = saved.filter((id) => !!productById(id));
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -35,8 +37,8 @@ export function SampleProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    try { localStorage.setItem(KEY, JSON.stringify(items)); } catch {}
-  }, [items]);
+    try { localStorage.setItem(KEY, JSON.stringify(saved.filter((id) => !!productById(id)))); } catch {}
+  }, [saved]);
 
   const value: Ctx = {
     items,
