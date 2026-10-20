@@ -64,6 +64,18 @@ export const PRODUCTS: CatalogProduct[] = [
   item("cosrx-retinol-cream", "cosrx", "COSRX", "The Retinol 0.1 Cream", "20 ml", "Retinol"),
   item("cosrx-snail-cream", "cosrx", "COSRX", "Advanced Snail 92 All in One Cream", "100 g", "Snail mucin"),
 
+  /* Major: Beauty of Joseon */
+  item("boj-relief-sun", "beauty-of-joseon", "Beauty of Joseon", "Relief Sun: Rice + Probiotics SPF50+ PA++++", "50 ml", "Rice", "Sun Care"),
+  item("boj-glow-serum", "beauty-of-joseon", "Beauty of Joseon", "Glow Serum: Propolis + Niacinamide", "30 ml", "Propolis"),
+  item("boj-dynasty-cream", "beauty-of-joseon", "Beauty of Joseon", "Dynasty Cream", "50 ml", "Rice"),
+  item("boj-ginseng-cleansing-oil", "beauty-of-joseon", "Beauty of Joseon", "Ginseng Cleansing Oil", "210 ml", "Ginseng", "Cleansing"),
+
+  /* Major: Torriden */
+  item("torriden-divein-serum", "torriden", "Torriden", "DIVE-IN Low Molecular Hyaluronic Acid Serum", "50 ml", "Hyaluronic acid"),
+  item("torriden-divein-toner", "torriden", "Torriden", "DIVE-IN Low Molecular Hyaluronic Acid Toner", "300 ml", "Hyaluronic acid"),
+  item("torriden-divein-cream", "torriden", "Torriden", "DIVE-IN Low Molecular Hyaluronic Acid Soothing Cream", "100 ml", "Hyaluronic acid"),
+  item("torriden-divein-sun", "torriden", "Torriden", "DIVE-IN Watery Moisture Sun Cream SPF50+ PA++++", "60 ml", "Hyaluronic acid", "Sun Care"),
+
 
   /* Partner brands — real line-ups from klow.kr */
   ...KLOW_PRODUCTS.map((k): CatalogProduct => {
