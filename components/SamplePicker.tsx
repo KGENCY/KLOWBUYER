@@ -2,49 +2,57 @@
 
 import { useState } from "react";
 import { FREE_SHIPPING_SKUS, MAX_SAMPLE_SKUS, SAMPLE_PRODUCTS, brandById } from "@/lib/data";
-import { PARTNER_SAMPLE_PRICE } from "@/content/products";
+import { BENEFITS, PARTNER_SAMPLE_PRICE, type Benefit } from "@/content/products";
 import ProductCard from "./ProductCard";
 
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s]/g, " ");
 
-/** Filters that actually have products, in first-seen order. */
+/** Filters that actually have products: brands in first-seen order, benefits in BENEFITS order. */
 const BRAND_IDS = [...new Set(SAMPLE_PRODUCTS.map((p) => p.brandId))];
-const CATEGORY_LIST = [...new Set(SAMPLE_PRODUCTS.map((p) => p.category))];
+const BENEFIT_TABS = BENEFITS
+  .map((b) => ({ b, n: SAMPLE_PRODUCTS.filter((p) => p.benefits?.includes(b)).length }))
+  .filter((x) => x.n);
 
-/** Every partner-brand product, filterable by brand and category, each one addable to the sample box. */
+/** Every partner-brand product, filterable by key benefit and brand, each one addable to the sample box. */
 export default function SamplePicker() {
   const [brand, setBrand] = useState("");
-  const [category, setCategory] = useState("");
+  const [benefit, setBenefit] = useState<Benefit | "">("");
   const [q, setQ] = useState("");
 
   const tokens = norm(q).split(/\s+/).filter(Boolean);
   const list = SAMPLE_PRODUCTS.filter((p) => {
     if (brand && p.brandId !== brand) return false;
-    if (category && p.category !== category) return false;
-    const hay = norm([p.name, brandById(p.brandId).name, p.category, p.size].join(" "));
+    if (benefit && !p.benefits?.includes(benefit)) return false;
+    const hay = norm([p.name, brandById(p.brandId).name, p.category, p.size, ...(p.benefits ?? [])].join(" "));
     return tokens.every((t) => hay.includes(t));
   });
 
   return (
     <section className="section samples">
       <div className="wrap">
-        <div className="section__head">
-          <div>
-            <span className="eyebrow">Sample box</span>
-            <h1 className="h2">No MOQ.<br />Every sample ${PARTNER_SAMPLE_PRICE}.</h1>
-          </div>
-          <div className="rule-note">
-            <p>
-              <b>Find the next Korean bestseller before anyone else stocks it.</b> Rising brands we work with directly &mdash; try any product for ${PARTNER_SAMPLE_PRICE}, whatever it retails for. Mix up to {MAX_SAMPLE_SKUS} per order; {FREE_SHIPPING_SKUS} or more ship free.
-            </p>
-          </div>
-        </div>
+        <header className="samples__head">
+          <span className="eyebrow eyebrow--accent">No MOQ · Every sample ${PARTNER_SAMPLE_PRICE}</span>
+          <h1 className="samples__title">Find the next Korean bestseller <em>before anyone else stocks it.</em></h1>
+          <p className="samples__lede">
+            Rising Korean brands we work with directly.<br />
+            Try any product for ${PARTNER_SAMPLE_PRICE} &mdash; whatever it retails for.
+          </p>
+          <ul className="samples__facts">
+            <li><b>${PARTNER_SAMPLE_PRICE}</b><span>Any product, 1 unit</span></li>
+            <li><b>{MAX_SAMPLE_SKUS}</b><span>Products per order</span></li>
+            <li><b>{FREE_SHIPPING_SKUS}+</b><span>Ships free</span></li>
+          </ul>
+        </header>
 
         <div className="tabsrow">
-          <div className="tabs" role="group" aria-label="Category">
-            <button className={!category ? "is-on" : ""} aria-pressed={!category} onClick={() => setCategory("")}>All products</button>
-            {CATEGORY_LIST.map((c) => (
-              <button key={c} className={category === c ? "is-on" : ""} aria-pressed={category === c} onClick={() => setCategory(category === c ? "" : c)}>{c}</button>
+          <div className="tabs" role="group" aria-label="Key benefit">
+            <button className={!benefit ? "is-on" : ""} aria-pressed={!benefit} onClick={() => setBenefit("")}>
+              All products <sup>{SAMPLE_PRODUCTS.length}</sup>
+            </button>
+            {BENEFIT_TABS.map(({ b, n }) => (
+              <button key={b} className={benefit === b ? "is-on" : ""} aria-pressed={benefit === b} onClick={() => setBenefit(benefit === b ? "" : b)}>
+                {b} <sup>{n}</sup>
+              </button>
             ))}
           </div>
 
@@ -66,14 +74,14 @@ export default function SamplePicker() {
         </div>
 
         {list.length ? (
-          <div className="grid" key={`${brand}|${category}|${q}`}>
+          <div className="grid" key={`${brand}|${benefit}|${q}`}>
             {list.map((p, i) => <ProductCard key={p.id} p={p} index={i} />)}
           </div>
         ) : (
           <div className="empty" role="status">
             <span className="eyebrow">No match</span>
             <p className="muted">Nothing fits these filters yet.</p>
-            <button className="link small" onClick={() => { setBrand(""); setCategory(""); setQ(""); }}>Clear filters</button>
+            <button className="link small" onClick={() => { setBrand(""); setBenefit(""); setQ(""); }}>Clear filters</button>
           </div>
         )}
       </div>
